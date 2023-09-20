@@ -1,0 +1,3426 @@
+{
+  "action": [
+    {
+      "type": 0,
+      "value": "Hành động"
+    }
+  ],
+  "active": [
+    {
+      "type": 0,
+      "value": "Kích hoạt"
+    }
+  ],
+  "addNewAddress": [
+    {
+      "type": 0,
+      "value": "Thêm địa chỉ"
+    }
+  ],
+  "addProduct": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm"
+    }
+  ],
+  "addSelectedProduct": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm đã chọn"
+    }
+  ],
+  "addStatus": [
+    {
+      "type": 0,
+      "value": "Thêm"
+    }
+  ],
+  "addSuccessfully": [
+    {
+      "type": 0,
+      "value": "Thêm "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " thành công"
+    }
+  ],
+  "addingStatus": [
+    {
+      "type": 0,
+      "value": "Đang thêm"
+    }
+  ],
+  "address": [
+    {
+      "type": 0,
+      "value": "Địa chỉ"
+    }
+  ],
+  "approve": [
+    {
+      "type": 0,
+      "value": "Đã duyệt"
+    }
+  ],
+  "approveButton": [
+    {
+      "type": 0,
+      "value": "Duyệt"
+    }
+  ],
+  "approveStatus": [
+    {
+      "type": 0,
+      "value": "Duyệt"
+    }
+  ],
+  "approveSuccessfully": [
+    {
+      "type": 0,
+      "value": "Duyệt "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " thành công"
+    }
+  ],
+  "approvingStatus": [
+    {
+      "type": 0,
+      "value": "Đang duyệt"
+    }
+  ],
+  "assignPermission": [
+    {
+      "type": 0,
+      "value": "Phân quyền tài khoản"
+    }
+  ],
+  "backButton": [
+    {
+      "type": 0,
+      "value": "Quay lại"
+    }
+  ],
+  "beginning_balance": [
+    {
+      "type": 0,
+      "value": "Quỹ đầu kỳ:"
+    }
+  ],
+  "billingAddress": [
+    {
+      "type": 0,
+      "value": "Địa chỉ thanh toán"
+    }
+  ],
+  "boolean.false": [
+    {
+      "type": 0,
+      "value": "Không"
+    }
+  ],
+  "boolean.true": [
+    {
+      "type": 0,
+      "value": "Có"
+    }
+  ],
+  "cancelOrder": [
+    {
+      "type": 0,
+      "value": "Hủy đơn hàng"
+    }
+  ],
+  "cash.confirmTransaction": [
+    {
+      "type": 0,
+      "value": "Xác nhận Transaction"
+    }
+  ],
+  "cash.createTransaction": [
+    {
+      "type": 0,
+      "value": "Tạo Transaction"
+    }
+  ],
+  "cash.transactionListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách transaction"
+    }
+  ],
+  "cod": [
+    {
+      "type": 0,
+      "value": "Ship COD"
+    }
+  ],
+  "completeButton": [
+    {
+      "type": 0,
+      "value": "Hoàn Thành"
+    }
+  ],
+  "confirm.cancelButtonContent": [
+    {
+      "type": 0,
+      "value": "Cancel"
+    }
+  ],
+  "confirm.deleteButtonContent": [
+    {
+      "type": 0,
+      "value": "Xóa"
+    }
+  ],
+  "confirm.deleteContent": [
+    {
+      "type": 0,
+      "value": "Bạn có chắc muốn xóa không?"
+    }
+  ],
+  "confirm.titleContent": [
+    {
+      "type": 0,
+      "value": "Xác nhận"
+    }
+  ],
+  "confirmInvoice": [
+    {
+      "type": 0,
+      "value": "Duyệt hóa đơn"
+    }
+  ],
+  "confirmOrder": [
+    {
+      "type": 0,
+      "value": "Xác nhận đơn hàng"
+    }
+  ],
+  "confirmPurchaseOrder": [
+    {
+      "type": 0,
+      "value": "Xác nhận đơn hàng"
+    }
+  ],
+  "connectStatus": [
+    {
+      "type": 0,
+      "value": "Liên kết"
+    }
+  ],
+  "connectingStatus": [
+    {
+      "type": 0,
+      "value": "Đang liên kết"
+    }
+  ],
+  "continueButton": [
+    {
+      "type": 0,
+      "value": "Tiếp tục"
+    }
+  ],
+  "create.newButton": [
+    {
+      "type": 0,
+      "value": "Tạo mới"
+    }
+  ],
+  "createExtendUnit": [
+    {
+      "type": 0,
+      "value": "Tạo đơn vị tính mở rộng"
+    }
+  ],
+  "createStatus": [
+    {
+      "type": 0,
+      "value": "Tạo"
+    }
+  ],
+  "createSuccessfully": [
+    {
+      "type": 0,
+      "value": "Tạo "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " mới thành công"
+    }
+  ],
+  "creatingStatus": [
+    {
+      "type": 0,
+      "value": "Đang tạo"
+    }
+  ],
+  "creditor_types.customer.customer": [
+    {
+      "type": 0,
+      "value": "Khách hàng"
+    }
+  ],
+  "creditor_types.partner.partner": [
+    {
+      "type": 0,
+      "value": "Đối tác"
+    }
+  ],
+  "customer.addNewAddress": [
+    {
+      "type": 0,
+      "value": "Thêm Địa chỉ mới"
+    }
+  ],
+  "customer.addressListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách địa chỉ"
+    }
+  ],
+  "customer.avatar": [
+    {
+      "type": 0,
+      "value": "Ảnh đại diện"
+    }
+  ],
+  "customer.belongToCustomerType": [
+    {
+      "type": 0,
+      "value": "Thuộc nhóm"
+    }
+  ],
+  "customer.birthday": [
+    {
+      "type": 0,
+      "value": "Ngày sinh nhật"
+    }
+  ],
+  "customer.businessStatus": [
+    {
+      "type": 0,
+      "value": "Tình Trạng"
+    }
+  ],
+  "customer.companyName": [
+    {
+      "type": 0,
+      "value": "Tên công ty"
+    }
+  ],
+  "customer.create.step1": [
+    {
+      "type": 0,
+      "value": "Thông tin khách hàng"
+    }
+  ],
+  "customer.create.step2": [
+    {
+      "type": 0,
+      "value": "Địa chỉ khách hàng"
+    }
+  ],
+  "customer.createCustomerTypeTitle": [
+    {
+      "type": 0,
+      "value": "Tạo nhóm khách hàng"
+    }
+  ],
+  "customer.customerInformation": [
+    {
+      "type": 0,
+      "value": "Thông tin khách hàng"
+    }
+  ],
+  "customer.customerListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách nhóm khách hàng"
+    }
+  ],
+  "customer.customerType": [
+    {
+      "type": 0,
+      "value": "Nhóm khách hàng"
+    }
+  ],
+  "customer.describeCustomerType": [
+    {
+      "type": 0,
+      "value": "Mô tả nhóm khách hàng"
+    }
+  ],
+  "customer.email": [
+    {
+      "type": 0,
+      "value": "Địa chỉ email"
+    }
+  ],
+  "customer.error.upload": [
+    {
+      "type": 0,
+      "value": "Chỉ chấp nhận file hình ảnh. Dung lượng nhỏ hơn 200Kb"
+    }
+  ],
+  "customer.facebook": [
+    {
+      "type": 0,
+      "value": "Facebook"
+    }
+  ],
+  "customer.firstName": [
+    {
+      "type": 0,
+      "value": "Tên"
+    }
+  ],
+  "customer.gender": [
+    {
+      "type": 0,
+      "value": "Giới tính"
+    }
+  ],
+  "customer.lastName": [
+    {
+      "type": 0,
+      "value": "Họ"
+    }
+  ],
+  "customer.maxDebt": [
+    {
+      "type": 0,
+      "value": "Nợ tối đa"
+    }
+  ],
+  "customer.offBusiness": [
+    {
+      "type": 0,
+      "value": "Ngừng kinh doanh"
+    }
+  ],
+  "customer.onBusiness": [
+    {
+      "type": 0,
+      "value": "Đang kinh doanh"
+    }
+  ],
+  "customer.phoneNumber": [
+    {
+      "type": 0,
+      "value": "Số điện thoại"
+    }
+  ],
+  "customer.saleInCharge": [
+    {
+      "type": 0,
+      "value": "Sale phụ trách"
+    }
+  ],
+  "customer.saleInChargeInformation": [
+    {
+      "type": 0,
+      "value": "Thông tin sale phụ trách"
+    }
+  ],
+  "customer.taxIdentificationNumber": [
+    {
+      "type": 0,
+      "value": "Mã số thuế"
+    }
+  ],
+  "customer.updateCustomerTypeTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật nhóm khách hàng"
+    }
+  ],
+  "customer.upload": [
+    {
+      "type": 0,
+      "value": "Tải lên"
+    }
+  ],
+  "customer.userListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách khách hàng"
+    }
+  ],
+  "debt_source_types.order.invoice": [
+    {
+      "type": 0,
+      "value": "Hóa đơn"
+    }
+  ],
+  "debt_source_types.stock.receiptorder": [
+    {
+      "type": 0,
+      "value": "Đơn nhập hàng"
+    }
+  ],
+  "debt_source_types.stock.returnorder": [
+    {
+      "type": 0,
+      "value": "Đơn trả hàng"
+    }
+  ],
+  "defaultBillingAddress": [
+    {
+      "type": 0,
+      "value": "Địa chỉ thanh toán mặc định"
+    }
+  ],
+  "defaultShippingAddress": [
+    {
+      "type": 0,
+      "value": "Địa chỉ giao hàng mặc định"
+    }
+  ],
+  "deleteStatus": [
+    {
+      "type": 0,
+      "value": "Xóa"
+    }
+  ],
+  "deleteSuccessfully": [
+    {
+      "type": 0,
+      "value": "Xóa "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " thành công"
+    }
+  ],
+  "deletingStatus": [
+    {
+      "type": 0,
+      "value": "Đang xóa"
+    }
+  ],
+  "deliveriedStatus": [
+    {
+      "type": 0,
+      "value": "Đã giao hàng"
+    }
+  ],
+  "deliveringStatus": [
+    {
+      "type": 0,
+      "value": "Đang giao hàng"
+    }
+  ],
+  "discount.addCategory": [
+    {
+      "type": 0,
+      "value": "Thêm danh mục"
+    }
+  ],
+  "discount.createDiscountTitle": [
+    {
+      "type": 0,
+      "value": "Tạo chương trình giảm giá"
+    }
+  ],
+  "discount.date_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc"
+    }
+  ],
+  "discount.date_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu"
+    }
+  ],
+  "discount.discountListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách khuyến mãi"
+    }
+  ],
+  "discount.discountName": [
+    {
+      "type": 0,
+      "value": "Tên chương trình khuyến mãi"
+    }
+  ],
+  "discount.productDiscountListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm giảm giá"
+    }
+  ],
+  "discount.updateDiscountName": [
+    {
+      "type": 0,
+      "value": "Cập nhật chương trình khuyến mãi"
+    }
+  ],
+  "discount.updateDiscountTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật chương trình khuyến mãi"
+    }
+  ],
+  "discountType": [
+    {
+      "type": 0,
+      "value": "Loại giảm giá"
+    }
+  ],
+  "discount_types.Absolute": [
+    {
+      "type": 0,
+      "value": "Giảm giá theo giá trị"
+    }
+  ],
+  "discount_types.Percentage": [
+    {
+      "type": 0,
+      "value": "Giảm giá theo phần trăm"
+    }
+  ],
+  "district": [
+    {
+      "type": 0,
+      "value": "Quận / Huyện"
+    }
+  ],
+  "draft_customer_states.Confirmed": [
+    {
+      "type": 0,
+      "value": "Đã duyệt"
+    }
+  ],
+  "draft_customer_states.Pending": [
+    {
+      "type": 0,
+      "value": "Chờ xử lý"
+    }
+  ],
+  "existEmail": [
+    {
+      "type": 0,
+      "value": "Email đã tồn tại"
+    }
+  ],
+  "existMainPhoneNumber": [
+    {
+      "type": 0,
+      "value": "Số điện thoại đã tồn tại"
+    }
+  ],
+  "existTax": [
+    {
+      "type": 0,
+      "value": "Mã số thuế đã tồn tại"
+    }
+  ],
+  "extendUnit": [
+    {
+      "type": 0,
+      "value": "Đơn vị tính mở rộng"
+    }
+  ],
+  "filter.available_for_purchase_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc có thể mua"
+    }
+  ],
+  "filter.available_for_purchase_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu có thể mua"
+    }
+  ],
+  "filter.birthday_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc sinh nhật"
+    }
+  ],
+  "filter.birthday_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu sinh nhật"
+    }
+  ],
+  "filter.channel": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Kênh bán"
+    }
+  ],
+  "filter.customerType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Nhóm Khách Hàng"
+    }
+  ],
+  "filter.date_created_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc tạo"
+    }
+  ],
+  "filter.date_created_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu tạo"
+    }
+  ],
+  "filter.date_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc"
+    }
+  ],
+  "filter.date_joined_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc tạo"
+    }
+  ],
+  "filter.date_joined_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu tạo"
+    }
+  ],
+  "filter.date_placed_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc đặt"
+    }
+  ],
+  "filter.date_placed_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu đặt"
+    }
+  ],
+  "filter.date_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu"
+    }
+  ],
+  "filter.discountType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Loại Giảm Giá"
+    }
+  ],
+  "filter.discount_amount_end": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị đến"
+    }
+  ],
+  "filter.discount_amount_start": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị từ"
+    }
+  ],
+  "filter.filterButton": [
+    {
+      "type": 0,
+      "value": "Lọc"
+    }
+  ],
+  "filter.flowType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Flow Type"
+    }
+  ],
+  "filter.gender": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Giới tính"
+    }
+  ],
+  "filter.inbussiness": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Tình Trạng Kinh Doanh"
+    }
+  ],
+  "filter.is_active": [
+    {
+      "type": 0,
+      "value": "Lọc theo tình trạng kính hoạt"
+    }
+  ],
+  "filter.orderStatus": [
+    {
+      "type": 0,
+      "value": "Lọc theo trạng thái đơn hàng"
+    }
+  ],
+  "filter.owner": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Người Tạo"
+    }
+  ],
+  "filter.partner": [
+    {
+      "type": 0,
+      "value": "Lọc theo đối tác"
+    }
+  ],
+  "filter.price_end": [
+    {
+      "type": 0,
+      "value": "Giá đến"
+    }
+  ],
+  "filter.price_start": [
+    {
+      "type": 0,
+      "value": "Giá từ"
+    }
+  ],
+  "filter.product": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Sản Phẩm"
+    }
+  ],
+  "filter.productAttribute": [
+    {
+      "type": 0,
+      "value": "Lọc theo thuộc tính cho sản phẩm"
+    }
+  ],
+  "filter.productCategory": [
+    {
+      "type": 0,
+      "value": "Lọc theo danh mục sản phẩm"
+    }
+  ],
+  "filter.productClass": [
+    {
+      "type": 0,
+      "value": "Lọc theo loại sản phẩm"
+    }
+  ],
+  "filter.publication_date_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc xuất bản"
+    }
+  ],
+  "filter.publication_date_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu xuất bản"
+    }
+  ],
+  "filter.saleInCharge": [
+    {
+      "type": 0,
+      "value": "Lọc theo Sale Quản Lý"
+    }
+  ],
+  "filter.search": [
+    {
+      "type": 0,
+      "value": "Tìm kiếm"
+    }
+  ],
+  "filter.shippingMethod": [
+    {
+      "type": 0,
+      "value": "Lọc theo phương thức vận chuyển"
+    }
+  ],
+  "filter.sourceType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Source Type"
+    }
+  ],
+  "filter.status": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Tình Trạng"
+    }
+  ],
+  "filter.total_debt_amount_end": [
+    {
+      "type": 0,
+      "value": "Tổng nợ đến"
+    }
+  ],
+  "filter.total_debt_amount_start": [
+    {
+      "type": 0,
+      "value": "Tổng nợ từ"
+    }
+  ],
+  "filter.total_end": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị đến"
+    }
+  ],
+  "filter.total_purchase_end": [
+    {
+      "type": 0,
+      "value": "Tổng doanh thu đến"
+    }
+  ],
+  "filter.total_purchase_start": [
+    {
+      "type": 0,
+      "value": "Tổng doanh thu từ"
+    }
+  ],
+  "filter.total_start": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị từ"
+    }
+  ],
+  "filter.transactionType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo loại Transaction"
+    }
+  ],
+  "filter.variantAttribute": [
+    {
+      "type": 0,
+      "value": "Lọc theo thuộc tính cho biến thể"
+    }
+  ],
+  "filter.voucherType": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Loại Voucher"
+    }
+  ],
+  "filter.warehouse": [
+    {
+      "type": 0,
+      "value": "Lọc Theo Kho"
+    }
+  ],
+  "genders.Female": [
+    {
+      "type": 0,
+      "value": "Nữ"
+    }
+  ],
+  "genders.Male": [
+    {
+      "type": 0,
+      "value": "Nam"
+    }
+  ],
+  "imageStock": [
+    {
+      "type": 0,
+      "value": "Kho hình ảnh sản phẩm"
+    }
+  ],
+  "invoice.createInvoice": [
+    {
+      "type": 0,
+      "value": "Tạo hóa đơn"
+    }
+  ],
+  "invoice.invoiceListTitle": [
+    {
+      "type": 0,
+      "value": "Hóa đơn bán hàng"
+    }
+  ],
+  "invoice_statuses.Cancelled": [
+    {
+      "type": 0,
+      "value": "Đã hủy"
+    }
+  ],
+  "invoice_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Đã duyệt"
+    }
+  ],
+  "invoice_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "invoice_statuses.Paid": [
+    {
+      "type": 0,
+      "value": "Đã thanh toán"
+    }
+  ],
+  "invoice_statuses.Processed": [
+    {
+      "type": 0,
+      "value": "Đang xử lý"
+    }
+  ],
+  "maximum_order_price": [
+    {
+      "type": 0,
+      "value": "Giá đơn hàng tối đa"
+    }
+  ],
+  "maximum_order_weight": [
+    {
+      "type": 0,
+      "value": "Trọng lượng đơn hàng tối đa"
+    }
+  ],
+  "message.error.attributeOption": [
+    {
+      "type": 0,
+      "value": "Vui lòng nhập option"
+    }
+  ],
+  "message.error.catchError": [
+    {
+      "type": 0,
+      "value": "Có lỗi xảy ra vui lòng kiểm tra lại"
+    }
+  ],
+  "message.error.common": [
+    {
+      "type": 0,
+      "value": "Có lỗi xảy ra"
+    }
+  ],
+  "message.error.dateEndIsMoreThanDateStart": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc không được trước ngày bắt đầu"
+    }
+  ],
+  "message.error.email": [
+    {
+      "type": 0,
+      "value": "Vui lòng nhập đúng định dạng email"
+    }
+  ],
+  "message.error.existEmail": [
+    {
+      "type": 0,
+      "value": "Email này đã tồn tại"
+    }
+  ],
+  "message.error.existEmailOrexistTaxIdentification": [
+    {
+      "type": 0,
+      "value": "Email hoặc Mã số thuế đã tồn tại"
+    }
+  ],
+  "message.error.existMainPhoneNumber": [
+    {
+      "type": 0,
+      "value": "Số điện thoại này đã tồn tại"
+    }
+  ],
+  "message.error.existTax": [
+    {
+      "type": 0,
+      "value": "Mã số thuế này đã tồn tại"
+    }
+  ],
+  "message.error.existUsername": [
+    {
+      "type": 0,
+      "value": "Username này đã tồn tại"
+    }
+  ],
+  "message.error.fileType": [
+    {
+      "type": 0,
+      "value": "Vui lòng chọn đúng định dạng file"
+    }
+  ],
+  "message.error.inputPrice": [
+    {
+      "type": 0,
+      "value": "Vui lòng nhập giá"
+    }
+  ],
+  "message.error.oneOf": [
+    {
+      "type": 0,
+      "value": "Trường này không được bỏ trống"
+    }
+  ],
+  "message.error.positive": [
+    {
+      "type": 0,
+      "value": "% thuế không được âm"
+    }
+  ],
+  "message.error.price_incl_tax": [
+    {
+      "type": 0,
+      "value": "Giá chưa thuế chỉ được nhỏ hơn hoặc bằng giá có thuế"
+    }
+  ],
+  "message.error.required": [
+    {
+      "type": 0,
+      "value": "Trường này không được bỏ trống"
+    }
+  ],
+  "message.error.size": [
+    {
+      "type": 0,
+      "value": "Dung lượng file quá lớn"
+    }
+  ],
+  "message.warninng.draftDifferOfficial": [
+    {
+      "type": 0,
+      "value": "Lưu ý: Bản nháp thay đổi so với bản chính"
+    }
+  ],
+  "minimum_order_price": [
+    {
+      "type": 0,
+      "value": "Giá đơn hàng tối thiểu"
+    }
+  ],
+  "minimum_order_weight": [
+    {
+      "type": 0,
+      "value": "Trọng lượng đơn hàng tối thiểu"
+    }
+  ],
+  "multiply": [
+    {
+      "type": 0,
+      "value": "Hệ số"
+    }
+  ],
+  "navbar.cash": [
+    {
+      "type": 0,
+      "value": "Sổ quỹ"
+    }
+  ],
+  "navbar.clientOrder": [
+    {
+      "type": 0,
+      "value": "Đơn hàng"
+    }
+  ],
+  "navbar.customer": [
+    {
+      "type": 0,
+      "value": "Khách hàng"
+    }
+  ],
+  "navbar.discount": [
+    {
+      "type": 0,
+      "value": "Khuyến mãi"
+    }
+  ],
+  "navbar.management": [
+    {
+      "type": 0,
+      "value": "Quản lý"
+    }
+  ],
+  "navbar.outnote": [
+    {
+      "type": 0,
+      "value": "Phiếu xuất kho"
+    }
+  ],
+  "navbar.overview": [
+    {
+      "type": 0,
+      "value": "Tổng quan"
+    }
+  ],
+  "navbar.partner": [
+    {
+      "type": 0,
+      "value": "Đối tác"
+    }
+  ],
+  "navbar.product": [
+    {
+      "type": 0,
+      "value": "Sản phẩm"
+    }
+  ],
+  "navbar.productAttribute": [
+    {
+      "type": 0,
+      "value": "Thuộc tính sản phẩm"
+    }
+  ],
+  "navbar.productCategory": [
+    {
+      "type": 0,
+      "value": "Danh mục sản phẩm"
+    }
+  ],
+  "navbar.productList": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm"
+    }
+  ],
+  "navbar.productType": [
+    {
+      "type": 0,
+      "value": "Loại sản phẩm"
+    }
+  ],
+  "navbar.purchaseChannel": [
+    {
+      "type": 0,
+      "value": "Kênh bán"
+    }
+  ],
+  "navbar.purchaseOrder": [
+    {
+      "type": 0,
+      "value": "Đặt hàng"
+    }
+  ],
+  "navbar.report": [
+    {
+      "type": 0,
+      "value": "Báo cáo"
+    }
+  ],
+  "navbar.shipper": [
+    {
+      "type": 0,
+      "value": "Đối tác giao hàng"
+    }
+  ],
+  "navbar.shippingMethod": [
+    {
+      "type": 0,
+      "value": "Vận chuyển"
+    }
+  ],
+  "navbar.supplier": [
+    {
+      "type": 0,
+      "value": "Nhà cung cấp"
+    }
+  ],
+  "navbar.transaction": [
+    {
+      "type": 0,
+      "value": "Giao dịch"
+    }
+  ],
+  "navbar.transactionList": [
+    {
+      "type": 0,
+      "value": "Giao dịch"
+    }
+  ],
+  "navbar.transactionType": [
+    {
+      "type": 0,
+      "value": "Loại Transaction"
+    }
+  ],
+  "navbar.user": [
+    {
+      "type": 0,
+      "value": "Người dùng"
+    }
+  ],
+  "navbar.warehouse": [
+    {
+      "type": 0,
+      "value": "Kho"
+    }
+  ],
+  "noAttribute": [
+    {
+      "type": 0,
+      "value": "Không có thuộc tính"
+    }
+  ],
+  "noCategory": [
+    {
+      "type": 0,
+      "value": "Chưa có danh mục sản phẩm"
+    }
+  ],
+  "noData": [
+    {
+      "type": 0,
+      "value": "Không có dữ liệu"
+    }
+  ],
+  "noOption": [
+    {
+      "type": 0,
+      "value": "Chưa chọn"
+    }
+  ],
+  "noProductType": [
+    {
+      "type": 0,
+      "value": "Chưa có loại sản phẩm"
+    }
+  ],
+  "none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "note": [
+    {
+      "type": 0,
+      "value": "Ghi chú"
+    }
+  ],
+  "order.createOrder": [
+    {
+      "type": 0,
+      "value": "Tạo đơn hàng"
+    }
+  ],
+  "order.date_placed": [
+    {
+      "type": 0,
+      "value": "Ngày đặt hàng"
+    }
+  ],
+  "order.orderListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách đơn hàng"
+    }
+  ],
+  "order.processOrder": [
+    {
+      "type": 0,
+      "value": "Xử lý đơn hàng"
+    }
+  ],
+  "order.sid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu đặt hàng"
+    }
+  ],
+  "orderInfomationTitle": [
+    {
+      "type": 0,
+      "value": "Thông tin đơn hàng"
+    }
+  ],
+  "orderStatus": [
+    {
+      "type": 0,
+      "value": "Trạng thái đơn hàng"
+    }
+  ],
+  "orderValue": [
+    {
+      "type": 0,
+      "value": "Giá trị đơn hàng"
+    }
+  ],
+  "order_statuses.Cancelled": [
+    {
+      "type": 0,
+      "value": "Đã hủy"
+    }
+  ],
+  "order_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Đã duyệt"
+    }
+  ],
+  "order_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "order_statuses.Fulfilled": [
+    {
+      "type": 0,
+      "value": "Hoàn thành"
+    }
+  ],
+  "order_statuses.Partial Fulfilled": [
+    {
+      "type": 0,
+      "value": "Bán hoàn thành"
+    }
+  ],
+  "order_statuses.Processed": [
+    {
+      "type": 0,
+      "value": "Đang xử lý"
+    }
+  ],
+  "outnote.addExportedProductTitle": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm xuất kho"
+    }
+  ],
+  "outnote.addSelectedProduct": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm đã chọn"
+    }
+  ],
+  "outnote.amount": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "outnote.amount_excl_tax": [
+    {
+      "type": 0,
+      "value": "Amount Excl Tax"
+    }
+  ],
+  "outnote.amount_incl_tax": [
+    {
+      "type": 0,
+      "value": "Amount Include Tax"
+    }
+  ],
+  "outnote.confirmOutnote": [
+    {
+      "type": 0,
+      "value": "Xác nhận xuất kho"
+    }
+  ],
+  "outnote.createOutnoteTitle": [
+    {
+      "type": 0,
+      "value": "Tạo phiếu xuất kho"
+    }
+  ],
+  "outnote.date_created": [
+    {
+      "type": 0,
+      "value": "Ngày tạo"
+    }
+  ],
+  "outnote.exportListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm xuất kho"
+    }
+  ],
+  "outnote.outnoteListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách phiếu xuất kho"
+    }
+  ],
+  "outnote.owner": [
+    {
+      "type": 0,
+      "value": "Người tạo"
+    }
+  ],
+  "outnote.sid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu xuất kho"
+    }
+  ],
+  "outnote.status": [
+    {
+      "type": 0,
+      "value": "Trạng thái"
+    }
+  ],
+  "outnote.total_price_excl_tax": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị"
+    }
+  ],
+  "outnote.updateOutnoteTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật phiếu xuất kho"
+    }
+  ],
+  "outnote.warehouseName": [
+    {
+      "type": 0,
+      "value": "Kho"
+    }
+  ],
+  "partner.addedProductListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm đã thêm"
+    }
+  ],
+  "partner.createPartnerTitle": [
+    {
+      "type": 0,
+      "value": "Tạo đối Tác"
+    }
+  ],
+  "partner.partnerListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách đối tác"
+    }
+  ],
+  "partner.partnerName": [
+    {
+      "type": 0,
+      "value": "Tên đối tác"
+    }
+  ],
+  "partner.totalDebtAmount": [
+    {
+      "type": 0,
+      "value": "Total Debt Amount"
+    }
+  ],
+  "partner.updatePartnerTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật đối tác"
+    }
+  ],
+  "phoneNumber": [
+    {
+      "type": 0,
+      "value": "Số điện thoại"
+    }
+  ],
+  "placeholder.productCategory": [
+    {
+      "type": 0,
+      "value": "Danh mục"
+    }
+  ],
+  "previewNote": [
+    {
+      "type": 0,
+      "value": "Xem trước mẫu hóa đơn"
+    }
+  ],
+  "price_incl_tax": [
+    {
+      "type": 0,
+      "value": "Giá có thuế"
+    }
+  ],
+  "print": [
+    {
+      "type": 0,
+      "value": "In"
+    }
+  ],
+  "printError": [
+    {
+      "type": 0,
+      "value": "Có lỗi xảy ra trong lúc in. Vui lòng thử lại"
+    }
+  ],
+  "printNote": [
+    {
+      "type": 0,
+      "value": "In phiếu"
+    }
+  ],
+  "processStatus": [
+    {
+      "type": 0,
+      "value": "Xử lý"
+    }
+  ],
+  "product.addImage": [
+    {
+      "type": 0,
+      "value": "Thêm hình ảnh"
+    }
+  ],
+  "product.attributeListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách thuộc tính sản phẩm"
+    }
+  ],
+  "product.attributeName": [
+    {
+      "type": 0,
+      "value": "Tên Thuộc tính"
+    }
+  ],
+  "product.attributeType": [
+    {
+      "type": 0,
+      "value": "Kiểu thuộc tính"
+    }
+  ],
+  "product.availableForPurchase": [
+    {
+      "type": 0,
+      "value": "Available for Purchase"
+    }
+  ],
+  "product.barcode": [
+    {
+      "type": 0,
+      "value": "Barcode"
+    }
+  ],
+  "product.categoryDescription": [
+    {
+      "type": 0,
+      "value": "Mô tả danh mục"
+    }
+  ],
+  "product.categoryListTitle": [
+    {
+      "type": 0,
+      "value": "Danh mục sản phẩm"
+    }
+  ],
+  "product.categoryName": [
+    {
+      "type": 0,
+      "value": "Tên danh mục"
+    }
+  ],
+  "product.changeDefaultVariant": [
+    {
+      "type": 0,
+      "value": "Thay đổi biến thể mặc định"
+    }
+  ],
+  "product.chooseProductAttribute": [
+    {
+      "type": 0,
+      "value": "Chọn thuộc tính cần thêm"
+    }
+  ],
+  "product.controlPanel": [
+    {
+      "type": 0,
+      "value": "Bảng điều khiển"
+    }
+  ],
+  "product.createCategory": [
+    {
+      "type": 0,
+      "value": "Tạo danh mục sản phẩm"
+    }
+  ],
+  "product.createCategoryTitle": [
+    {
+      "type": 0,
+      "value": "Tạo danh mục sản phẩm"
+    }
+  ],
+  "product.createProductAttribute": [
+    {
+      "type": 0,
+      "value": "Tạo thuộc tính sản phẩm"
+    }
+  ],
+  "product.createProductClassTitle": [
+    {
+      "type": 0,
+      "value": "Tạo loại sản phẩm"
+    }
+  ],
+  "product.createProductType": [
+    {
+      "type": 0,
+      "value": "Tạo loại sản phẩm"
+    }
+  ],
+  "product.createVariant": [
+    {
+      "type": 0,
+      "value": "Tạo biến thể"
+    }
+  ],
+  "product.createVariantAttribute": [
+    {
+      "type": 0,
+      "value": "Tạo thuộc tính biến thể"
+    }
+  ],
+  "product.defaultVariant": [
+    {
+      "type": 0,
+      "value": "Biến thể mặc định"
+    }
+  ],
+  "product.dropToUpload": [
+    {
+      "type": 0,
+      "value": "Bỏ hình ở đây để upload"
+    }
+  ],
+  "product.hasVariant": [
+    {
+      "type": 0,
+      "value": "Biến thể"
+    }
+  ],
+  "product.inputWarehouseTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách số lượng nhập kho"
+    }
+  ],
+  "product.isPublished": [
+    {
+      "type": 0,
+      "value": "Is Published?"
+    }
+  ],
+  "product.metaDescription": [
+    {
+      "type": 0,
+      "value": "meta_description"
+    }
+  ],
+  "product.metaTitle": [
+    {
+      "type": 0,
+      "value": "meta_title"
+    }
+  ],
+  "product.onlyVariant": [
+    {
+      "type": 0,
+      "value": "Is Variant Only"
+    }
+  ],
+  "product.optional": [
+    {
+      "type": 0,
+      "value": "Tùy chọn"
+    }
+  ],
+  "product.otherVariant": [
+    {
+      "type": 0,
+      "value": "Biến thể khác"
+    }
+  ],
+  "product.parentCategory": [
+    {
+      "type": 0,
+      "value": "Danh mục cha"
+    }
+  ],
+  "product.price": [
+    {
+      "type": 0,
+      "value": "Giá"
+    }
+  ],
+  "product.productAttribute": [
+    {
+      "type": 0,
+      "value": "Thuộc tính sản phẩm"
+    }
+  ],
+  "product.productCategoryTitle": [
+    {
+      "type": 0,
+      "value": "Danh mục sản phẩm"
+    }
+  ],
+  "product.productClassListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách loại sản phẩm"
+    }
+  ],
+  "product.productDescription": [
+    {
+      "type": 0,
+      "value": "Mô tả sản phẩm"
+    }
+  ],
+  "product.productInfomation": [
+    {
+      "type": 0,
+      "value": "Thông tin sản phẩm"
+    }
+  ],
+  "product.productInformationTitle": [
+    {
+      "type": 0,
+      "value": "Thông tin sản phẩm"
+    }
+  ],
+  "product.productListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm"
+    }
+  ],
+  "product.productName": [
+    {
+      "type": 0,
+      "value": "Tên sản phẩm"
+    }
+  ],
+  "product.productType": [
+    {
+      "type": 0,
+      "value": "Loại sản phẩm"
+    }
+  ],
+  "product.publicationDate": [
+    {
+      "type": 0,
+      "value": "Publication Date"
+    }
+  ],
+  "product.standaloneProduct": [
+    {
+      "type": 0,
+      "value": "Sản phẩm đơn"
+    }
+  ],
+  "product.taxRate": [
+    {
+      "type": 0,
+      "value": "% Thuế"
+    }
+  ],
+  "product.trackInventory": [
+    {
+      "type": 0,
+      "value": "Theo dõi tồn kho"
+    }
+  ],
+  "product.unit": [
+    {
+      "type": 0,
+      "value": "Đơn vị tính"
+    }
+  ],
+  "product.updateCategoryTitle": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa danh mục sản phẩm"
+    }
+  ],
+  "product.updateProductAttribute": [
+    {
+      "type": 0,
+      "value": "Cập nhật thuộc tính sản phẩm"
+    }
+  ],
+  "product.updateProductClassTitle": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa loại sản phẩm"
+    }
+  ],
+  "product.variantAttribute": [
+    {
+      "type": 0,
+      "value": "Thuộc tính biến thể"
+    }
+  ],
+  "product.variantDescription": [
+    {
+      "type": 0,
+      "value": "Mô tả biến thể"
+    }
+  ],
+  "product.variantInfomation": [
+    {
+      "type": 0,
+      "value": "Thông tin biến thể"
+    }
+  ],
+  "product.variantName": [
+    {
+      "type": 0,
+      "value": "Tên biến thể"
+    }
+  ],
+  "product.variantProduct": [
+    {
+      "type": 0,
+      "value": "Sản phẩm biến thể"
+    }
+  ],
+  "product.weight": [
+    {
+      "type": 0,
+      "value": "Cân nặng"
+    }
+  ],
+  "productListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm"
+    }
+  ],
+  "product_attribute_types.Multi_option": [
+    {
+      "type": 0,
+      "value": "Nhiều lựa chọn"
+    }
+  ],
+  "product_attribute_types.Option": [
+    {
+      "type": 0,
+      "value": "Một lựa chọn"
+    }
+  ],
+  "province": [
+    {
+      "type": 0,
+      "value": "Tỉnh / Thành"
+    }
+  ],
+  "purchaseChannel.createPurchaseChannelTitle": [
+    {
+      "type": 0,
+      "value": "Tạo kênh bán"
+    }
+  ],
+  "purchaseChannel.purchaseChannelDescription": [
+    {
+      "type": 0,
+      "value": "Mô tả kênh bán"
+    }
+  ],
+  "purchaseChannel.purchaseChannelListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách kênh bán"
+    }
+  ],
+  "purchaseChannel.purchaseChannelName": [
+    {
+      "type": 0,
+      "value": "Tên kênh bán"
+    }
+  ],
+  "purchaseOrder.addItem": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm đặt hàng"
+    }
+  ],
+  "purchaseOrder.addSelectedItem": [
+    {
+      "type": 0,
+      "value": "Thêm sản phẩm đã chọn"
+    }
+  ],
+  "purchaseOrder.cancelPurchaseOrder": [
+    {
+      "type": 0,
+      "value": "Hủy đơn đặt mua"
+    }
+  ],
+  "purchaseOrder.createPurchaseOrder": [
+    {
+      "type": 0,
+      "value": "Tạo phiếu đặt hàng"
+    }
+  ],
+  "purchaseOrder.date_placed": [
+    {
+      "type": 0,
+      "value": "Ngày Tạo"
+    }
+  ],
+  "purchaseOrder.owner": [
+    {
+      "type": 0,
+      "value": "Người Tạo"
+    }
+  ],
+  "purchaseOrder.processPurchaseOrder": [
+    {
+      "type": 0,
+      "value": "Xử lý Purchase Order"
+    }
+  ],
+  "purchaseOrder.purchaseOrderListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách đơn đặt hàng"
+    }
+  ],
+  "purchaseOrder.purchaseOrderTitle": [
+    {
+      "type": 0,
+      "value": "Phiếu đặt hàng"
+    }
+  ],
+  "purchaseOrder.selectedItemListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm đặt"
+    }
+  ],
+  "purchaseOrder.sid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu đặt hàng"
+    }
+  ],
+  "purchaseOrder.totalPrice": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị"
+    }
+  ],
+  "purchase_order_statuses.Cancelled": [
+    {
+      "type": 0,
+      "value": "Đã hủy"
+    }
+  ],
+  "purchase_order_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Đã duyệt"
+    }
+  ],
+  "purchase_order_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "purchase_order_statuses.Fulfilled": [
+    {
+      "type": 0,
+      "value": "Hoàn thành"
+    }
+  ],
+  "purchase_order_statuses.Partial Fulfilled": [
+    {
+      "type": 0,
+      "value": "Bán hoàn thành"
+    }
+  ],
+  "purchase_order_statuses.Processed": [
+    {
+      "type": 0,
+      "value": "Đang xử lý"
+    }
+  ],
+  "receiptOrder.addActualImport": [
+    {
+      "type": 0,
+      "value": "Thêm số lượng thực tế nhập kho"
+    }
+  ],
+  "receiptOrder.confirmReceiptOrder": [
+    {
+      "type": 0,
+      "value": "Xác nhận duyệt phiếu nhập kho"
+    }
+  ],
+  "receiptOrder.createReceiptOrder": [
+    {
+      "type": 0,
+      "value": "Tạo phiếu nhập kho"
+    }
+  ],
+  "receiptOrder.updateActualExport": [
+    {
+      "type": 0,
+      "value": "Cập nhật số lượng sản phẩm trả kho"
+    }
+  ],
+  "receiptOrder.updateActualImport": [
+    {
+      "type": 0,
+      "value": "Cập nhật số lượng thực tế nhập kho"
+    }
+  ],
+  "receiptOrderNote": [
+    {
+      "type": 0,
+      "value": "Phiếu nhập kho"
+    }
+  ],
+  "receiptOrderSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu nhập kho"
+    }
+  ],
+  "receipt_order_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Bản đã duyệt"
+    }
+  ],
+  "receipt_order_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "receivedStatus": [
+    {
+      "type": 0,
+      "value": "Đã lấy hàng"
+    }
+  ],
+  "receiver": [
+    {
+      "type": 0,
+      "value": "Tên người nhận"
+    }
+  ],
+  "receiverEmail": [
+    {
+      "type": 0,
+      "value": "Email người nhận"
+    }
+  ],
+  "refuseButton": [
+    {
+      "type": 0,
+      "value": "Từ chối"
+    }
+  ],
+  "refuseSuccessfully": [
+    {
+      "type": 0,
+      "value": "Từ chối "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " thành công"
+    }
+  ],
+  "resetButton": [
+    {
+      "type": 0,
+      "value": "Reset"
+    }
+  ],
+  "returnOrder.addActualExport": [
+    {
+      "type": 0,
+      "value": "Thêm số lượng sản phẩm trả kho"
+    }
+  ],
+  "returnOrder.confirmReturnOrder": [
+    {
+      "type": 0,
+      "value": "Xác nhận duyệt phiếu trả kho"
+    }
+  ],
+  "returnOrder.createReturnOrder": [
+    {
+      "type": 0,
+      "value": "Tạo phiếu trả hàng"
+    }
+  ],
+  "returnOrder.returnOrderListTitle": [
+    {
+      "type": 0,
+      "value": "Phiếu trả hàng"
+    }
+  ],
+  "returnOrderStatus": [
+    {
+      "type": 0,
+      "value": "Trả hàng"
+    }
+  ],
+  "return_order_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Bản đã duyệt"
+    }
+  ],
+  "return_order_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "sameAsShippingAddress": [
+    {
+      "type": 0,
+      "value": "Giống địa chỉ giao hàng"
+    }
+  ],
+  "shipper.createShipperTitle": [
+    {
+      "type": 0,
+      "value": "Tạo Shipper"
+    }
+  ],
+  "shipper.shipperListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách shipper"
+    }
+  ],
+  "shipper.shipperName": [
+    {
+      "type": 0,
+      "value": "Tên shipper"
+    }
+  ],
+  "shipper.updateShipperTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật shipper"
+    }
+  ],
+  "shippingAddress": [
+    {
+      "type": 0,
+      "value": "Địa chỉ giao hàng"
+    }
+  ],
+  "shippingMethod.createShippingMethod": [
+    {
+      "type": 0,
+      "value": "Tạo phương thức vận chuyển"
+    }
+  ],
+  "shippingMethod.price": [
+    {
+      "type": 0,
+      "value": "Giá"
+    }
+  ],
+  "shippingMethod.shippingMethodListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách phương thức vận chuyển"
+    }
+  ],
+  "shippingMethod.shippingMethodName": [
+    {
+      "type": 0,
+      "value": "Tên phương thức vận chuyển"
+    }
+  ],
+  "shippingMethod.updateShippingMethodTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật phương thức vận chuyển"
+    }
+  ],
+  "shippingMethodName": [
+    {
+      "type": 0,
+      "value": "Phương thức vận chuyển"
+    }
+  ],
+  "shippingType": [
+    {
+      "type": 0,
+      "value": "Loại Shipping"
+    }
+  ],
+  "shipping_excl_tax": [
+    {
+      "type": 0,
+      "value": "Phí ship không bao gồm thuế"
+    }
+  ],
+  "shipping_exlude_tax": [
+    {
+      "type": 0,
+      "value": "Phí ship không bao gồm thuế"
+    }
+  ],
+  "shipping_incl_tax": [
+    {
+      "type": 0,
+      "value": "Phí ship bao gồm thuế"
+    }
+  ],
+  "shipping_method_types.price": [
+    {
+      "type": 0,
+      "value": "Tính theo giá"
+    }
+  ],
+  "shipping_method_types.weight": [
+    {
+      "type": 0,
+      "value": "Tính theo cân nặng"
+    }
+  ],
+  "shipping_statuses.Delivered": [
+    {
+      "type": 0,
+      "value": "Đã giao hàng"
+    }
+  ],
+  "shipping_statuses.On delivery": [
+    {
+      "type": 0,
+      "value": "Đang vận chuyển"
+    }
+  ],
+  "shipping_statuses.Pending": [
+    {
+      "type": 0,
+      "value": "Chờ xử lý"
+    }
+  ],
+  "shipping_statuses.Received": [
+    {
+      "type": 0,
+      "value": "Đã lấy hàng"
+    }
+  ],
+  "shipping_statuses.Returned": [
+    {
+      "type": 0,
+      "value": "Trả hàng"
+    }
+  ],
+  "sid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "staff": [
+    {
+      "type": 0,
+      "value": "Nhân viên"
+    }
+  ],
+  "status": [
+    {
+      "type": 0,
+      "value": "Trạng thái"
+    }
+  ],
+  "stock_out_note_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Bản đã duyệt"
+    }
+  ],
+  "stock_out_note_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "surcharge": [
+    {
+      "type": 0,
+      "value": "Phụ phí"
+    }
+  ],
+  "table.actually_receipt_quantity": [
+    {
+      "type": 0,
+      "value": "SL nhập kho"
+    }
+  ],
+  "table.address": [
+    {
+      "type": 0,
+      "value": "Địa chỉ"
+    }
+  ],
+  "table.adjust_quantity": [
+    {
+      "type": 0,
+      "value": "SL điều chỉnh"
+    }
+  ],
+  "table.affect_creditor": [
+    {
+      "type": 0,
+      "value": "Affect Creditor"
+    }
+  ],
+  "table.amount": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "table.attributeName": [
+    {
+      "type": 0,
+      "value": "Thuộc tính"
+    }
+  ],
+  "table.availableReturnQuantity": [
+    {
+      "type": 0,
+      "value": "SL có thể trả"
+    }
+  ],
+  "table.available_quantity": [
+    {
+      "type": 0,
+      "value": "SL khả dụng"
+    }
+  ],
+  "table.bar_code": [
+    {
+      "type": 0,
+      "value": "Barcode"
+    }
+  ],
+  "table.beginning_balance": [
+    {
+      "type": 0,
+      "value": "Số dư đầu kỳ"
+    }
+  ],
+  "table.birthday": [
+    {
+      "type": 0,
+      "value": "Sinh nhật"
+    }
+  ],
+  "table.categoryName": [
+    {
+      "type": 0,
+      "value": "Danh mục"
+    }
+  ],
+  "table.channel": [
+    {
+      "type": 0,
+      "value": "Kênh bán"
+    }
+  ],
+  "table.company_name": [
+    {
+      "type": 0,
+      "value": "Tên công ty"
+    }
+  ],
+  "table.currentExportQuantity": [
+    {
+      "type": 0,
+      "value": "SL XK hiện tại"
+    }
+  ],
+  "table.customerType": [
+    {
+      "type": 0,
+      "value": "Nhóm khách hàng"
+    }
+  ],
+  "table.date_created": [
+    {
+      "type": 0,
+      "value": "Ngày tạo"
+    }
+  ],
+  "table.date_joined": [
+    {
+      "type": 0,
+      "value": "Ngày tạo"
+    }
+  ],
+  "table.date_placed": [
+    {
+      "type": 0,
+      "value": "Ngày đặt hàng"
+    }
+  ],
+  "table.debt": [
+    {
+      "type": 0,
+      "value": "Nợ"
+    }
+  ],
+  "table.debtRecordSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "table.debt_amount": [
+    {
+      "type": 0,
+      "value": "Nợ"
+    }
+  ],
+  "table.delivered_unit_quantity": [
+    {
+      "type": 0,
+      "value": "SL giao thành công"
+    }
+  ],
+  "table.discountName": [
+    {
+      "type": 0,
+      "value": "Chương trình"
+    }
+  ],
+  "table.discount_amount": [
+    {
+      "type": 0,
+      "value": "Lượng giảm"
+    }
+  ],
+  "table.discount_type": [
+    {
+      "type": 0,
+      "value": "Loại giảm giá"
+    }
+  ],
+  "table.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
+  "table.expiration_date": [
+    {
+      "type": 0,
+      "value": "Ngày hết hạn"
+    }
+  ],
+  "table.exportQuantity": [
+    {
+      "type": 0,
+      "value": "SL thực xuất"
+    }
+  ],
+  "table.facebook": [
+    {
+      "type": 0,
+      "value": "Facebook"
+    }
+  ],
+  "table.first_name": [
+    {
+      "type": 0,
+      "value": "Tên"
+    }
+  ],
+  "table.flow_type": [
+    {
+      "type": 0,
+      "value": "Loại tiền"
+    }
+  ],
+  "table.gender": [
+    {
+      "type": 0,
+      "value": "Giới tính"
+    }
+  ],
+  "table.has_variants": [
+    {
+      "type": 0,
+      "value": "Biến thể"
+    }
+  ],
+  "table.id": [
+    {
+      "type": 0,
+      "value": "ID"
+    }
+  ],
+  "table.input_type": [
+    {
+      "type": 0,
+      "value": "Kiểu thuộc tính"
+    }
+  ],
+  "table.invoiceSid": [
+    {
+      "type": 0,
+      "value": "Mã hóa đơn"
+    }
+  ],
+  "table.invoice_unit_quantity": [
+    {
+      "type": 0,
+      "value": "SL đang xử lý"
+    }
+  ],
+  "table.is_active": [
+    {
+      "type": 0,
+      "value": "Trạng thái"
+    }
+  ],
+  "table.is_staff": [
+    {
+      "type": 0,
+      "value": "Nhân viên"
+    }
+  ],
+  "table.is_variant_only": [
+    {
+      "type": 0,
+      "value": "Biến thể"
+    }
+  ],
+  "table.last_name": [
+    {
+      "type": 0,
+      "value": "Họ"
+    }
+  ],
+  "table.line1": [
+    {
+      "type": 0,
+      "value": "Địa chỉ"
+    }
+  ],
+  "table.line_price": [
+    {
+      "type": 0,
+      "value": "Giá trị"
+    }
+  ],
+  "table.line_price_incl_tax": [
+    {
+      "type": 0,
+      "value": "Thành tiền"
+    }
+  ],
+  "table.low_stock_threshold": [
+    {
+      "type": 0,
+      "value": "Giới hạn đặt hàng"
+    }
+  ],
+  "table.max_debt": [
+    {
+      "type": 0,
+      "value": "Nợ tối đa"
+    }
+  ],
+  "table.multiply": [
+    {
+      "type": 0,
+      "value": "Hệ số"
+    }
+  ],
+  "table.notes": [
+    {
+      "type": 0,
+      "value": "Ghi chú"
+    }
+  ],
+  "table.orderSid": [
+    {
+      "type": 0,
+      "value": "Mã đơn hàng"
+    }
+  ],
+  "table.orderedQuantity": [
+    {
+      "type": 0,
+      "value": "SL đặt"
+    }
+  ],
+  "table.outnoteSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "table.owner_name": [
+    {
+      "type": 0,
+      "value": "Người tạo"
+    }
+  ],
+  "table.partnerName": [
+    {
+      "type": 0,
+      "value": "Đối tác"
+    }
+  ],
+  "table.partner_sku": [
+    {
+      "type": 0,
+      "value": "SKU"
+    }
+  ],
+  "table.period": [
+    {
+      "type": 0,
+      "value": "Thời gian có hiệu lực"
+    }
+  ],
+  "table.phone_number": [
+    {
+      "type": 0,
+      "value": "Số điện thoại"
+    }
+  ],
+  "table.price": [
+    {
+      "type": 0,
+      "value": "Giá"
+    }
+  ],
+  "table.price_incl_tax": [
+    {
+      "type": 0,
+      "value": "Giá có thuế"
+    }
+  ],
+  "table.productClassName": [
+    {
+      "type": 0,
+      "value": "Loại sản phẩm"
+    }
+  ],
+  "table.productName": [
+    {
+      "type": 0,
+      "value": "Sản phẩm"
+    }
+  ],
+  "table.productType": [
+    {
+      "type": 0,
+      "value": "Loại sản phẩm"
+    }
+  ],
+  "table.purchaseChannelName": [
+    {
+      "type": 0,
+      "value": "Tên kênh bán"
+    }
+  ],
+  "table.purchaseOrderSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "table.quantity": [
+    {
+      "type": 0,
+      "value": "Số lượng"
+    }
+  ],
+  "table.receiptOrderSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "table.receipt_quantity": [
+    {
+      "type": 0,
+      "value": "SL thực nhận"
+    }
+  ],
+  "table.receiver_name": [
+    {
+      "type": 0,
+      "value": "Tên khách hàng"
+    }
+  ],
+  "table.record_quantity": [
+    {
+      "type": 0,
+      "value": "Số lượng tối đa"
+    }
+  ],
+  "table.returnOrderSid": [
+    {
+      "type": 0,
+      "value": "Mã phiếu"
+    }
+  ],
+  "table.return_quantity": [
+    {
+      "type": 0,
+      "value": "SL trả"
+    }
+  ],
+  "table.returned_quantity": [
+    {
+      "type": 0,
+      "value": "SL đã trả"
+    }
+  ],
+  "table.rowsPerPage": [
+    {
+      "type": 0,
+      "value": "Số dòng mỗi trang"
+    }
+  ],
+  "table.sales_in_charge": [
+    {
+      "type": 0,
+      "value": "Sale In Charge"
+    }
+  ],
+  "table.selectedRow": [
+    {
+      "type": 0,
+      "value": "Số dòng được chọn "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "table.shipperName": [
+    {
+      "type": 0,
+      "value": "Tên Shipper"
+    }
+  ],
+  "table.shippingMethodName": [
+    {
+      "type": 0,
+      "value": "Phương thức"
+    }
+  ],
+  "table.shippingMethodType": [
+    {
+      "type": 0,
+      "value": "Loại phương thức"
+    }
+  ],
+  "table.shipping_address": [
+    {
+      "type": 0,
+      "value": "Địa chỉ"
+    }
+  ],
+  "table.shipping_charge": [
+    {
+      "type": 0,
+      "value": "Phí giao hàng"
+    }
+  ],
+  "table.shipping_method_name": [
+    {
+      "type": 0,
+      "value": "Đơn vị vận chuyển"
+    }
+  ],
+  "table.shipping_status": [
+    {
+      "type": 0,
+      "value": "Trạng thái giao hàng"
+    }
+  ],
+  "table.sid": [
+    {
+      "type": 0,
+      "value": "SID"
+    }
+  ],
+  "table.sku": [
+    {
+      "type": 0,
+      "value": "SKU"
+    }
+  ],
+  "table.status": [
+    {
+      "type": 0,
+      "value": "Trạng thái"
+    }
+  ],
+  "table.tax_identification_number": [
+    {
+      "type": 0,
+      "value": "Mã số thuế"
+    }
+  ],
+  "table.tax_rate": [
+    {
+      "type": 0,
+      "value": "% thuế"
+    }
+  ],
+  "table.total_balance": [
+    {
+      "type": 0,
+      "value": "Balance"
+    }
+  ],
+  "table.total_expense": [
+    {
+      "type": 0,
+      "value": "Tổng chi"
+    }
+  ],
+  "table.total_price": [
+    {
+      "type": 0,
+      "value": "Tổng giá trị"
+    }
+  ],
+  "table.total_purchase": [
+    {
+      "type": 0,
+      "value": "Tổng mua"
+    }
+  ],
+  "table.total_revenue": [
+    {
+      "type": 0,
+      "value": "Tổng thu"
+    }
+  ],
+  "table.transactionType": [
+    {
+      "type": 0,
+      "value": "Loại Transaction"
+    }
+  ],
+  "table.transactionTypeName": [
+    {
+      "type": 0,
+      "value": "Loại Transaction"
+    }
+  ],
+  "table.unit": [
+    {
+      "type": 0,
+      "value": "Đơn vị tính"
+    }
+  ],
+  "table.unit_price": [
+    {
+      "type": 0,
+      "value": "Giá khuyến mãi"
+    }
+  ],
+  "table.unit_price_before_discounts": [
+    {
+      "type": 0,
+      "value": "Giá gốc"
+    }
+  ],
+  "table.unit_price_incl_tax": [
+    {
+      "type": 0,
+      "value": "Đơn giá"
+    }
+  ],
+  "table.unit_quantity": [
+    {
+      "type": 0,
+      "value": "Số lượng"
+    }
+  ],
+  "table.usage_limit": [
+    {
+      "type": 0,
+      "value": "Lượt dùng tối đa"
+    }
+  ],
+  "table.used": [
+    {
+      "type": 0,
+      "value": "Đã sử dụng"
+    }
+  ],
+  "table.username": [
+    {
+      "type": 0,
+      "value": "Tên người dùng"
+    }
+  ],
+  "table.variantName": [
+    {
+      "type": 0,
+      "value": "Biến thể"
+    }
+  ],
+  "table.variantSku": [
+    {
+      "type": 0,
+      "value": "SKU"
+    }
+  ],
+  "table.variant_name": [
+    {
+      "type": 0,
+      "value": "Sản phẩm"
+    }
+  ],
+  "table.variant_sku": [
+    {
+      "type": 0,
+      "value": "SKU"
+    }
+  ],
+  "table.voucherCode": [
+    {
+      "type": 0,
+      "value": "Mã Voucher"
+    }
+  ],
+  "table.voucherName": [
+    {
+      "type": 0,
+      "value": "Voucher"
+    }
+  ],
+  "table.warehouseName": [
+    {
+      "type": 0,
+      "value": "Kho"
+    }
+  ],
+  "table.warehouse_quantity": [
+    {
+      "type": 0,
+      "value": "SL trong kho"
+    }
+  ],
+  "table.weight": [
+    {
+      "type": 0,
+      "value": "Cân nặng"
+    }
+  ],
+  "total_balance": [
+    {
+      "type": 0,
+      "value": "Tồn quỹ:"
+    }
+  ],
+  "total_expense": [
+    {
+      "type": 0,
+      "value": "Tổng chi:"
+    }
+  ],
+  "total_revenue": [
+    {
+      "type": 0,
+      "value": "Tổng thu:"
+    }
+  ],
+  "transaction.TransactionTypeTitle": [
+    {
+      "type": 0,
+      "value": "Loại transaction"
+    }
+  ],
+  "transaction.affectCreditor": [
+    {
+      "type": 0,
+      "value": "Affect Creditor"
+    }
+  ],
+  "transaction.amount": [
+    {
+      "type": 0,
+      "value": "Lượng tiền"
+    }
+  ],
+  "transaction.transactionTypeDescription": [
+    {
+      "type": 0,
+      "value": "Mô tả loại transaction"
+    }
+  ],
+  "transaction.transactionTypeListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách loại transaction"
+    }
+  ],
+  "transaction.transactionTypeTitle": [
+    {
+      "type": 0,
+      "value": "Tạo loại Transaction"
+    }
+  ],
+  "transaction.updateTransaction": [
+    {
+      "type": 0,
+      "value": "Cập nhật Transaction"
+    }
+  ],
+  "transaction.updateTransactionTypeTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật loại transaction"
+    }
+  ],
+  "transaction.viewTransaction": [
+    {
+      "type": 0,
+      "value": "Xem transaction"
+    }
+  ],
+  "transactionType": [
+    {
+      "type": 0,
+      "value": "Loại Transaction"
+    }
+  ],
+  "transaction_flow_types.Cash-in": [
+    {
+      "type": 0,
+      "value": "Dòng tiền vào"
+    }
+  ],
+  "transaction_flow_types.Cash-out": [
+    {
+      "type": 0,
+      "value": "Dòng tiền ra"
+    }
+  ],
+  "transaction_source_types.order.invoice": [
+    {
+      "type": 0,
+      "value": "Hóa đơn"
+    }
+  ],
+  "transaction_source_types.stock.receiptorder": [
+    {
+      "type": 0,
+      "value": "Đơn nhập hàng"
+    }
+  ],
+  "transaction_source_types.stock.returnorder": [
+    {
+      "type": 0,
+      "value": "Đơn trả hàng"
+    }
+  ],
+  "transaction_source_types.stock.stockoutnote": [
+    {
+      "type": 0,
+      "value": "Đơn xuất kho"
+    }
+  ],
+  "transaction_statuses.Confirmed": [
+    {
+      "type": 0,
+      "value": "Bản xác nhận"
+    }
+  ],
+  "transaction_statuses.Draft": [
+    {
+      "type": 0,
+      "value": "Bản nháp"
+    }
+  ],
+  "transaction_target_types.customer.customer": [
+    {
+      "type": 0,
+      "value": "Khách hàng"
+    }
+  ],
+  "transaction_target_types.partner.partner": [
+    {
+      "type": 0,
+      "value": "Đối tác"
+    }
+  ],
+  "unapprove": [
+    {
+      "type": 0,
+      "value": "Chưa duyệt"
+    }
+  ],
+  "updateAddress": [
+    {
+      "type": 0,
+      "value": "Cập nhật địa chỉ"
+    }
+  ],
+  "updateStatus": [
+    {
+      "type": 0,
+      "value": "Cập nhật"
+    }
+  ],
+  "updateSuccessfully": [
+    {
+      "type": 0,
+      "value": "Cập nhật "
+    },
+    {
+      "type": 1,
+      "value": "content"
+    },
+    {
+      "type": 0,
+      "value": " thành công"
+    }
+  ],
+  "updatingStatus": [
+    {
+      "type": 0,
+      "value": "Đang cập nhật"
+    }
+  ],
+  "user": [
+    {
+      "type": 0,
+      "value": "User"
+    }
+  ],
+  "user.create.step1": [
+    {
+      "type": 0,
+      "value": "Thông tin người dùng"
+    }
+  ],
+  "user.create.step2": [
+    {
+      "type": 0,
+      "value": "Địa chỉ người dùng"
+    }
+  ],
+  "user.userInfomationTitle": [
+    {
+      "type": 0,
+      "value": "Thông tin User"
+    }
+  ],
+  "user.userListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách User"
+    }
+  ],
+  "username": [
+    {
+      "type": 0,
+      "value": "Tên tài khoản"
+    }
+  ],
+  "viewDetail": [
+    {
+      "type": 0,
+      "value": "Xem chi tiết"
+    }
+  ],
+  "voucher.addCategory": [
+    {
+      "type": 0,
+      "value": "Thêm danh mục"
+    }
+  ],
+  "voucher.applyOncePerCustomer": [
+    {
+      "type": 0,
+      "value": "Áp dụng một lần mỗi khách hàng"
+    }
+  ],
+  "voucher.applyOncePerOrder": [
+    {
+      "type": 0,
+      "value": "Áp dụng một lần mỗi đơn hàng"
+    }
+  ],
+  "voucher.avaiableProductListForVoucherTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách sản phẩm giảm giá"
+    }
+  ],
+  "voucher.createVoucherTitle": [
+    {
+      "type": 0,
+      "value": "Tạo Voucher"
+    }
+  ],
+  "voucher.date_end": [
+    {
+      "type": 0,
+      "value": "Ngày kết thúc"
+    }
+  ],
+  "voucher.date_start": [
+    {
+      "type": 0,
+      "value": "Ngày bắt đầu"
+    }
+  ],
+  "voucher.discountType": [
+    {
+      "type": 0,
+      "value": "Loại giảm giá"
+    }
+  ],
+  "voucher.minCheckoutItemsQuantity": [
+    {
+      "type": 0,
+      "value": "Số lượng sản phẩm tối thiểu"
+    }
+  ],
+  "voucher.minSpentAmount": [
+    {
+      "type": 0,
+      "value": "Giá trị đơn hàng tối thiểu"
+    }
+  ],
+  "voucher.updateVoucherTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật voucher"
+    }
+  ],
+  "voucher.usageLimit": [
+    {
+      "type": 0,
+      "value": "Lượt dùng tối đa"
+    }
+  ],
+  "voucher.voucherCode": [
+    {
+      "type": 0,
+      "value": "Mã Voucher"
+    }
+  ],
+  "voucher.voucherListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách voucher"
+    }
+  ],
+  "voucher.voucherName": [
+    {
+      "type": 0,
+      "value": "Voucher"
+    }
+  ],
+  "voucher.voucherType": [
+    {
+      "type": 0,
+      "value": "Loại voucher"
+    }
+  ],
+  "voucher_types.Entire_order": [
+    {
+      "type": 0,
+      "value": "Giảm giá trên tổng đơn hàng"
+    }
+  ],
+  "voucher_types.Shipping": [
+    {
+      "type": 0,
+      "value": "Giảm giá trên phí giao hàng"
+    }
+  ],
+  "voucher_types.Specific product variant": [
+    {
+      "type": 0,
+      "value": "Giảm gía cho sản phẩm"
+    }
+  ],
+  "ward": [
+    {
+      "type": 0,
+      "value": "Phường / Xã"
+    }
+  ],
+  "warehouse": [
+    {
+      "type": 0,
+      "value": "Kho"
+    }
+  ],
+  "warehouse.amount": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "warehouse.amount_incl_tax": [
+    {
+      "type": 0,
+      "value": "Amount Include Tax"
+    }
+  ],
+  "warehouse.createWarehouseTitle": [
+    {
+      "type": 0,
+      "value": "Tạo Kho"
+    }
+  ],
+  "warehouse.updateWarehouseTitle": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa kho"
+    }
+  ],
+  "warehouse.warehouseListTitle": [
+    {
+      "type": 0,
+      "value": "Danh sách kho"
+    }
+  ],
+  "warehouse.warehouseName": [
+    {
+      "type": 0,
+      "value": "Tên kho"
+    }
+  ]
+}

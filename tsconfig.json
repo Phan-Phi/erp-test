@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": "."
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "src/**/*",
+    "scripts/preconfigYupSchema.ts",
+    "scripts/getSchemaJson.js",
+    "scripts/generateDefaultValue.js",
+    "scripts/generateDefaultValue.js",
+    "scripts/generateGetResponseType.js",
+    "gulpfile.js",
+    "scripts/generateJsonSchema.js",
+    "scripts/addPropertyForGenerateData.js",
+    "scripts/excludeKeyList.js",
+    "next.config.js"
+  ],
+
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "experimentalSpecifierResolution": "node"
+  }
+}
