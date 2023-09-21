@@ -5,8 +5,8 @@ const path = require("node:path");
 const fsPromise = require("node:fs/promises");
 
 const URL_LIST = [
-  "https://erp.t-solution.vn/api/v1/swagger/",
-  "https://erp.t-solution.vn/api/v2/swagger/",
+  "https://erp-demo.t-solution.vn/api/v1/swagger/",
+  "https://erp-demo.t-solution.vn/api/v2/swagger/",
 ];
 
 // const __dirname = path.dirname(url.fileURLToPath(new url.URL(import.meta.url)));

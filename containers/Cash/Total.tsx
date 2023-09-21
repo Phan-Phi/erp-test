@@ -31,10 +31,6 @@ const Total = ({ params }) => {
       ...omit(params, ["range", "range_params", "sid_icontains"]),
     });
   });
-  console.log(
-    "🚀 ~ file: Total.tsx:34 ~ const{data:cashData,error:cashError}=useSWR ~ cashData:",
-    cashData
-  );
 
   if (cashError) return <FailToLoad />;
 

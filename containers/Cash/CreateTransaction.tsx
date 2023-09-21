@@ -47,7 +47,7 @@ const CreateTransaction = () => {
 
   const onSubmit = useCallback(async ({ data }: { data: TransactionSchemaProps }) => {
     setLoading(true);
-    return;
+    // return;
     try {
       // set(data, "payment_method", get(data, "payment_method.id", null));
       set(data, "source_id", get(data, "source_id.id"));

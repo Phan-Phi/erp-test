@@ -123,10 +123,6 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
   });
 
   const onSubmit = useCallback(async ({ data, dirtyFields }) => {
-    console.log(
-      "🚀 ~ file: EditTransaction.tsx:126 ~ onSubmit ~ dirtyFields:",
-      dirtyFields
-    );
     setLoading(true);
 
     try {
@@ -148,6 +144,7 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
       if (get(data, "target_id")) {
         unset(data, "target_name");
       }
+      return;
 
       if (!isEmpty(dirtyFields)) {
         const body = pick(data, Object.keys(dirtyFields));

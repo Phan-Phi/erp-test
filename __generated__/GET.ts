@@ -55,6 +55,7 @@ export const CHOICES_SEARCH_COUNTRY_DIVISIONS_GET_PARAM_SCHEMA = {
 export const PRODUCTS_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
+    search: { description: "A search term.", required: false, type: "string" },
     is_visible: { description: "", required: false, type: "string" },
     publication_date_start: { description: "", required: false, type: "string" },
     publication_date_end: { description: "", required: false, type: "string" },
@@ -81,7 +82,6 @@ export const PRODUCTS_GET_PARAM_SCHEMA = {
       type: "number",
     },
     ordering: { description: "", required: false, type: "string" },
-    search: { description: "A search term.", required: false, type: "string" },
     limit: {
       description: "Number of results to return per page.",
       required: false,
@@ -562,6 +562,7 @@ export const PRODUCTS_VARIANTS_WITH_ID_GET_PARAM_SCHEMA = {
 export const PRODUCTS_WITH_ID_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
+    search: { description: "A search term.", required: false, type: "string" },
     is_visible: { description: "", required: false, type: "string" },
     publication_date_start: { description: "", required: false, type: "string" },
     publication_date_end: { description: "", required: false, type: "string" },
@@ -588,7 +589,6 @@ export const PRODUCTS_WITH_ID_GET_PARAM_SCHEMA = {
       type: "number",
     },
     ordering: { description: "", required: false, type: "string" },
-    search: { description: "A search term.", required: false, type: "string" },
   },
   additionalProperties: false,
 };
@@ -770,11 +770,6 @@ export const ADMIN_CUSTOMERS_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     email: { description: "", required: false, type: "string" },
     gender: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
@@ -790,6 +785,11 @@ export const ADMIN_CUSTOMERS_GET_PARAM_SCHEMA = {
     birthday_end: { description: "", required: false, type: "string" },
     sales_in_charge: { description: "", required: false, type: "number" },
     in_business: { description: "", required: false, type: "string" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
     page: {
       description: "A page number within the paginated result set.",
       required: false,
@@ -837,11 +837,6 @@ export const ADMIN_CUSTOMERS_DRAFTS_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     email: { description: "", required: false, type: "string" },
     gender: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
@@ -860,6 +855,11 @@ export const ADMIN_CUSTOMERS_DRAFTS_GET_PARAM_SCHEMA = {
     birthday_end: { description: "", required: false, type: "string" },
     sales_in_charge: { description: "", required: false, type: "number" },
     in_business: { description: "", required: false, type: "string" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
     page: {
       description: "A page number within the paginated result set.",
       required: false,
@@ -907,11 +907,6 @@ export const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     email: { description: "", required: false, type: "string" },
     gender: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
@@ -930,6 +925,11 @@ export const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_GET_PARAM_SCHEMA = {
     birthday_end: { description: "", required: false, type: "string" },
     sales_in_charge: { description: "", required: false, type: "number" },
     in_business: { description: "", required: false, type: "string" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
   },
   additionalProperties: false,
 };
@@ -967,11 +967,6 @@ export const ADMIN_CUSTOMERS_WITH_ID_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     email: { description: "", required: false, type: "string" },
     gender: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
@@ -987,6 +982,11 @@ export const ADMIN_CUSTOMERS_WITH_ID_GET_PARAM_SCHEMA = {
     birthday_end: { description: "", required: false, type: "string" },
     sales_in_charge: { description: "", required: false, type: "number" },
     in_business: { description: "", required: false, type: "string" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
   },
   additionalProperties: false,
 };
@@ -1230,6 +1230,7 @@ export const ADMIN_ORDERS_INVOICES_GET_PARAM_SCHEMA = {
     order_owner: { description: "", required: false, type: "number" },
     date_created_start: { description: "", required: false, type: "string" },
     date_created_end: { description: "", required: false, type: "string" },
+    shipper: { description: "", required: false, type: "number" },
     receiver: { description: "", required: false, type: "number" },
     page: {
       description: "A page number within the paginated result set.",
@@ -1372,6 +1373,7 @@ export const ADMIN_ORDERS_INVOICES_WITH_ID_GET_PARAM_SCHEMA = {
     order_owner: { description: "", required: false, type: "number" },
     date_created_start: { description: "", required: false, type: "string" },
     date_created_end: { description: "", required: false, type: "string" },
+    shipper: { description: "", required: false, type: "number" },
     receiver: { description: "", required: false, type: "number" },
   },
   additionalProperties: false,
@@ -1391,6 +1393,7 @@ export const ADMIN_ORDERS_INVOICES_WITH_ID_PDF_GET_PARAM_SCHEMA = {
     order_owner: { description: "", required: false, type: "number" },
     date_created_start: { description: "", required: false, type: "string" },
     date_created_end: { description: "", required: false, type: "string" },
+    shipper: { description: "", required: false, type: "number" },
     receiver: { description: "", required: false, type: "number" },
   },
   additionalProperties: false,
@@ -1410,6 +1413,7 @@ export const ADMIN_ORDERS_INVOICES_WITH_ID_SHIPPING_PDF_GET_PARAM_SCHEMA = {
     order_owner: { description: "", required: false, type: "number" },
     date_created_start: { description: "", required: false, type: "string" },
     date_created_end: { description: "", required: false, type: "string" },
+    shipper: { description: "", required: false, type: "number" },
     receiver: { description: "", required: false, type: "number" },
   },
   additionalProperties: false,
@@ -1616,11 +1620,6 @@ export const ADMIN_PARTNERS_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     name: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
     province: { description: "", required: false, type: "string" },
@@ -1630,6 +1629,11 @@ export const ADMIN_PARTNERS_GET_PARAM_SCHEMA = {
     total_debt_amount_end: { description: "", required: false, type: "number" },
     total_purchase_start: { description: "", required: false, type: "number" },
     total_purchase_end: { description: "", required: false, type: "number" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
     page: {
       description: "A page number within the paginated result set.",
       required: false,
@@ -1703,11 +1707,6 @@ export const ADMIN_PARTNERS_WITH_ID_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
     search: { description: "A search term.", required: false, type: "string" },
-    ordering: {
-      description: "Which field to use when ordering the results.",
-      required: false,
-      type: "string",
-    },
     name: { description: "", required: false, type: "string" },
     country: { description: "", required: false, type: "string" },
     province: { description: "", required: false, type: "string" },
@@ -1717,6 +1716,11 @@ export const ADMIN_PARTNERS_WITH_ID_GET_PARAM_SCHEMA = {
     total_debt_amount_end: { description: "", required: false, type: "number" },
     total_purchase_start: { description: "", required: false, type: "number" },
     total_purchase_end: { description: "", required: false, type: "number" },
+    ordering: {
+      description: "Which field to use when ordering the results.",
+      required: false,
+      type: "string",
+    },
   },
   additionalProperties: false,
 };

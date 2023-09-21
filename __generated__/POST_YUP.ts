@@ -215,12 +215,12 @@ export const ADMIN_EXPORT_FILES_POST_YUP_SCHEMA = object({}).shape({
       ])
     ),
   date_start: string()
-    .default("2023-09-10T19:44:15.070394+07:00")
+    .default("2023-09-17T18:14:40.906230+07:00")
     .nullable()
     .test(testFormatDate)
     .notRequired(),
   date_end: string()
-    .default("2023-09-11T19:44:15.071185+07:00")
+    .default("2023-09-18T18:14:40.906839+07:00")
     .nullable()
     .test(testFormatDate)
     .test(testCompareDate("date_start"))
@@ -741,12 +741,12 @@ export type ADMIN_PARTNERS_ITEMS_POST_YUP_SCHEMA_TYPE = InferType<
 export const ADMIN_PRODUCTS_POST_YUP_SCHEMA = object({}).shape({
   is_published: boolean().notRequired(),
   publication_date: string()
-    .default("2023-09-11T19:44:04.873118+07:00")
+    .default("2023-09-18T18:14:31.114178+07:00")
     .nullable()
     .test(testFormatDate)
     .notRequired(),
   available_for_purchase: string()
-    .default("2023-09-11T19:44:04.873868+07:00")
+    .default("2023-09-18T18:14:31.114809+07:00")
     .nullable()
     .test(testFormatDate)
     .notRequired(),

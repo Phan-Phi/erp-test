@@ -86,7 +86,7 @@ const ADMIN_EXPORT_FILES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_EXPORT_FILES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         field_options: [],
         type: "Invoice_quantity",
@@ -100,14 +100,14 @@ export const ADMIN_EXPORT_FILES_POST_DEFAULT_VALUE =
 const CHANGE_PASSWORD_POST_FAKE_DATA = {};
 
 export const CHANGE_PASSWORD_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production" ? {} : CHANGE_PASSWORD_POST_FAKE_DATA;
+  process.env.NEXT_PUBLIC_ENV === "production" ? {} : CHANGE_PASSWORD_POST_FAKE_DATA;
 
 const LOGIN_POST_FAKE_DATA = {
   username: chance.name(),
 };
 
 export const LOGIN_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         username: "",
       }
@@ -116,12 +116,12 @@ export const LOGIN_POST_DEFAULT_VALUE =
 const REFRESH_TOKEN_POST_FAKE_DATA = {};
 
 export const REFRESH_TOKEN_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production" ? {} : REFRESH_TOKEN_POST_FAKE_DATA;
+  process.env.NEXT_PUBLIC_ENV === "production" ? {} : REFRESH_TOKEN_POST_FAKE_DATA;
 
 const VERIFY_TOKEN_POST_FAKE_DATA = {};
 
 export const VERIFY_TOKEN_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production" ? {} : VERIFY_TOKEN_POST_FAKE_DATA;
+  process.env.NEXT_PUBLIC_ENV === "production" ? {} : VERIFY_TOKEN_POST_FAKE_DATA;
 
 const ADMIN_CASH_PAYMENT_METHODS_POST_FAKE_DATA = {
   name: chance.name(),
@@ -131,7 +131,7 @@ const ADMIN_CASH_PAYMENT_METHODS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CASH_PAYMENT_METHODS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         name: "",
         description: "",
@@ -167,7 +167,7 @@ const ADMIN_CASH_TRANSACTIONS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         source_id: null,
         target_id: null,
@@ -194,7 +194,7 @@ const ADMIN_CASH_TRANSACTIONS_TYPES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CASH_TRANSACTIONS_TYPES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         is_business_activity: false,
         name: "",
@@ -236,7 +236,7 @@ const ADMIN_CUSTOMERS_DRAFTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CUSTOMERS_DRAFTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         avatar: null,
         in_business: false,
@@ -280,7 +280,7 @@ const ADMIN_CUSTOMERS_DRAFTS_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CUSTOMERS_DRAFTS_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         is_default_for_shipping: false,
         is_default_for_shipping_ecom: false,
@@ -301,14 +301,14 @@ export const ADMIN_CUSTOMERS_DRAFTS_ADDRESSES_POST_DEFAULT_VALUE =
 const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_APPLY_POST_FAKE_DATA = {};
 
 export const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_APPLY_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {}
     : ADMIN_CUSTOMERS_DRAFTS_WITH_ID_APPLY_POST_FAKE_DATA;
 
 const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_REFUSE_POST_FAKE_DATA = {};
 
 export const ADMIN_CUSTOMERS_DRAFTS_WITH_ID_REFUSE_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {}
     : ADMIN_CUSTOMERS_DRAFTS_WITH_ID_REFUSE_POST_FAKE_DATA;
 
@@ -321,7 +321,7 @@ const ADMIN_CUSTOMERS_TYPES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_CUSTOMERS_TYPES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         parent: null,
         name: "",
@@ -344,7 +344,7 @@ const ADMIN_DISCOUNTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_DISCOUNTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         name: "",
         date_start: new Date().toISOString(),
@@ -371,7 +371,7 @@ const ADMIN_DISCOUNTS_DISCOUNTED_VARIANTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_DISCOUNTS_DISCOUNTED_VARIANTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         category: null,
         usage_limit: 0,
@@ -427,7 +427,7 @@ const ADMIN_DISCOUNTS_VOUCHERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_DISCOUNTS_VOUCHERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         usage_limit: 0,
         apply_once_per_order: false,
@@ -452,7 +452,7 @@ const ADMIN_DISCOUNTS_VOUCHERS_DISCOUNTED_VARIANTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_DISCOUNTS_VOUCHERS_DISCOUNTED_VARIANTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         category: null,
         variant: null,
@@ -483,7 +483,7 @@ const ADMIN_ORDERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         receiver: null,
         channel: null,
@@ -519,7 +519,7 @@ const ADMIN_ORDERS_BILLING_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_BILLING_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         line1: "",
@@ -564,7 +564,7 @@ const ADMIN_ORDERS_INVOICES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_INVOICES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         cod: false,
@@ -589,7 +589,7 @@ const ADMIN_ORDERS_INVOICES_QUANTITIES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_INVOICES_QUANTITIES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         line: null,
         invoice: null,
@@ -618,7 +618,7 @@ const ADMIN_ORDERS_LINES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_LINES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         variant: null,
@@ -637,7 +637,7 @@ const ADMIN_ORDERS_PURCHASE_CHANNELS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_PURCHASE_CHANNELS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         name: "",
         description: "",
@@ -650,7 +650,7 @@ const ADMIN_ORDERS_SHIPPERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_SHIPPERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         user: null,
         name: "",
@@ -680,7 +680,7 @@ const ADMIN_ORDERS_SHIPPING_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_SHIPPING_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         line1: "",
@@ -733,7 +733,7 @@ const ADMIN_ORDERS_SHIPPING_METHODS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_ORDERS_SHIPPING_METHODS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         minimum_order_weight: 0,
         maximum_order_weight: 0,
@@ -768,7 +768,7 @@ const ADMIN_PARTNERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PARTNERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         max_debt: "",
         name: "",
@@ -799,7 +799,7 @@ const ADMIN_PARTNERS_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PARTNERS_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         partner: null,
         phone_number: "",
@@ -834,7 +834,7 @@ const ADMIN_PARTNERS_ITEMS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PARTNERS_ITEMS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         partner: null,
         variant: null,
@@ -876,7 +876,7 @@ const ADMIN_PRODUCTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         is_published: false,
         product_class: null,
@@ -898,7 +898,7 @@ const ADMIN_PRODUCTS_ATTRIBUTES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_ATTRIBUTES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         is_variant_only: false,
         input_type: "Option",
@@ -913,7 +913,7 @@ const ADMIN_PRODUCTS_ATTRIBUTES_OPTIONS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_ATTRIBUTES_OPTIONS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         attribute: null,
         name: "",
@@ -934,7 +934,7 @@ const ADMIN_PRODUCTS_CATEGORIES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_CATEGORIES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         parent: null,
         image: null,
@@ -957,7 +957,7 @@ const ADMIN_PRODUCTS_IMAGES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_IMAGES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         image: null,
         sort_order: 0,
@@ -972,7 +972,7 @@ const ADMIN_PRODUCTS_PRODUCT_CATEGORIES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_PRODUCT_CATEGORIES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         category: null,
         product: null,
@@ -986,7 +986,7 @@ const ADMIN_PRODUCTS_RECOMMENDATIONS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_RECOMMENDATIONS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         ranking: null,
         primary: null,
@@ -1007,7 +1007,7 @@ const ADMIN_PRODUCTS_TYPES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_TYPES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         has_variants: false,
         name: "",
@@ -1021,7 +1021,7 @@ const ADMIN_PRODUCTS_TYPES_PRODUCT_ATTRIBUTES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_TYPES_PRODUCT_ATTRIBUTES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         attribute: null,
         product_class: null,
@@ -1034,7 +1034,7 @@ const ADMIN_PRODUCTS_TYPES_VARIANT_ATTRIBUTES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_TYPES_VARIANT_ATTRIBUTES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         attribute: null,
         product_class: null,
@@ -1062,7 +1062,7 @@ const ADMIN_PRODUCTS_VARIANTS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_VARIANTS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         track_inventory: false,
         is_default: false,
@@ -1082,7 +1082,7 @@ const ADMIN_PRODUCTS_VARIANTS_IMAGES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_VARIANTS_IMAGES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         variant: null,
         image: 0,
@@ -1111,7 +1111,7 @@ const ADMIN_PRODUCTS_VARIANTS_UNITS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_PRODUCTS_VARIANTS_UNITS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         multiply: 1,
         weight: 0,
@@ -1156,7 +1156,7 @@ const ADMIN_USERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_USERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         avatar: null,
         is_staff: false,
@@ -1198,7 +1198,7 @@ const ADMIN_USERS_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         is_default_for_shipping: false,
         is_default_for_billing: false,
@@ -1221,7 +1221,7 @@ const ADMIN_USERS_PERMISSIONS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_USERS_PERMISSIONS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         user: null,
         permission: null,
@@ -1231,7 +1231,7 @@ export const ADMIN_USERS_PERMISSIONS_POST_DEFAULT_VALUE =
 const ADMIN_USERS_WITH_ID_RESET_PASSWORD_POST_FAKE_DATA = {};
 
 export const ADMIN_USERS_WITH_ID_RESET_PASSWORD_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {}
     : ADMIN_USERS_WITH_ID_RESET_PASSWORD_POST_FAKE_DATA;
 
@@ -1241,7 +1241,7 @@ const ADMIN_WAREHOUSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         manager: null,
         name: "",
@@ -1268,7 +1268,7 @@ const ADMIN_WAREHOUSES_ADDRESSES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_ADDRESSES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         warehouse: null,
         line1: "",
@@ -1319,7 +1319,7 @@ const ADMIN_WAREHOUSES_OUT_NOTES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_OUT_NOTES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         warehouse: null,
         status: "Draft",
@@ -1343,7 +1343,7 @@ const ADMIN_WAREHOUSES_OUT_NOTES_LINES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_OUT_NOTES_LINES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         variant: null,
         record: null,
@@ -1363,7 +1363,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         warehouse: null,
         partner: null,
@@ -1393,7 +1393,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_LINES_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_LINES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         quantity: 1,
@@ -1420,7 +1420,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_POST_FAKE_DATA = {
 };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         status: "Draft",
@@ -1447,7 +1447,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_QUANTITIES_POST_FAKE_DATA 
 };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_QUANTITIES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         line: null,
@@ -1473,7 +1473,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_POST_FAKE_DA
 };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         status: "Draft",
@@ -1493,7 +1493,7 @@ const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_QUANTITIES_P
   };
 
 export const ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_QUANTITIES_POST_DEFAULT_VALUE =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_ENV === "production"
     ? {
         order: null,
         receipt_order_quantity: 0,

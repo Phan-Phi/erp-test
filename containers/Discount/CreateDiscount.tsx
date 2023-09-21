@@ -1,23 +1,24 @@
 import { useCallback } from "react";
 import { formatISO } from "date-fns";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { Grid, Stack } from "@mui/material";
+import { useMountedState } from "react-use";
 
 import get from "lodash/get";
 import set from "lodash/set";
+
 import axios from "axios.config";
 import DynamicMessage from "messages";
 import DiscountForm from "./components/DiscountForm";
 
 import { DISCOUNT } from "apis";
 import { useIntl } from "react-intl";
-import { useRouter } from "next/router";
 import { DISCOUNTS, EDIT } from "routes";
-import { Grid, Stack } from "@mui/material";
-import { useMountedState } from "react-use";
 import { useChoice, useNotification } from "hooks";
 import { Card, BackButton, LoadingButton } from "components";
-import { discountSchema, defaultDiscountFormState, DiscountSchemaProps } from "yups";
 import { ADMIN_DISCOUNTS_END_POINT } from "__generated__/END_POINT";
+import { discountSchema, defaultDiscountFormState, DiscountSchemaProps } from "yups";
 
 const CreateDiscount = () => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const CreateDiscount = () => {
 
       setLoading(true);
 
-      return;
+      // return;
       const { data: resData } = await axios.post(ADMIN_DISCOUNTS_END_POINT, data);
 
       enqueueSnackbarWithSuccess(

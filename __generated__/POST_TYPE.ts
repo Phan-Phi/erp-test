@@ -1,7 +1,73 @@
 export interface ADMIN_EXPORT_FILES_POST_TYPE {
   type: "Invoice_quantity" | "Transaction" | "Debt_record";
   file_ext: ".csv" | ".xlsx";
-  field_options?: ["Order_sid" | "Order_status" | "Order_channel_name" | "Order_shipping_method_name" | "Order_customer_notes" | "Order_owner_name" | "Order_owner_phone_number" | "Order_owner_email" | "Invoice_sid" | "Invoice_date_created" | "Invoice_status" | "Order_receiver_name" | "Order_receiver_phone_number" | "Order_receiver_email" | "Shipping_address_address" | "Billing_address_address" | "Invoice_quantity_amount_before_discounts" | "Invoice_quantity_amount_before_discounts_incl_tax" | "Invoice_amount_before_discounts" | "Invoice_amount_before_discounts_incl_tax" | "Invoice_discount_amount" | "Invoice_discount_amount_incl_tax" | "Invoice_surcharge" | "Invoice_shipping_incl_tax" | "Invoice_shipping_excl_tax" | "Invoice_cod" | "Invoice_shipping_status" | "Invoice_shipping_name" | "Invoice_owner_name" | "Invoice_owner_phone_number" | "Invoice_owner_email" | "Line_variant_sku" | "Variant_editable_sku" | "Line_variant_name" | "Line_variant_unit" | "Invoice_quantity_unit_quantity" | "Line_variant_unit_price_excl_tax" | "Line_variant_unit_price_incl_tax" | "Invoice_quantity_amount" | "Invoice_quantity_amount_incl_tax" | "Line_variant_unit_weight" | "Invoice_quantity_weight" | "Invoice_quantity_warehouse_name" | "Line_variant_unit_price_before_discounts_excl_tax" | "Line_variant_unit_price_before_discounts_incl_tax" | "Invoice_amount" | "Invoice_amount_incl_tax" | "Invoice_base_amount" | "Invoice_base_amount_incl_tax" | "Invoice_merge_profit_amount" | "Invoice_merge_profit_amount_incl_tax" | "Transaction_sid" | "Transaction_owner_name" | "Transaction_owner_email" | "Transaction_owner_phone_number" | "Transaction_status" | "Transaction_notes" | "Transaction_address" | "Transaction_date_created" | "Transaction_directed_amount" | "Transaction_target_name" | "Transaction_payment_method_name" | "Transaction_affect_creditor" | "Type_name" | "Source_sid"];
+  field_options?: [
+    | "Order_sid"
+    | "Order_status"
+    | "Order_channel_name"
+    | "Order_shipping_method_name"
+    | "Order_customer_notes"
+    | "Order_owner_name"
+    | "Order_owner_phone_number"
+    | "Order_owner_email"
+    | "Invoice_sid"
+    | "Invoice_date_created"
+    | "Invoice_status"
+    | "Order_receiver_name"
+    | "Order_receiver_phone_number"
+    | "Order_receiver_email"
+    | "Shipping_address_address"
+    | "Billing_address_address"
+    | "Invoice_quantity_amount_before_discounts"
+    | "Invoice_quantity_amount_before_discounts_incl_tax"
+    | "Invoice_amount_before_discounts"
+    | "Invoice_amount_before_discounts_incl_tax"
+    | "Invoice_discount_amount"
+    | "Invoice_discount_amount_incl_tax"
+    | "Invoice_surcharge"
+    | "Invoice_shipping_incl_tax"
+    | "Invoice_shipping_excl_tax"
+    | "Invoice_cod"
+    | "Invoice_shipping_status"
+    | "Invoice_shipping_name"
+    | "Invoice_owner_name"
+    | "Invoice_owner_phone_number"
+    | "Invoice_owner_email"
+    | "Line_variant_sku"
+    | "Variant_editable_sku"
+    | "Line_variant_name"
+    | "Line_variant_unit"
+    | "Invoice_quantity_unit_quantity"
+    | "Line_variant_unit_price_excl_tax"
+    | "Line_variant_unit_price_incl_tax"
+    | "Invoice_quantity_amount"
+    | "Invoice_quantity_amount_incl_tax"
+    | "Line_variant_unit_weight"
+    | "Invoice_quantity_weight"
+    | "Invoice_quantity_warehouse_name"
+    | "Line_variant_unit_price_before_discounts_excl_tax"
+    | "Line_variant_unit_price_before_discounts_incl_tax"
+    | "Invoice_amount"
+    | "Invoice_amount_incl_tax"
+    | "Invoice_base_amount"
+    | "Invoice_base_amount_incl_tax"
+    | "Invoice_merge_profit_amount"
+    | "Invoice_merge_profit_amount_incl_tax"
+    | "Transaction_sid"
+    | "Transaction_owner_name"
+    | "Transaction_owner_email"
+    | "Transaction_owner_phone_number"
+    | "Transaction_status"
+    | "Transaction_notes"
+    | "Transaction_address"
+    | "Transaction_date_created"
+    | "Transaction_directed_amount"
+    | "Transaction_target_name"
+    | "Transaction_payment_method_name"
+    | "Transaction_affect_creditor"
+    | "Type_name"
+    | "Source_sid",
+  ];
   date_start?: string;
   date_end?: string;
   customer?: string | null;
@@ -463,4 +529,3 @@ export interface ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_Q
   receipt_order_quantity: number;
   quantity?: number;
 }
-

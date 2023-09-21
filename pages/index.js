@@ -6,6 +6,7 @@ const MainPage = () => {
   const { data: session } = useSession();
 
   const isDefault = session?.user?.login_as_default;
+  console.log(process.env.NEXT_PUBLIC_ENV);
 
   if (isDefault) return null;
 

@@ -122,7 +122,7 @@ try {
         const chanceTemplate = template(`const CHANCE_NAME = CHANCE_VALUE;`);
 
         const defaultValueTemplate = template(
-          `export const %%DEFAULT_NAME%% = process.env.NODE_ENV === 'production' ? %%DEFAULT_VALUE%% :  %%FAKE_DATA%%`
+          `export const %%DEFAULT_NAME%% = process.env.NEXT_PUBLIC_ENV === 'production' ? %%DEFAULT_VALUE%% :  %%FAKE_DATA%%`
         );
 
         const chanceIdentifier = t.identifier("chance");

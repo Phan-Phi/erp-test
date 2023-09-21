@@ -42,7 +42,7 @@ const ViewDetailLineDialog = dynamic(() => import("../ViewDetailLineDialog"), {
 });
 
 interface TransactionFormProps<
-  T extends TransactionSchemaProps = TransactionSchemaProps
+  T extends TransactionSchemaProps = TransactionSchemaProps,
 > {
   control: Control<T>;
   getValues: UseFormGetValues<T>;

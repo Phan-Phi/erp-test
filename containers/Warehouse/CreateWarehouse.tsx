@@ -239,10 +239,6 @@ const CreateWarehouse = () => {
         // });
 
         const { data: resData } = await axios.post(WAREHOUSE, data);
-        console.log(
-          "🚀 ~ file: CreateWarehouse.tsx:242 ~ CreateWarehouse ~ resData:",
-          resData
-        );
 
         // const warehouseId = get(resData, "id");
 

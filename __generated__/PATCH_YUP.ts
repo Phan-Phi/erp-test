@@ -686,12 +686,12 @@ export type ADMIN_PRODUCTS_VARIANTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE = InferType<
 export const ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_SCHEMA = object({}).shape({
   is_published: boolean().notRequired(),
   publication_date: string()
-    .default("2023-09-11T19:44:05.614109+07:00")
+    .default("2023-09-18T18:14:31.582884+07:00")
     .nullable()
     .test(testFormatDate)
     .notRequired(),
   available_for_purchase: string()
-    .default("2023-09-11T19:44:05.614630+07:00")
+    .default("2023-09-18T18:14:31.583111+07:00")
     .nullable()
     .test(testFormatDate)
     .notRequired(),

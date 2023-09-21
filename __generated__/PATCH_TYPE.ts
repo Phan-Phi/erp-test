@@ -381,4 +381,3 @@ export interface ADMIN_WAREHOUSES_WITH_ID_PATCH_TYPE {
   name: string;
   manager?: number | null;
 }
-
