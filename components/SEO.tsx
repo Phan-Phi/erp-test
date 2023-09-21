@@ -8,19 +8,19 @@ type SEOProps = {
 const SEO = (props: SEOProps) => {
   const { logo } = props;
 
+  const favicon = logo ? logo.default : "";
+
   return (
     <NextSeo
       title={"ERP"}
       additionalLinkTags={[
         {
           rel: "icon",
-          href: "",
-          //   href: logo.default ? logo.default : "",
+          href: favicon,
         },
         {
           rel: "apple-touch-icon",
-          href: "",
-          //   href: logo.default ? logo.default : "",
+          href: favicon,
         },
       ]}
     />

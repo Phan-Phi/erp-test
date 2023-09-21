@@ -16,14 +16,21 @@ import LoginForm from "./components/LoginForm";
 import LoginHeader from "./components/LoginHeader";
 import LoginFooter from "./components/LoginFooter";
 
-import { LoadingButton } from "components";
+import { LoadingButton, SEO } from "components";
 
 import { loginSchema, defaultLoginFormState, LoginSchemaProps } from "yups";
 
 import { PUBLIC_SETTING } from "apis";
+import { getSeoObject } from "libs/getSeoObject";
+import dynamic from "next/dynamic";
+
+const SEODEMO = dynamic(import("../../components/SEO"), {
+  ssr: false,
+});
 
 const Login = () => {
   const { data: settingData } = useSWR(PUBLIC_SETTING);
+  // console.log("🚀 ~ file: Login.tsx:27 ~ Login ~ settingData:", settingData.logo.default);
 
   const router = useRouter();
   const { messages } = useIntl();
@@ -76,6 +83,8 @@ const Login = () => {
 
   return (
     <Wrapper>
+      <SEODEMO {...getSeoObject(settingData)} />
+
       <Box
         sx={{
           minWidth: "600px",
