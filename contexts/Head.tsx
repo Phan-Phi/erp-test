@@ -5,6 +5,7 @@ import React, { Fragment } from "react";
 
 const Head = () => {
   const { company_name, logo } = useSetting();
+  console.log("🚀 ~ file: Head.tsx:8 ~ Head ~ logo:", logo);
   const setting = useSetting();
   const title = company_name ? `ERP - ${company_name || ""}` : "ERP";
 
