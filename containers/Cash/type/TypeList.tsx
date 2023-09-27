@@ -49,6 +49,7 @@ const defaultFilterValue: PartnerFilterType = {
 
 const TypeList = () => {
   const setting = useSetting();
+  console.log("🚀 ~ file: TypeList.tsx:52 ~ TypeList ~ setting:", setting);
   console.log("2");
 
   const { hasPermission: writePermission } = usePermission("write_transaction_type");

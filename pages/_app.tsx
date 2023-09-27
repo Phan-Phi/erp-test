@@ -58,11 +58,11 @@ function MyApp(props: MyAppProps) {
             <Snackbar>
               <ErrorBoundary>
                 <SWR fallback={pageProps.fallback}>
-                  <Permission>
-                    <User>
-                      <Setting>
-                        <Head />
+                  <Setting>
+                    <Permission>
+                      <User>
                         <Choice>
+                          <Head />
                           <Confirmation>
                             <LayoutProvider>
                               <Layout>
@@ -71,9 +71,9 @@ function MyApp(props: MyAppProps) {
                             </LayoutProvider>
                           </Confirmation>
                         </Choice>
-                      </Setting>
-                    </User>
-                  </Permission>
+                      </User>
+                    </Permission>
+                  </Setting>
                 </SWR>
               </ErrorBoundary>
             </Snackbar>

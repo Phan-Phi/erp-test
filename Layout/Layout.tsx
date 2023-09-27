@@ -30,6 +30,7 @@ const Layout = (props: React.PropsWithChildren<{}>) => {
   const choice = useChoice();
   const userInfo = useUser();
   const setting = useSetting();
+  console.log("🚀 ~ file: Layout.tsx:33 ~ Layout ~ setting:", setting);
 
   const { status, data } = useSession();
 

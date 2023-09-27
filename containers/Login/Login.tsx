@@ -88,7 +88,7 @@ const Login = () => {
   return (
     <Wrapper>
       {/* <SEODynamic {...getSeoObject(settingData)} /> */}
-      {/* <SEO {...getSeoObject(setting)} /> */}
+      <SEO {...getSeoObject(setting)} />
       <WrapperContent>
         <WrapperLoginHeader>
           <LoginHeader src={get(settingData, "logo.default")} />
