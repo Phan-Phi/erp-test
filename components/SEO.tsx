@@ -10,6 +10,7 @@ const SEO = (props: SEOProps) => {
   const { logo, company_name } = props;
 
   const favicon = logo ? logo.default : "";
+  console.log("🚀 ~ file: SEO.tsx:13 ~ SEO ~ favicon:", favicon);
   const title = company_name ? `ERP - ${company_name}` : "ERP";
 
   return (

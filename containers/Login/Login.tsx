@@ -16,7 +16,7 @@ import LoginFooter from "./components/LoginFooter";
 
 import { useIntl } from "react-intl";
 import { PUBLIC_SETTING } from "apis";
-import { LoadingButton } from "components";
+import { LoadingButton, SEO } from "components";
 import { getSeoObject } from "libs/getSeoObject";
 import { loginSchema, defaultLoginFormState, LoginSchemaProps } from "yups";
 import { LOGIN_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
@@ -32,6 +32,7 @@ const SEODynamic = dynamic(import("../../components/SEO"), {
 
 const Login = () => {
   const { data: settingData } = useSWR(PUBLIC_SETTING);
+  const setting = useSetting();
 
   const router = useRouter();
   const { messages } = useIntl();
@@ -86,8 +87,8 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <SEODynamic {...getSeoObject(settingData)} />
-
+      {/* <SEODynamic {...getSeoObject(settingData)} /> */}
+      {/* <SEO {...getSeoObject(setting)} /> */}
       <WrapperContent>
         <WrapperLoginHeader>
           <LoginHeader src={get(settingData, "logo.default")} />

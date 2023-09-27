@@ -8,8 +8,9 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 
 import { LayoutContext } from "contexts";
-import { Loading, Container, LoadingDynamic } from "components";
+import { Loading, Container, LoadingDynamic, SEO } from "components";
 import { useUser, useChoice, useRouting, useSetting } from "hooks";
+import { getSeoObject } from "libs/getSeoObject";
 
 const Login = dynamic(() => import("containers/Login/Login"), {
   loading: () => <LoadingDynamic />,
@@ -25,7 +26,6 @@ const Header = dynamic<{}>(
 
 const Layout = (props: React.PropsWithChildren<{}>) => {
   const { children } = props;
-
   const router = useRouter();
   const choice = useChoice();
   const userInfo = useUser();
@@ -72,9 +72,10 @@ const Layout = (props: React.PropsWithChildren<{}>) => {
   if ((isEmpty(setting) || isEmpty(userInfo)) && !get(data, "user.login_as_default")) {
     return <Loading />;
   }
-
+  console.log("1");
   return (
     <StyledBox>
+      <SEO {...getSeoObject(setting)} />
       <Header />
       <Container>
         <Box
