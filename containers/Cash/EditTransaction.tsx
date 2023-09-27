@@ -1,4 +1,6 @@
 import useSWR from "swr";
+import { useForm } from "react-hook-form";
+
 import get from "lodash/get";
 import set from "lodash/set";
 import pick from "lodash/pick";
@@ -8,29 +10,25 @@ import isEmpty from "lodash/isEmpty";
 
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 import { useToggle, useMountedState } from "react-use";
 import { useState, useEffect, useCallback } from "react";
 import { Grid, Stack, Typography, Button } from "@mui/material";
 
-import {
-  transactionSchema,
-  TransactionSchemaProps,
-  defaultTransactionFormState,
-} from "yups";
 import { CASHES } from "routes";
 import { transformUrl } from "libs";
-import { CASH_TRANSACTION } from "apis";
-import { CASH_TRANSACTION_ITEM } from "interfaces";
 import { useChoice, useNotification, usePermission } from "hooks";
 import { Card, BackButton, LoadingButton, LoadingDynamic as Loading } from "components";
+
+import { ADMIN_CASH_TRANSACTIONS_END_POINT } from "__generated__/END_POINT";
+import { ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
+import { ADMIN_CASH_TRANSACTIONS_WITH_ID_PATCH_YUP_RESOLVER } from "__generated__/PATCH_YUP";
+import { ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 import axios from "axios.config";
 import DynamicMessage from "messages";
 import ViewOnlyTransaction from "./ViewOnlyTransaction";
 import TransactionForm from "./components/EditTransactionForm";
-import { ADMIN_CASH_TRANSACTIONS_POST_YUP_RESOLVER } from "__generated__/POST_YUP";
-import { ADMIN_CASH_TRANSACTIONS_END_POINT } from "__generated__/END_POINT";
 
 const PrintNote = dynamic(import("components/PrintNote/PrintNote"), {
   loading: () => {
@@ -40,10 +38,11 @@ const PrintNote = dynamic(import("components/PrintNote/PrintNote"), {
 
 const CreateType = () => {
   const router = useRouter();
-  const [defaultValues, setDefaultValues] = useState<TransactionSchemaProps>();
+  const [defaultValues, setDefaultValues] =
+    useState<ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE>();
 
   const { data: transactionData, mutate: transactionMutate } =
-    useSWR<CASH_TRANSACTION_ITEM>(() => {
+    useSWR<ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1>(() => {
       const id = router.query.id;
       if (id) {
         const params = {
@@ -58,10 +57,10 @@ const CreateType = () => {
   useEffect(() => {
     if (transactionData == undefined) return;
 
-    const data = {} as TransactionSchemaProps;
+    const data = {} as ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE;
 
     const keyList = [
-      ...Object.keys(defaultTransactionFormState()),
+      ...Object.keys(ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE),
       "id",
       "target",
       "source",
@@ -118,8 +117,7 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
     formState: { dirtyFields },
   } = useForm({
     defaultValues,
-    // resolver: transactionSchema(choice),
-    resolver: ADMIN_CASH_TRANSACTIONS_POST_YUP_RESOLVER,
+    resolver: ADMIN_CASH_TRANSACTIONS_WITH_ID_PATCH_YUP_RESOLVER,
   });
 
   const onSubmit = useCallback(async ({ data, dirtyFields }) => {
@@ -128,10 +126,10 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
     try {
       const transactionId = get(data, "id");
 
-      set(data, "payment_method", get(data, "payment_method.id", null));
+      // set(data, "payment_method", get(data, "payment_method.id", null));
       set(data, "source_id", get(data, "source_id.id"));
       set(data, "target_id", get(data, "target_id.id"));
-      set(data, "type", get(data, "type.id"));
+      // set(data, "type", get(data, "type.id"));
 
       if (get(data, "source_type") === "") {
         set(data, "source_type", null);
@@ -144,7 +142,7 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
       if (get(data, "target_id")) {
         unset(data, "target_name");
       }
-      return;
+      // return;
 
       if (!isEmpty(dirtyFields)) {
         const body = pick(data, Object.keys(dirtyFields));
@@ -212,9 +210,7 @@ const RootComponent = ({ defaultValues, onSuccessHandler }) => {
                   (data) => {
                     onSubmit({ data, dirtyFields });
                   },
-                  (err) => {
-                    // console.log("err", err);
-                  }
+                  (err) => {}
                 ),
               }}
             >

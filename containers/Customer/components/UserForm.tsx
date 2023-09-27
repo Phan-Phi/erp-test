@@ -11,7 +11,7 @@ import {
 
 import useSWR from "swr";
 import AddIcon from "@mui/icons-material/Add";
-import { get, unset, groupBy } from "lodash";
+import { get, unset, groupBy, isEmpty } from "lodash";
 
 import {
   Box,
@@ -198,6 +198,13 @@ const ControlledUserDetailForm = (props: ControlledUserDetailFormProps) => {
                         errorMessage={error && error.message}
                       />
                     );
+                  }}
+                  isOptionEqualToValue={(option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   }}
                 />
               );

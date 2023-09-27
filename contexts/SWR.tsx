@@ -1,16 +1,33 @@
 import { SWRConfig } from "swr";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import axios from "axios.config";
+import { useEffect } from "react";
 
-const SWR = ({ children }) => {
-  const { status } = useSession();
+type SWRProps = {
+  children: React.ReactNode;
+  fallback?: { [key: string]: any };
+};
+
+const SWR = ({ children, fallback }: SWRProps) => {
+  const { status, data } = useSession();
+
+  useEffect(() => {
+    if (data == null) return;
+
+    const { user } = data;
+
+    if (user.shouldReLogin) {
+      signOut();
+    }
+  }, [data]);
 
   if (status === "loading") return null;
 
   return (
     <SWRConfig
       value={{
+        fallback: fallback || {},
         refreshInterval: 30000,
         revalidateIfStale: true,
         revalidateOnFocus: true,

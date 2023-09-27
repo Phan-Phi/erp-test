@@ -1,36 +1,37 @@
 import useSWR from "swr";
-import { useIntl } from "react-intl";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
 import { useSession } from "next-auth/react";
+import { Box, Stack, styled } from "@mui/material";
 import { useState, useCallback, useEffect } from "react";
 
-import { Box, Stack, styled } from "@mui/material";
-
 import get from "lodash/get";
-
 import LoginForm from "./components/LoginForm";
 import LoginHeader from "./components/LoginHeader";
 import LoginFooter from "./components/LoginFooter";
 
-import { LoadingButton, SEO } from "components";
-
-import { loginSchema, defaultLoginFormState, LoginSchemaProps } from "yups";
-
+import { useIntl } from "react-intl";
 import { PUBLIC_SETTING } from "apis";
+import { LoadingButton } from "components";
 import { getSeoObject } from "libs/getSeoObject";
-import dynamic from "next/dynamic";
+import { loginSchema, defaultLoginFormState, LoginSchemaProps } from "yups";
+import { LOGIN_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
+import {
+  LOGIN_POST_YUP_RESOLVER,
+  LOGIN_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
+import { useSetting } from "hooks";
 
-const SEODEMO = dynamic(import("../../components/SEO"), {
+const SEODynamic = dynamic(import("../../components/SEO"), {
   ssr: false,
 });
 
 const Login = () => {
   const { data: settingData } = useSWR(PUBLIC_SETTING);
-  // console.log("🚀 ~ file: Login.tsx:27 ~ Login ~ settingData:", settingData.logo.default);
 
   const router = useRouter();
   const { messages } = useIntl();
@@ -41,8 +42,10 @@ const Login = () => {
   const [loginLoading, setLoginLoading] = useState(false);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: defaultLoginFormState(),
-    resolver: loginSchema(),
+    // defaultValues: defaultLoginFormState(),
+    defaultValues: LOGIN_POST_DEFAULT_VALUE,
+    // resolver: loginSchema(),
+    resolver: LOGIN_POST_YUP_RESOLVER,
   });
 
   useEffect(() => {
@@ -51,7 +54,7 @@ const Login = () => {
     }
   }, [status]);
 
-  const onLoginHandler = useCallback(async (data: LoginSchemaProps) => {
+  const onLoginHandler = useCallback(async (data: any) => {
     setLoginLoading(true);
 
     try {
@@ -83,23 +86,12 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <SEODEMO {...getSeoObject(settingData)} />
+      <SEODynamic {...getSeoObject(settingData)} />
 
-      <Box
-        sx={{
-          minWidth: "600px",
-          width: "fit-content",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+      <WrapperContent>
+        <WrapperLoginHeader>
           <LoginHeader src={get(settingData, "logo.default")} />
-        </Box>
+        </WrapperLoginHeader>
 
         <Stack spacing={2} component="form">
           <LoginForm control={control} />
@@ -116,16 +108,10 @@ const Login = () => {
           </Box>
         </Stack>
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 5,
-          }}
-        >
+        <WrapperLoginFooter>
           <LoginFooter />
-        </Box>
-      </Box>
+        </WrapperLoginFooter>
+      </WrapperContent>
     </Wrapper>
   );
 };
@@ -139,6 +125,23 @@ const Wrapper = styled(Box)({
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
+});
+
+const WrapperLoginFooter = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  marginTop: 5,
+});
+
+const WrapperLoginHeader = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const WrapperContent = styled(Box)({
+  minWidth: "600px",
+  width: "fit-content",
 });
 
 export default Login;

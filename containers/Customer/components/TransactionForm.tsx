@@ -17,7 +17,7 @@ import {
   MenuItem,
   FormControl as OriginalFormControl,
 } from "@mui/material";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import {
   FormControl,
@@ -68,6 +68,7 @@ const TransactionForm = (props: TransactionFormProps) => {
   const { messages } = useIntl();
   const [open, toggle] = useToggle(false);
   const [maxAmount, setMaxAmount] = useState(0);
+
   const { hasPermission: writePermission } = usePermission("write_transaction");
 
   const { defaultValues } = props;
@@ -160,6 +161,13 @@ const TransactionForm = (props: TransactionFormProps) => {
                       disabled: true,
                       readOnly: true,
                     }),
+                    isOptionEqualToValue: (option, value) => {
+                      if (isEmpty(option) || isEmpty(value)) {
+                        return true;
+                      }
+
+                      return option?.["id"] === value?.["id"];
+                    },
                   }}
                   // searchKey: "sid_icontains",
                 />
@@ -181,6 +189,8 @@ const TransactionForm = (props: TransactionFormProps) => {
     }
   }, [watch("source_type")]);
 
+  const { transaction_target_types } = useChoice();
+
   const { transaction_flow_types } = choice;
 
   return (
@@ -195,11 +205,10 @@ const TransactionForm = (props: TransactionFormProps) => {
               placeholder: messages["targetType"] as string,
             },
             readOnly: true,
-            value:
-              getDisplayValueFromChoiceItem(
-                transaction_flow_types,
-                get(defaultValues, "target_type")
-              ) || "-",
+            value: getDisplayValueFromChoiceItem(
+              transaction_target_types,
+              get(defaultValues, "target_type")
+            ),
           }}
         />
       </Grid>
@@ -277,6 +286,13 @@ const TransactionForm = (props: TransactionFormProps) => {
                   },
                   getOptionLabel: (option) => {
                     return option.name;
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                   ...(!writePermission && {
                     readOnly: true,
@@ -428,6 +444,13 @@ const TransactionForm = (props: TransactionFormProps) => {
                   },
                   getOptionLabel: (option) => {
                     return option.name;
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                   ...(!writePermission && {
                     readOnly: true,

@@ -16,6 +16,7 @@ import {
   ADMIN_PARTNER_PARTNER_VIEW_TYPE_V1,
   ADMIN_PRODUCT_CATEGORY_VIEW_TYPE_V1,
 } from "__generated__/apiType_v1";
+import { isEmpty } from "lodash";
 
 type FilterProps = CommonFilterTableProps<ProductListFilterType> & {
   onSearchChange: (value: any) => void;
@@ -102,6 +103,14 @@ const Filter = (props: FilterProps) => {
                 return option.full_name;
               },
 
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
+              },
+
               value: filter.category,
               onChange: (e, value) => {
                 onCategoryChange(value);
@@ -133,7 +142,14 @@ const Filter = (props: FilterProps) => {
             shouldSearch: false,
             AutocompleteProps: {
               renderOption(props, option) {
-                return <MenuItem {...props} value={option.id} children={option.name} />;
+                return (
+                  <MenuItem
+                    {...props}
+                    key={option.id}
+                    value={option.id}
+                    children={option.name}
+                  />
+                );
               },
 
               getOptionLabel: (option) => {
@@ -143,6 +159,14 @@ const Filter = (props: FilterProps) => {
               value: filter.partner,
               onChange: (e, value) => {
                 onPartnerChange(value);
+              },
+
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
               },
               componentsProps: {
                 popper: {

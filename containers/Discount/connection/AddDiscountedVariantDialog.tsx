@@ -18,11 +18,6 @@ import { PRODUCT_VARIANT, DISCOUNT_DISCOUNTED_VARIANT } from "apis";
 import { LoadingButton, Dialog, BackButton, SearchField } from "components";
 import AddDiscountedVariantColumn from "../column/AddDiscountedVariantColumn";
 
-import {
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-} from "components/TableV2";
-
 interface AddDiscountedProductDialogProps {
   open: boolean;
   toggle: (newValue?: boolean) => void;
@@ -42,7 +37,7 @@ const AddDiscountedProductDialog = ({
 
   const discountContext = useContext(DiscountContext);
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<PRODUCT_VARIANT_ITEM>>();
+  const tableInstance = useRef<any>();
 
   const [, setParams] = useParams({
     initState: {
@@ -102,16 +97,13 @@ const AddDiscountedProductDialog = ({
     [discountContext]
   );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<PRODUCT_VARIANT_ITEM>) => {
-      tableInstance.current = _tableInstance;
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
 
-      discountContext.set({
-        mutateAddDiscountedVariant: _tableInstance.mutate,
-      });
-    },
-    []
-  );
+    discountContext.set({
+      mutateAddDiscountedVariant: _tableInstance.mutate,
+    });
+  }, []);
 
   const onFilterHandler = useCallback((key) => {
     return (value: any) => {
@@ -159,7 +151,7 @@ const AddDiscountedProductDialog = ({
             <Stack spacing={2}>
               <SearchField onChange={onFilterHandler("search")} />
 
-              <CompoundTableWithFunction<PRODUCT_VARIANT_ITEM>
+              {/* <CompoundTableWithFunction<PRODUCT_VARIANT_ITEM>
                 url={transformUrl(PRODUCT_VARIANT, {
                   not_in_sale: router.query.id,
                   use_cache: false,
@@ -174,7 +166,7 @@ const AddDiscountedProductDialog = ({
                     maxHeight: 250,
                   },
                 }}
-              />
+              /> */}
             </Stack>
           );
         },

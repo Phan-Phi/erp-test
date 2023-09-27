@@ -4,11 +4,12 @@ import React, { useState, Fragment, useEffect, useCallback, useMemo } from "reac
 import { cloneDeep } from "lodash";
 import { Box } from "@mui/material";
 
+import { LoadingDynamic as Loading } from "components";
+import ReceiptOrderTable from "./table/ReceiptOrderTable";
+
 import { useFetch } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
-import OrderLineTable from "./table/OrderLineTable";
 import { ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_QUANTITIES_END_POINT } from "__generated__/END_POINT";
-import ReceiptOrderTable from "./table/ReceiptOrderTable";
 
 type Props = {
   id: number;
@@ -84,6 +85,8 @@ export default function ReceiptOrder({ id, onGotoHandler }: Props) {
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Fragment>

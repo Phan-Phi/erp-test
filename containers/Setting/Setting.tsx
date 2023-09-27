@@ -149,7 +149,6 @@ const RootComponent = ({ defaultValues, onSuccessHandler }: RootComponent) => {
 
       try {
         const formData = transformJSONToFormData(data, dirtyFields);
-
         await axios.patch(ADMIN_SETTINGS_END_POINT, formData, {
           headers: {
             "Content-Type": "multipart/form-data",

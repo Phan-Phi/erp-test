@@ -1,41 +1,8 @@
+import { useState } from "react";
+import { Stack, Button, Card, CardHeader, CardContent } from "@mui/material";
+
 import { useIntl } from "react-intl";
-import { useState, useCallback } from "react";
-import {
-  Stack,
-  Button,
-  MenuItem,
-  Typography,
-  Box,
-  Card,
-  CardHeader,
-  CardContent,
-} from "@mui/material";
-
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-
-import {
-  FilterByTimeRange,
-  Select,
-  SearchField,
-  DateRangePicker,
-  Radio,
-  RadioItem,
-} from "components";
-
-import { LazyAutocomplete } from "compositions";
-
-import {
-  CASH_TRANSACTION_TYPE,
-  USER,
-  CASH_PAYMENT_METHOD,
-  ORDER_PURCHASE_CHANNEL,
-} from "apis";
-import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+import { SearchField, DateRangePicker } from "components";
 
 type FilterProps = {
   onFilterByTime: any;

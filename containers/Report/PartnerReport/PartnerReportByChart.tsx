@@ -1,21 +1,13 @@
 import useSWR from "swr";
 import { memo } from "react";
-import isEmpty from "lodash/isEmpty";
-import { useIntl } from "react-intl";
 import truncate from "lodash/truncate";
 import { Stack, Typography, useTheme } from "@mui/material";
 import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
 
-import {
-  REPORT_TOP_PARTNER_BY_DEBT_AMOUNT,
-  REPORT_TOP_PARTNER_BY_RECEIPT_AMOUNT,
-} from "apis";
-import {
-  REPORT_TOP_PARTNER_BY_DEBT_AMOUNT_ITEM,
-  REPORT_TOP_PARTNER_BY_RECEIPT_AMOUNT_ITEM,
-} from "interfaces";
+import isEmpty from "lodash/isEmpty";
 
-import { getPeriodFromTimeFrame } from "libs/dateUtils";
+import { useIntl } from "react-intl";
+import { transformDate, transformUrl } from "libs";
 
 import {
   NoData,
@@ -25,7 +17,14 @@ import {
   ResponsiveContainer,
   LoadingDynamic as Loading,
 } from "components";
-import { transformDate, transformUrl } from "libs";
+import {
+  ADMIN_REPORTS_TOP_PARTNER_BY_DEBT_AMOUNT_END_POINT,
+  ADMIN_REPORTS_TOP_PARTNER_BY_RECEIPT_AMOUNT_END_POINT,
+} from "__generated__/END_POINT";
+import {
+  TopPartnerByDebtAmountReport,
+  TopPartnerByReceiptAmountReport,
+} from "__generated__/apiType_v1";
 
 interface PartnerReportByChartProps {
   filter: Record<string, any>;
@@ -39,24 +38,24 @@ export const PartnerReportByChart = (props: PartnerReportByChartProps) => {
 
   const { messages } = useIntl();
 
-  const { data: topPartnerByDebtAmountData } = useSWR<
-    REPORT_TOP_PARTNER_BY_DEBT_AMOUNT_ITEM[]
-  >(() => {
-    if (viewType === "debt") {
-      return transformUrl(REPORT_TOP_PARTNER_BY_DEBT_AMOUNT, {
-        date_start: transformDate(filter.range.startDate, "date_start"),
-        date_end: transformDate(filter.range.endDate, "date_end"),
-        get_all: true,
-        name: filter.search,
-      });
+  const { data: topPartnerByDebtAmountData } = useSWR<TopPartnerByDebtAmountReport[]>(
+    () => {
+      if (viewType === "debt") {
+        return transformUrl(ADMIN_REPORTS_TOP_PARTNER_BY_DEBT_AMOUNT_END_POINT, {
+          date_start: transformDate(filter.range.startDate, "date_start"),
+          date_end: transformDate(filter.range.endDate, "date_end"),
+          get_all: true,
+          name: filter.search,
+        });
+      }
     }
-  });
+  );
 
   const { data: topPartnerByReceiptAmountData } = useSWR<
-    REPORT_TOP_PARTNER_BY_RECEIPT_AMOUNT_ITEM[]
+    TopPartnerByReceiptAmountReport[]
   >(() => {
     if (viewType === "import") {
-      return transformUrl(REPORT_TOP_PARTNER_BY_RECEIPT_AMOUNT, {
+      return transformUrl(ADMIN_REPORTS_TOP_PARTNER_BY_RECEIPT_AMOUNT_END_POINT, {
         date_start: transformDate(filter.range.startDate, "date_start"),
         date_end: transformDate(filter.range.endDate, "date_end"),
         get_all: true,
@@ -77,7 +76,7 @@ export const PartnerReportByChart = (props: PartnerReportByChartProps) => {
     const transformedData = topPartnerByReceiptAmountData.map((el) => {
       return {
         ...el,
-        receipt_amount: parseFloat(el.receipt_amount.incl_tax),
+        receipt_amount: parseFloat(el.receipt_amount?.incl_tax || "0"),
       };
     });
 
@@ -135,7 +134,7 @@ export const PartnerReportByChart = (props: PartnerReportByChartProps) => {
     const transformedData = topPartnerByDebtAmountData.map((el) => {
       return {
         ...el,
-        debt_amount: parseFloat(el.debt_amount.incl_tax),
+        debt_amount: parseFloat(el.debt_amount?.incl_tax || "0"),
       };
     });
 

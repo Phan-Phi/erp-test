@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useFieldArray, Control } from "react-hook-form";
 
 import useSWR from "swr";
+import { isEmpty } from "lodash";
 import { Stack, Button, MenuItem, Autocomplete } from "@mui/material";
 
 import { InputForAutocomplete } from "compositions";
@@ -97,6 +98,13 @@ const Category = ({ control }: CategoryProps) => {
                       {option.full_name}
                     </MenuItem>
                   );
+                }}
+                isOptionEqualToValue={(option, value) => {
+                  if (isEmpty(option) || isEmpty(value)) {
+                    return true;
+                  }
+
+                  return option?.["id"] === value?.["id"];
                 }}
               />
             </Fragment>

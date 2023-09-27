@@ -18,6 +18,8 @@ export { default as LoadingButton } from "./Button/LoadingButton";
 export { default as PrintButton } from "./Button/PrintButton";
 export { default as CustomIconButton } from "./Button/CustomIconButton";
 export { default as IconButtonBackground } from "./Button/IconButtonBackground";
+export { default as ButtonReset } from "./Button/ButtonReset";
+export { default as PaymentButton } from "./Button/PaymentButton";
 
 export { default as NoData } from "./Loading/NoData";
 export { default as Skeleton } from "./Loading/Skeleton";
@@ -28,20 +30,6 @@ export { default as TableSkeleton } from "./Loading/TableSkeleton";
 export { default as LoadingDynamic } from "./Loading/LoadingDynamic";
 export { default as LoadingWrapper } from "./Loading/LoadingWrapper";
 export { default as SEO } from "./SEO";
-
-export {
-  EditCell,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableTitle,
-  ColumnFilter,
-  ViewOnlyTable,
-  HighOrderTable,
-  TableContainer,
-  TablePagination,
-  default as Table,
-} from "./Table";
 
 export { default as FormatNumber } from "./FormatNumber";
 
@@ -114,3 +102,7 @@ export { default as ResponsiveContainer } from "components/Chart/ResponsiveConta
 export { default as DateRangePicker } from "./DateRangePicker/DateRangePicker";
 
 export { default as WrapperTable } from "./WrapperTable";
+export { default as EditCell } from "./TableV3/EditCell";
+
+//Editor
+export { default as Editor } from "./Editor/Editor";

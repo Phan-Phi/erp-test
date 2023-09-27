@@ -6,14 +6,15 @@ import get from "lodash/get";
 import { Skeleton, Stack } from "@mui/material";
 
 import { DeleteButton, NumberFormat, ViewButton } from "components";
+
+import { useChoice } from "hooks";
+import { getDisplayValueFromChoiceItem } from "libs";
+import { EDIT, ORDERS, SHIPPING_METHOD } from "routes";
 import {
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { useChoice } from "hooks";
-import { getDisplayValueFromChoiceItem } from "libs";
-import { EDIT, ORDERS, SHIPPING_METHOD } from "routes";
+} from "components/TableV3";
 
 export const keys = [
   "selection",

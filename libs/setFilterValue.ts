@@ -23,7 +23,6 @@ const BOOLEAN_KEY_LIST = [
   "price_end",
   "category",
   "order_date",
-  "search_by_type",
   "total_start",
   "total_end",
   "owner",
@@ -33,6 +32,8 @@ const BOOLEAN_KEY_LIST = [
   "partner",
   "channel",
   "shipping_method",
+  "shipping_status",
+  "shipper",
 ];
 
 const DATE_KEY_LIST = [
@@ -70,18 +71,6 @@ export function setFilterValue<T extends Record<string, any>>(
       set(filter, "search", parseInt(value.toString().replaceAll(" ", "")));
     } else {
       set(filter, "search", value);
-    }
-  } else if (key === "sid_icontains") {
-    if (value && isPossiblePhoneNumber(value.toString(), "VN")) {
-      set(filter, "sid_icontains", parseInt(value.toString().replaceAll(" ", "")));
-    } else {
-      set(filter, "sid_icontains", value);
-    }
-  } else if (key === "search2") {
-    if (value && isPossiblePhoneNumber(value.toString(), "VN")) {
-      set(filter, "search2", parseInt(value.toString().replaceAll(" ", "")));
-    } else {
-      set(filter, "search2", value);
     }
   } else if (key === "action") {
     set(filter, "action", value.target.value);

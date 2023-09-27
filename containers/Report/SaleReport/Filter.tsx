@@ -1,41 +1,12 @@
-import { useIntl } from "react-intl";
-import { useState, useCallback } from "react";
-import {
-  Stack,
-  Button,
-  MenuItem,
-  Typography,
-  Box,
-  Card,
-  CardHeader,
-  CardContent,
-} from "@mui/material";
+import { useState } from "react";
+import { Stack, Button, MenuItem, Card, CardHeader, CardContent } from "@mui/material";
 
-import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 
-import {
-  FilterByTimeRange,
-  Select,
-  SearchField,
-  DateRangePicker,
-  Radio,
-  RadioItem,
-} from "components";
-
+import { useIntl } from "react-intl";
+import { DateRangePicker } from "components";
 import { LazyAutocomplete } from "compositions";
-
-import {
-  CASH_TRANSACTION_TYPE,
-  USER,
-  CASH_PAYMENT_METHOD,
-  ORDER_PURCHASE_CHANNEL,
-} from "apis";
-import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+import { ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT } from "__generated__/END_POINT";
 
 type FilterProps = {
   onFilterByTime: any;
@@ -70,26 +41,9 @@ const Filter = ({
             paddingTop: "0 !important",
           }}
         >
-          {/* <LazyAutocomplete<any>
-            {...{
-              url: ORDER_PURCHASE_CHANNEL,
-              placeholder: "Vị trí",
-              AutocompleteProps: {
-                // getOptionLabel: (option: string) => {
-                //   const value = getDisplayValueFromChoiceItem(position, option[0]);
-
-                //   return value;
-                // },
-                onChange: (_: any, value: any) => {
-                  onPurchaseChannelChange(value);
-                },
-                initValue: null,
-              },
-            }}
-          /> */}
           <LazyAutocomplete<any>
             {...{
-              url: ORDER_PURCHASE_CHANNEL,
+              url: ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT,
               placeholder: messages["filterChannel"] as string,
               AutocompleteProps: {
                 renderOption(props, option) {

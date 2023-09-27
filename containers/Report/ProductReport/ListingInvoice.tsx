@@ -1,25 +1,17 @@
 import useSWR from "swr";
-import { alpha, Box } from "@mui/material";
-import { useUpdateEffect } from "react-use";
-import React, { Fragment, useCallback, useMemo, useRef } from "react";
+import { Box } from "@mui/material";
+import { Fragment, useMemo } from "react";
 
-import get from "lodash/get";
+import ColumnDetail from "./ColumnDetail";
+
+import { useFetch } from "hooks";
+import { transformUrl } from "libs";
 
 import {
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-  TableRow,
-  TableCell,
-  TableView,
-} from "components/TableV2";
-
-import { transformUrl } from "libs";
-import { NumberFormat } from "components";
-import { ORDER_INVOICE_ITEM } from "interfaces";
-import { ORDER_INVOICE, ORDER_INVOICE_QUANTITY } from "apis";
-import ListingInvoiceColumnBySale from "./ListingInvoiceColumnBySale";
-import { useFetch, useFetchAllData } from "hooks";
-import ColumnDetail from "./ColumnDetail";
+  ADMIN_ORDERS_INVOICES_END_POINT,
+  ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT,
+} from "__generated__/END_POINT";
+import { ADMIN_ORDER_INVOICE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 interface ListingInvoiceProps {
   variantSku: string;
@@ -45,7 +37,7 @@ export const ListingInvoice = (props: ListingInvoiceProps) => {
   } = props;
 
   const { data } = useSWR(() => {
-    return transformUrl(ORDER_INVOICE, {
+    return transformUrl(ADMIN_ORDERS_INVOICES_END_POINT, {
       variant_sku: variantSku,
       date_created_start: filter.date_start,
       date_created_end: filter.date_end,
@@ -54,7 +46,7 @@ export const ListingInvoice = (props: ListingInvoiceProps) => {
   });
 
   const { data: orderInvoiceQuantityData } = useSWR(() => {
-    return transformUrl(ORDER_INVOICE_QUANTITY, {
+    return transformUrl(ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT, {
       variant_sku: variantSku,
       date_created_start: filter.date_start,
       date_created_end: filter.date_end,
@@ -70,130 +62,14 @@ export const ListingInvoice = (props: ListingInvoiceProps) => {
     data: dataTable,
     isLoading,
     itemCount,
-  } = useFetch<ORDER_INVOICE_ITEM>(
-    transformUrl(ORDER_INVOICE, {
+  } = useFetch<ADMIN_ORDER_INVOICE_VIEW_TYPE_V1>(
+    transformUrl(ADMIN_ORDERS_INVOICES_END_POINT, {
       variant_sku: variantSku,
       shipping_status: "Delivered",
       date_created_start: filter.date_start,
       date_created_end: filter.date_end,
     })
   );
-
-  const tableInstance = useRef<ExtendableTableInstanceProps<ORDER_INVOICE_ITEM>>();
-
-  const { data: reportDataForPrinting, setUrl, isDone } = useFetchAllData();
-
-  useUpdateEffect(() => {
-    if (!isPrinting) return;
-
-    tableInstance.current && setUrl(tableInstance.current.url);
-  }, [isPrinting]);
-
-  useUpdateEffect(() => {
-    isDone && onIsDoneHandler();
-  }, [isDone]);
-
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<ORDER_INVOICE_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
-
-  useUpdateEffect(() => {
-    if (tableInstance.current) {
-      const setUrl = tableInstance.current.setUrl;
-
-      setUrl(
-        transformUrl(ORDER_INVOICE, {
-          variant_sku: variantSku,
-          shipping_status: "Delivered",
-          date_created_start: filter.date_start,
-          date_created_end: filter.date_end,
-        })
-      );
-    }
-  }, [filter]);
-
-  const renderTotal = useMemo(() => {
-    if (data == undefined || orderInvoiceQuantityData == undefined) return null;
-
-    if (viewType === "sale") {
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-            colSpan={2}
-          >
-            {"SL giao dịch: "}
-            <NumberFormat value={get(data, "count")} suffix="" />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={get(orderInvoiceQuantityData, "sum_unit_quantity")}
-              suffix=""
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                get(orderInvoiceQuantityData, "sum_amount_before_discounts_incl_tax")
-              )}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(get(orderInvoiceQuantityData, "sum_amount_incl_tax"))}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  get(orderInvoiceQuantityData, "sum_amount_before_discounts_incl_tax") -
-                  get(orderInvoiceQuantityData, "sum_amount_incl_tax")
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    return null;
-  }, [data, orderInvoiceQuantityData, viewType]);
-
-  const columnFn = useMemo(() => {
-    return ListingInvoiceColumnBySale;
-  }, [viewType]);
 
   const pagination = useMemo(() => {
     return {
@@ -221,62 +97,6 @@ export const ListingInvoice = (props: ListingInvoiceProps) => {
           onPageSizeChange={onPageSizeChange}
           // maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
         />
-        <CompoundTableWithFunction<ORDER_INVOICE_ITEM>
-          url={transformUrl(ORDER_INVOICE, {
-            variant_sku: variantSku,
-            shipping_status: "Delivered",
-            date_created_start: filter.date_start,
-            date_created_end: filter.date_end,
-          })}
-          columnFn={columnFn}
-          passHandler={passHandler}
-          variantSku={variantSku}
-          renderBodyItem={(rows, tableInstance) => {
-            if (rows == undefined) return null;
-
-            return (
-              <Fragment>
-                {renderTotal}
-
-                {rows.map((row, i) => {
-                  tableInstance.prepareRow(row);
-
-                  return (
-                    <TableRow {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <TableCell
-                            {...cell.getCellProps()}
-                            {...(cell.column.colSpan && {
-                              colSpan: cell.column.colSpan,
-                            })}
-                            sx={{
-                              width: cell.column.width,
-                              minWidth: cell.column.minWidth,
-                              maxWidth: cell.column.maxWidth,
-                            }}
-                          >
-                            {cell.render("Cell")}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </Fragment>
-            );
-          }}
-        />
-      </Box>
-
-      <Box display={isPrinting ? "block" : "none"}>
-        {isDone && (
-          <TableView
-            columns={columnFn()}
-            data={reportDataForPrinting}
-            prependChildren={renderTotal}
-          />
-        )}
       </Box>
     </Fragment>
   );

@@ -5,9 +5,9 @@ import { CellProps, Column } from "react-table";
 import get from "lodash/get";
 
 import { NumberFormat } from "components";
-import { WrapperTableCell } from "components/TableV2";
 
 import { formatDate } from "libs";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = ["invoice", "time", "customer", "revenue"];
 

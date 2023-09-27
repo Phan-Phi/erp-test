@@ -11,9 +11,9 @@ import { REPORT_CASH } from "apis";
 import { transformUrl } from "libs";
 import { REPORT_CASH_ITEM } from "interfaces";
 import { convertTimeToString, getPeriodUnitFromTimeObj } from "libs/dateUtils";
-import { TableRow, TableCell, Table, TableBody } from "components/TableV2";
 
 import { LoadingDynamic as Loading, NumberFormat } from "components";
+import { Table, TableBody, TableCell, TableRow } from "components/TableV3";
 
 const rows = [
   "Doanh thu bán hàng (1)",

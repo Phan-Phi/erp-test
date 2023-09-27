@@ -1,9 +1,10 @@
 import { useSticky } from "react-table-sticky";
 import { FormattedMessage, useIntl } from "react-intl";
-import React, { PropsWithChildren, useEffect, useMemo } from "react";
 import { CellProps, useTable, useSortBy, useRowSelect } from "react-table";
+import React, { Fragment, PropsWithChildren, useEffect, useMemo } from "react";
 
 import { get } from "lodash";
+import { compareAsc } from "date-fns";
 import DynamicMessage from "messages";
 import { Box, Stack, MenuItem, Typography } from "@mui/material";
 
@@ -43,7 +44,7 @@ const CreateLineTable = (props: CreateLineTableProps) => {
     ...restProps
   } = props;
 
-  const { formatMessage, messages } = useIntl();
+  const { formatMessage } = useIntl();
 
   const columns = useMemo(() => {
     return [
@@ -61,7 +62,23 @@ const CreateLineTable = (props: CreateLineTableProps) => {
         Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
           const { row } = props;
 
-          return <TableCellForSelection row={row} />;
+          const availableForPurchase = get(
+            row,
+            "original.product.available_for_purchase"
+          );
+
+          const compareDate = compareAsc(new Date(availableForPurchase), new Date());
+
+          return (
+            <Fragment>
+              <TableCellForSelection
+                row={row}
+                disabled={
+                  availableForPurchase === null || compareDate === 1 ? true : false
+                }
+              />
+            </Fragment>
+          );
         },
         maxWidth: 64,
         width: 64,
@@ -108,18 +125,34 @@ const CreateLineTable = (props: CreateLineTableProps) => {
 
           const value = get(row, "original.name");
 
+          const availableForPurchase = get(
+            row,
+            "original.product.available_for_purchase"
+          );
+
+          const compareDate = compareAsc(new Date(availableForPurchase), new Date());
+
           return (
             <WrapperTableCell>
-              <Link
-                href={"#"}
-                onClick={(e: React.SyntheticEvent) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onGotoHandler?.(row);
-                }}
-              >
-                {value}
-              </Link>
+              <Stack spacing="6px">
+                <Link
+                  href={"#"}
+                  onClick={(e: React.SyntheticEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onGotoHandler?.(row);
+                  }}
+                >
+                  {value}
+                </Link>
+
+                {availableForPurchase === null || compareDate === 1 ? (
+                  <Typography
+                    variant="subtitle2"
+                    fontSize={12}
+                  >{`(Sản phẩm tạm ngừng kinh doanh)`}</Typography>
+                ) : null}
+              </Stack>
             </WrapperTableCell>
           );
         },
@@ -557,14 +590,23 @@ const CreateLineTable = (props: CreateLineTableProps) => {
 
           const id = get(row, "original.id");
 
+          const availableForPurchase = get(
+            row,
+            "original.product.available_for_purchase"
+          );
+
+          const compareDate = compareAsc(new Date(availableForPurchase), new Date());
+
           return (
             <Stack columnGap={1} flexDirection="row" alignItems="center">
-              <AddButton
-                disabled={!!addLoading[id]}
-                onClick={() => {
-                  addHandler?.({ data: [row] });
-                }}
-              />
+              {availableForPurchase === null || compareDate === 1 ? null : (
+                <AddButton
+                  disabled={!!addLoading[id]}
+                  onClick={() => {
+                    addHandler?.({ data: [row] });
+                  }}
+                />
+              )}
             </Stack>
           );
         },
@@ -588,7 +630,19 @@ const CreateLineTable = (props: CreateLineTableProps) => {
   );
 
   useEffect(() => {
-    setListSelectedRow(table.selectedFlatRows);
+    const filterData = table.selectedFlatRows.filter((item) => {
+      return item.original.product?.available_for_purchase !== null;
+    });
+
+    const filterDataOutDate = filterData.filter((item) => {
+      const availableForPurchase = get(item, "original.product.available_for_purchase");
+
+      const compareDate = compareAsc(new Date(availableForPurchase), new Date());
+
+      return compareDate !== 1;
+    });
+
+    setListSelectedRow(filterDataOutDate);
   }, [table.selectedFlatRows.length]);
 
   return (
@@ -601,10 +655,29 @@ const CreateLineTable = (props: CreateLineTableProps) => {
               renderHeaderContentForSelectedRow={(tableInstance) => {
                 const selectedRows = tableInstance.selectedFlatRows;
 
+                const filterDateIsNull = selectedRows.filter((item) => {
+                  const availableForPurchase =
+                    item.original.product.available_for_purchase;
+
+                  return availableForPurchase !== null;
+                });
+
+                const filterOutDate = filterDateIsNull.filter((item) => {
+                  const availableForPurchase =
+                    item.original.product.available_for_purchase;
+
+                  const compareDate = compareAsc(
+                    new Date(availableForPurchase),
+                    new Date()
+                  );
+
+                  return compareDate !== 1;
+                });
+
                 return (
                   <Stack flexDirection="row" columnGap={3} alignItems="center">
                     <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
+                      length: filterOutDate.length,
                     })}`}</Typography>
                   </Stack>
                 );

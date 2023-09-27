@@ -1,11 +1,10 @@
+import get from "lodash/get";
 import { Row } from "react-table";
+import { cloneDeep } from "lodash";
 import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
-import { useCallback, useMemo, useRef, useState } from "react";
-
-import get from "lodash/get";
-
 import { Grid, Stack, Typography, Box } from "@mui/material";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import {
   useParams,
@@ -14,6 +13,7 @@ import {
   useConfirmation,
   useNotification,
   useFetch,
+  useSetting,
 } from "hooks";
 
 import {
@@ -24,22 +24,16 @@ import {
   setFilterValue,
 } from "libs";
 
-import {
-  CompoundTableWithFunction,
-  type ExtendableTableInstanceProps,
-} from "components/TableV2";
-
 import { Sticky } from "hocs";
 import DynamicMessage from "messages";
-import { CASH_TRANSACTION_TYPE } from "apis";
-import TypeColumn from "../column/TypeColumn";
 import { CREATE, CASHES, TYPE } from "routes";
-import { LoadingButton, TableHeader } from "components";
-import { CASH_TRANSACTION_TYPE_ITEM } from "interfaces";
 import TypeColumnV2 from "../column/TypeColumnV2";
-import { cloneDeep } from "lodash";
+import { LoadingButton, SEO, TableHeader, WrapperTable } from "components";
 import { ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import useSWR from "swr";
+import { PUBLIC_SETTING } from "apis";
+import { getSeoObject } from "libs/getSeoObject";
 
 export type PartnerFilterType = {
   page: number;
@@ -54,6 +48,9 @@ const defaultFilterValue: PartnerFilterType = {
 };
 
 const TypeList = () => {
+  const setting = useSetting();
+  console.log("🚀 ~ file: TypeList.tsx:52 ~ TypeList ~ setting:", setting);
+
   const { hasPermission: writePermission } = usePermission("write_transaction_type");
 
   const { formatMessage, messages } = useIntl();
@@ -65,8 +62,7 @@ const TypeList = () => {
 
   const { state: layoutState } = useLayout();
 
-  const tableInstance =
-    useRef<ExtendableTableInstanceProps<CASH_TRANSACTION_TYPE_ITEM>>();
+  const tableInstance = useRef<any>();
 
   useParams({
     initState: {
@@ -75,7 +71,7 @@ const TypeList = () => {
     callback: (params) => {
       if (tableInstance.current) {
         const setUrl = tableInstance.current.setUrl;
-        setUrl(transformUrl(CASH_TRANSACTION_TYPE, params));
+        setUrl(transformUrl(ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT, params));
       }
     },
   });
@@ -85,15 +81,12 @@ const TypeList = () => {
       transformUrl(ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT, filter)
     );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<CASH_TRANSACTION_TYPE_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
+  }, []);
 
   const deleteHandler = useCallback(
-    ({ data }: { data: Row<CASH_TRANSACTION_TYPE_ITEM>[] }) => {
+    ({ data }: { data: Row<ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1>[] }) => {
       const handler = async () => {
         const filteredData = data.filter((el) => {
           return !el.original.is_used;
@@ -106,7 +99,10 @@ const TypeList = () => {
         const { list } = createLoadingList(filteredData);
 
         try {
-          const results = await deleteRequest(CASH_TRANSACTION_TYPE, list);
+          const results = await deleteRequest(
+            ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT,
+            list
+          );
           const result = checkResArr(results);
 
           if (result) {
@@ -144,7 +140,7 @@ const TypeList = () => {
 
         // if (key === "range") return;
 
-        changeKey(transformUrl(CASH_TRANSACTION_TYPE, cloneFilter));
+        changeKey(transformUrl(ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT, cloneFilter));
       };
     },
     [filter]
@@ -160,6 +156,8 @@ const TypeList = () => {
   return (
     <Grid container>
       <Grid item xs={10}>
+        <SEO {...getSeoObject(setting)} />
+
         <Sticky>
           <Stack spacing={2}>
             <Box ref={ref}>
@@ -168,72 +166,43 @@ const TypeList = () => {
                 pathname={`/${CASHES}/${TYPE}/${CREATE}`}
               ></TableHeader>
             </Box>
-            <TypeColumnV2
-              data={data ?? []}
-              count={itemCount}
-              isLoading={isLoading}
-              writePermission={writePermission}
-              deleteHandler={deleteHandler}
-              pagination={pagination}
-              onPageChange={onFilterChangeHandler("page")}
-              onPageSizeChange={onFilterChangeHandler("pageSize")}
-              maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
 
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
+            <WrapperTable>
+              <TypeColumnV2
+                data={data ?? []}
+                count={itemCount}
+                isLoading={isLoading}
+                writePermission={writePermission}
+                deleteHandler={deleteHandler}
+                pagination={pagination}
+                onPageChange={onFilterChangeHandler("page")}
+                onPageSizeChange={onFilterChangeHandler("pageSize")}
+                maxHeight={
+                  layoutState.windowHeight - (height + layoutState.sumHeight) - 80
+                }
+                renderHeaderContentForSelectedRow={(tableInstance) => {
+                  const selectedRows = tableInstance.selectedFlatRows;
 
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            />
-            {/* <CompoundTableWithFunction<CASH_TRANSACTION_TYPE_ITEM>
-              url={CASH_TRANSACTION_TYPE}
-              passHandler={passHandler}
-              columnFn={TypeColumn}
-              deleteHandler={deleteHandler}
-              writePermission={writePermission}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
+                  return (
+                    <Stack flexDirection="row" columnGap={3} alignItems="center">
+                      <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
+                        length: selectedRows.length,
+                      })}`}</Typography>
 
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
-
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            /> */}
+                      <LoadingButton
+                        onClick={() => {
+                          deleteHandler({
+                            data: selectedRows,
+                          });
+                        }}
+                        color="error"
+                        children={messages["deleteStatus"]}
+                      />
+                    </Stack>
+                  );
+                }}
+              />
+            </WrapperTable>
           </Stack>
         </Sticky>
       </Grid>

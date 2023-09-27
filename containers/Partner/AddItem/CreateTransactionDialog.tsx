@@ -26,7 +26,21 @@ import {
   ADMIN_CASH_TRANSACTIONS_END_POINT,
 } from "__generated__/END_POINT";
 
-import { ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
+const OBJ_DEFAULT_VALUE = {
+  source_id: null,
+  target_id: null,
+  affect_creditor: false,
+  type: null,
+  payment_method: null,
+  status: "Draft",
+  source_type: "stock.receiptorder",
+  target_type: "partner.partner",
+  flow_type: "Cash_out",
+  notes: "",
+  address: "",
+  amount: "",
+  target_name: "",
+};
 
 const CreateTransactionDialog = ({ open, toggle }) => {
   const router = useRouter();
@@ -41,7 +55,7 @@ const CreateTransactionDialog = ({ open, toggle }) => {
   useEffect(() => {
     if (partnerData == undefined || !open) return;
 
-    const data = ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE;
+    const data = OBJ_DEFAULT_VALUE;
 
     set(data, "source_type", "stock.receiptorder");
     set(data, "target_type", "partner.partner");

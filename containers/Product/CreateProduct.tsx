@@ -6,7 +6,9 @@ import { useCallback, Fragment, useMemo } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 
 import useSWR from "swr";
-import { get, set, chunk, isEmpty } from "lodash";
+import { boolean, object } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { get, set, chunk, isEmpty, unset } from "lodash";
 import { Box, Grid, Stack, Button, MenuItem, Autocomplete } from "@mui/material";
 
 import {
@@ -19,7 +21,7 @@ import {
 
 import ImageThumbList from "./components/ImageThumbList";
 import ImageUploadBox from "./components/ImageUploadBox";
-import { FormControl, InputForAutocomplete } from "compositions";
+import { FormControl, FormControlForRichText, InputForAutocomplete } from "compositions";
 
 import {
   IImage,
@@ -36,7 +38,7 @@ import { PRODUCTS, TYPE, CREATE, VARIANT } from "routes";
 import { transformUrl, createRequest, checkResArr } from "libs";
 
 import {
-  ADMIN_PRODUCTS_POST_YUP_RESOLVER,
+  ADMIN_PRODUCTS_POST_SHAPE,
   ADMIN_PRODUCTS_POST_YUP_SCHEMA_TYPE,
 } from "__generated__/POST_YUP";
 
@@ -53,6 +55,10 @@ import {
 } from "__generated__/apiType_v1";
 
 import { ADMIN_PRODUCTS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
+
+export interface DATA_PRODUCT_EXTEND extends ADMIN_PRODUCTS_POST_YUP_SCHEMA_TYPE {
+  stop_business?: boolean;
+}
 
 const Category = dynamic(() => import("./components/Category"), {
   loading: () => {
@@ -72,9 +78,22 @@ const ProductCategory = () => {
 
   const isMounted = useMountedState();
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: { ...ADMIN_PRODUCTS_POST_DEFAULT_VALUE },
-    resolver: ADMIN_PRODUCTS_POST_YUP_RESOLVER,
+  const ADMIN_PRODUCTS_POST_SHAPE_EXTENDS = Object.assign(ADMIN_PRODUCTS_POST_SHAPE, {
+    stop_business: boolean().notRequired(),
+  });
+
+  const ADMIN_PRODUCTS_POST_YUP_SCHEMA_EXTENDS = object({}).shape(
+    ADMIN_PRODUCTS_POST_SHAPE_EXTENDS
+  );
+
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      ...ADMIN_PRODUCTS_POST_DEFAULT_VALUE,
+      stop_business: false,
+      publication_date: new Date().toISOString(),
+      available_for_purchase: new Date().toISOString(),
+    },
+    resolver: yupResolver(ADMIN_PRODUCTS_POST_YUP_SCHEMA_EXTENDS),
   });
 
   const { control: productCategoryControl, handleSubmit: productCategoryHandleSubmit } =
@@ -112,26 +131,17 @@ const ProductCategory = () => {
       categoryData,
       imageData,
     }: {
-      data: ADMIN_PRODUCTS_POST_YUP_SCHEMA_TYPE;
+      data: DATA_PRODUCT_EXTEND;
       categoryData: ADMIN_PRODUCT_CATEGORY_VIEW_TYPE_V1[];
       imageData: IImage[];
     }) => {
       setLoading(true);
 
-      // const publicationDate = get(data, "publication_date");
-      // const availableForPurchase = get(data, "available_for_purchase");
+      if (get(data, "stop_business")) {
+        set(data, "available_for_purchase", null);
+      }
 
-      // if (publicationDate) {
-      //   set(data, "publication_date", publicationDate);
-      // }
-
-      // if (availableForPurchase) {
-      //   set(data, "available_for_purchase", availableForPurchase);
-      // }
-
-      // const productClassId = get(data, "product_class.id");
-
-      // set(data, "product_class", productClassId);
+      unset(data, "stop_business");
 
       try {
         const { data: resData } = await axios.post(ADMIN_PRODUCTS_END_POINT, data);
@@ -220,7 +230,7 @@ const ProductCategory = () => {
     return (
       <Fragment>
         <Grid item xs={12}>
-          <Checkbox control={control} />
+          <Checkbox control={control} setValue={setValue} />
         </Grid>
         <Grid item xs={12}>
           <Category {...{ control: productCategoryControl }} />
@@ -290,6 +300,13 @@ const ProductCategory = () => {
                                 />
                               );
                             }}
+                            isOptionEqualToValue={(option, value) => {
+                              if (isEmpty(option) || isEmpty(value)) {
+                                return true;
+                              }
+
+                              return option?.["id"] === value?.["id"];
+                            }}
                           />
                         );
                       }}
@@ -324,7 +341,7 @@ const ProductCategory = () => {
       })}
     >
       <Grid container>
-        <Grid item xs={9}>
+        <Grid item xs={8.5}>
           <Card
             title={messages["productInfo"] as string}
             body={
@@ -352,17 +369,9 @@ const ProductCategory = () => {
                     name="description"
                     render={(props) => {
                       return (
-                        <FormControl
+                        <FormControlForRichText
                           controlState={props}
                           label={messages["productDescription"] as string}
-                          placeholder={messages["productDescription"] as string}
-                          InputProps={{
-                            rows: 5,
-                            multiline: true,
-                            sx: {
-                              padding: 1,
-                            },
-                          }}
                         />
                       );
                     }}
@@ -397,7 +406,7 @@ const ProductCategory = () => {
           />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={3.5}>
           <Grid container>{children}</Grid>
         </Grid>
 

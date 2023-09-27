@@ -1,26 +1,22 @@
-import { useIntl } from "react-intl";
+import { Range } from "react-date-range";
+import { cloneDeep, get, omit } from "lodash";
 import { useReactToPrint } from "react-to-print";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-
+import { endOfWeek, startOfWeek } from "date-fns";
 import { Grid, Typography, Stack, Box } from "@mui/material";
+import { useCallback, useMemo, useRef, useState } from "react";
 
-import { SearchBox } from "../components/SearchBox";
-import { TimeFrame } from "../components/TimeFrame";
+import { useIntl } from "react-intl";
+
+import { EXPORTS, INVOICE } from "routes";
+import { usePermission, useToggle } from "hooks";
+import { PrintButton, LoadingDialog } from "components";
 import { DisplayCard } from "../components/DisplayCard";
 import { ViewTypeForCustomer } from "./ViewTypeForCustomer";
-
-import { ConvertTimeFrameType, convertTimeFrame } from "libs/dateUtils";
-
 import { CustomerReportByChart } from "./CustomerReportByChart";
 import { CustomerReportByTable } from "./CustomerReportByTable";
 import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
-import { usePermission, useToggle } from "hooks";
-import { EXPORTS, INVOICE } from "routes";
-import { PrintButton, ExportButton, LoadingDialog } from "components";
-import { Range } from "react-date-range";
-import { endOfWeek, startOfWeek } from "date-fns";
+
 import Filter from "./Filter";
-import { cloneDeep, get, omit, set } from "lodash";
 
 export type PartnerFilterType = {
   with_count: boolean;
@@ -48,7 +44,6 @@ const CustomerReport = () => {
 
   const { open, onOpen, onClose } = useToggle();
   const { open: isPrinting, toggle: setIsPrinting } = useToggle();
-  const { hasPermission } = usePermission("export_invoice_quantity");
 
   const promiseResolveRef = useRef<(value?: any) => void>();
 
@@ -56,23 +51,6 @@ const CustomerReport = () => {
   const [filterDate, setFilterDate] = useState(defaultFilterValue);
   const [displayType, setDisplayType] = useState<"chart" | "table">("chart");
   const [viewType, setViewType] = useState<"sale" | "profit" | "debt">("sale");
-
-  // const printHandler = useReactToPrint({
-  //   content: () => printComponentRef.current,
-  //   onBeforeGetContent: () => {
-  //     if (displayType === "chart") return;
-
-  //     return new Promise((resolve) => {
-  //       onOpen();
-  //       setIsPrinting(true);
-  //       promiseResolveRef.current = resolve;
-  //     });
-  //   },
-  //   onAfterPrint: () => {
-  //     setIsPrinting(false);
-  //   },
-  // });
-
 
   const printHandler = useReactToPrint({
     content: () => printComponentRef.current,
@@ -206,8 +184,6 @@ const CustomerReport = () => {
         <Stack spacing={3}>
           <Typography fontWeight="700">{messages["customerReport"]}</Typography>
 
-          {/* {hasPermission && <ExportButton onClick={onGotoExportFileHandler} />} */}
-
           <DisplayCard value={displayType} onChange={setDisplayType} />
 
           <ViewTypeForCustomer value={viewType} onChange={setViewType} />
@@ -220,39 +196,6 @@ const CustomerReport = () => {
             onFilterDateHandler={onFilterDateHandler("range")}
             onSearch={onFilterChangeHandler("search")}
           />
-          {/* <TimeFrame
-            value={filter.timeFrame}
-            onChange={(value: ConvertTimeFrameType) => {
-              setFilter((prev) => {
-                return {
-                  ...prev,
-                  ...convertTimeFrame(value),
-                  timeFrame: value,
-                };
-              });
-            }}
-            onTimeFrameChange={(props) => {
-              setFilter((prev) => {
-                return {
-                  ...prev,
-                  date_start: props.date_start,
-                  date_end: props.date_end,
-                  timeFrame: "",
-                };
-              });
-            }}
-          /> */}
-
-          {/* <SearchBox
-            onChange={(value) => {
-              setFilter((prev) => {
-                return {
-                  ...prev,
-                  name: value,
-                };
-              });
-            }}
-          /> */}
         </Stack>
       </Grid>
       <Grid item xs={10}>
@@ -271,21 +214,6 @@ const CustomerReport = () => {
 
           {renderTitle}
           {renderContent}
-          {/* {displayType === "chart" ? (
-            <CustomerReportByChart filter={filter} viewType={viewType} />
-          ) : (
-            <CustomerReportByTable
-              filter={{
-                date_start: filter.date_start,
-                date_end: filter.date_end,
-                period: 3600 * 24,
-                name: filter.name,
-              }}
-              viewType={viewType}
-              isPrinting={isPrinting}
-              onIsDoneHandler={onIsDoneHandler}
-            />
-          )} */}
         </Stack>
       </Grid>
 

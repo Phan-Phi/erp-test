@@ -1,38 +1,8 @@
+import { useState } from "react";
+import { Stack, Button, Card, CardHeader, CardContent } from "@mui/material";
+
 import { useIntl } from "react-intl";
-import { useState, useCallback } from "react";
-import {
-  Stack,
-  Button,
-  MenuItem,
-  Typography,
-  Box,
-  Card,
-  CardHeader,
-  CardContent,
-} from "@mui/material";
-
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-
-import { useChoice } from "hooks";
-import {
-  FilterByTimeRange,
-  Select,
-  LazyAutocomplete,
-  SearchField,
-  DateRangePicker,
-  Radio,
-  RadioItem,
-} from "components";
-
-import { LazyAutocomplete as LazyAutocompleteV2 } from "compositions";
-
-import { CASH_TRANSACTION_TYPE, USER, CASH_PAYMENT_METHOD } from "apis";
-import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+import { SearchField, DateRangePicker } from "components";
 
 type FilterProps = {
   onFilterByTime: any;
@@ -53,7 +23,6 @@ const Filter = ({
   onSearch,
   resetFilter,
 }: FilterProps) => {
-  const choice = useChoice();
   const { messages } = useIntl();
 
   const [isReady, setIsReady] = useState(true);

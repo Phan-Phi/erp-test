@@ -15,10 +15,6 @@ import { useNotification, useParams } from "hooks";
 import DynamicMessage from "messages";
 
 import { PRODUCT_CATEGORY_ITEM } from "interfaces";
-import {
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-} from "components/TableV2";
 
 const AddDiscountedCategoryDialog = ({ open, toggle }) => {
   const router = useRouter();
@@ -29,7 +25,7 @@ const AddDiscountedCategoryDialog = ({ open, toggle }) => {
   const { loading, setLoading, enqueueSnackbarWithSuccess, enqueueSnackbarWithError } =
     useNotification();
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<PRODUCT_CATEGORY_ITEM>>();
+  const tableInstance = useRef<any>();
 
   const [, setParams] = useParams({
     initState: {
@@ -47,12 +43,9 @@ const AddDiscountedCategoryDialog = ({ open, toggle }) => {
     isUpdateRouter: false,
   });
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<PRODUCT_CATEGORY_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
+  }, []);
   const addHandler = useCallback(
     async ({ data }: { data: Row<PRODUCT_CATEGORY_ITEM>[] }) => {
       let bodyList: any[] = [];
@@ -135,7 +128,7 @@ const AddDiscountedCategoryDialog = ({ open, toggle }) => {
             <Stack spacing={2}>
               <SearchField onChange={onFilterHandler("search")} />
 
-              <CompoundTableWithFunction<PRODUCT_CATEGORY_ITEM>
+              {/* <CompoundTableWithFunction<PRODUCT_CATEGORY_ITEM>
                 url={transformUrl(PRODUCT_CATEGORY, {
                   nested_depth: 1,
                   is_leaf: true,
@@ -148,7 +141,7 @@ const AddDiscountedCategoryDialog = ({ open, toggle }) => {
                     maxHeight: 250,
                   },
                 }}
-              />
+              /> */}
             </Stack>
           );
         },

@@ -18,3 +18,5 @@ export { default as Ward } from "./Input/Ward";
 export { default as Province } from "./Input/Province";
 export { default as District } from "./Input/District";
 export { default as AvatarForUpload } from "./Input/AvatarForUpload";
+
+export { default as FormControlForRichText } from "./Input/FormControlForRichText";

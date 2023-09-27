@@ -28,6 +28,7 @@ import {
   ADMIN_CUSTOMERS_DRAFTS_POST_DEFAULT_VALUE,
   ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE,
 } from "__generated__/POST_DEFAULT_VALUE";
+
 import {
   ADMIN_CUSTOMERS_DRAFTS_ADDRESSES_END_POINT,
   ADMIN_CUSTOMERS_DRAFTS_END_POINT,
@@ -107,6 +108,9 @@ const CreateCustomer = () => {
         unset(customerData, "email");
       }
 
+      let customerId;
+      let customerToken;
+
       try {
         const formData = transformJSONToFormData(customerData);
 
@@ -120,7 +124,8 @@ const CreateCustomer = () => {
           }
         );
 
-        const customerId = get(customerResData, "id");
+        customerId = get(customerResData, "id");
+        customerToken = get(customerResData, "token");
 
         if (customerId) {
           set(addressData, "user", customerId);
@@ -140,6 +145,10 @@ const CreateCustomer = () => {
           });
         }
       } catch (err) {
+        await axios.post(`${ADMIN_CUSTOMERS_DRAFTS_END_POINT}${customerId}/refuse/`, {
+          token: customerToken,
+        });
+
         enqueueSnackbarWithError(err);
       } finally {
         if (isMounted()) {

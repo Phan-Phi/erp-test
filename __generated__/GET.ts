@@ -683,6 +683,7 @@ export const ADMIN_CASH_TRANSACTIONS_GET_PARAM_SCHEMA = {
     sid_icontains: { description: "", required: false, type: "string" },
     date_confirmed_start: { description: "", required: false, type: "string" },
     date_confirmed_end: { description: "", required: false, type: "string" },
+    status: { description: "", required: false, type: "string" },
     page: {
       description: "A page number within the paginated result set.",
       required: false,
@@ -742,6 +743,7 @@ export const ADMIN_CASH_TRANSACTIONS_WITH_ID_GET_PARAM_SCHEMA = {
     sid_icontains: { description: "", required: false, type: "string" },
     date_confirmed_start: { description: "", required: false, type: "string" },
     date_confirmed_end: { description: "", required: false, type: "string" },
+    status: { description: "", required: false, type: "string" },
   },
   additionalProperties: false,
 };
@@ -763,6 +765,7 @@ export const ADMIN_CASH_TRANSACTIONS_WITH_ID_PDF_GET_PARAM_SCHEMA = {
     sid_icontains: { description: "", required: false, type: "string" },
     date_confirmed_start: { description: "", required: false, type: "string" },
     date_confirmed_end: { description: "", required: false, type: "string" },
+    status: { description: "", required: false, type: "string" },
   },
   additionalProperties: false,
 };
@@ -1956,6 +1959,7 @@ export const ADMIN_PRODUCTS_PRODUCT_CATEGORIES_WITH_ID_GET_PARAM_SCHEMA = {
 export const ADMIN_PRODUCTS_RECOMMENDATIONS_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
+    search: { description: "A search term.", required: false, type: "string" },
     primary: { description: "", required: false, type: "number" },
     recommendation: { description: "", required: false, type: "number" },
     page: {
@@ -1974,6 +1978,7 @@ export const ADMIN_PRODUCTS_RECOMMENDATIONS_GET_PARAM_SCHEMA = {
 export const ADMIN_PRODUCTS_RECOMMENDATIONS_WITH_ID_GET_PARAM_SCHEMA = {
   type: "object",
   properties: {
+    search: { description: "A search term.", required: false, type: "string" },
     primary: { description: "", required: false, type: "number" },
     recommendation: { description: "", required: false, type: "number" },
   },
@@ -2916,6 +2921,12 @@ export const ADMIN_WAREHOUSES_OUT_NOTES_GET_PARAM_SCHEMA = {
     variant_name: { description: "", required: false, type: "string" },
     variant_sku: { description: "", required: false, type: "string" },
     sid_icontains: { description: "", required: false, type: "string" },
+    direction: { description: "", required: false, type: "string" },
+    reasons: {
+      description: "Multiple values may be separated by commas.",
+      required: false,
+      type: "string",
+    },
     can_be_paid: { description: "", required: false, type: "string" },
     page: {
       description: "A page number within the paginated result set.",
@@ -2974,6 +2985,12 @@ export const ADMIN_WAREHOUSES_OUT_NOTES_WITH_ID_GET_PARAM_SCHEMA = {
     variant_name: { description: "", required: false, type: "string" },
     variant_sku: { description: "", required: false, type: "string" },
     sid_icontains: { description: "", required: false, type: "string" },
+    direction: { description: "", required: false, type: "string" },
+    reasons: {
+      description: "Multiple values may be separated by commas.",
+      required: false,
+      type: "string",
+    },
     can_be_paid: { description: "", required: false, type: "string" },
   },
   additionalProperties: false,
@@ -2992,6 +3009,12 @@ export const ADMIN_WAREHOUSES_OUT_NOTES_WITH_ID_PDF_GET_PARAM_SCHEMA = {
     variant_name: { description: "", required: false, type: "string" },
     variant_sku: { description: "", required: false, type: "string" },
     sid_icontains: { description: "", required: false, type: "string" },
+    direction: { description: "", required: false, type: "string" },
+    reasons: {
+      description: "Multiple values may be separated by commas.",
+      required: false,
+      type: "string",
+    },
     can_be_paid: { description: "", required: false, type: "string" },
   },
   additionalProperties: false,

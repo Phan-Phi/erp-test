@@ -46,7 +46,6 @@ export type PurchaseOrderListFilterType = {
   page_size: number;
   with_count: boolean;
   use_cache: boolean;
-  search_by_type: string;
   search: string;
   range: Range;
   range_params: {
@@ -71,7 +70,6 @@ const defaultFilterValue: PurchaseOrderListFilterType = {
   page_size: 25,
   with_count: true,
   use_cache: false,
-  search_by_type: "",
   search: "",
   range: {
     startDate: undefined,
@@ -99,8 +97,6 @@ const omitFiled = [
   "range",
   "range_params",
   "price_params",
-  "search_by_type",
-  "search",
   "date_placed_start",
   "date_placed_end",
   "total_start",
@@ -133,17 +129,7 @@ const Component = () => {
 
         setFilter(cloneFilter);
 
-        if (key === "search_by_type" && cloneFilter.search_by_type === "") {
-          resetFilterHandler();
-        }
-
-        if (
-          key === "search_by_type" ||
-          key === "range" ||
-          key === "total_start" ||
-          key === "total_end"
-        )
-          return;
+        if (key === "range" || key === "total_start" || key === "total_end") return;
 
         let startDate = transformDate(cloneFilter.range_params.startDate, "date_start");
         let endDate = transformDate(cloneFilter.range_params.endDate, "date_end");
@@ -160,7 +146,6 @@ const Component = () => {
         let overrideCloneFilter = {
           ...omit(cloneFilter, omitFiled),
         };
-        overrideCloneFilter[cloneFilter.search_by_type] = cloneFilter.search;
 
         changeKey(
           transformUrl(ADMIN_WAREHOUSES_PURCHASE_ORDERS_END_POINT, {
@@ -206,9 +191,6 @@ const Component = () => {
     let overrideCloneFilter = {
       ...omit(cloneFilter, omitFiled),
     };
-    if (cloneFilter.search) {
-      overrideCloneFilter[cloneFilter.search_by_type] = cloneFilter.search;
-    }
 
     changeKey(
       transformUrl(ADMIN_WAREHOUSES_PURCHASE_ORDERS_END_POINT, {
@@ -251,10 +233,6 @@ const Component = () => {
     let overrideCloneFilter = {
       ...omit(cloneFilter, omitFiled),
     };
-
-    if (cloneFilter.search) {
-      overrideCloneFilter[cloneFilter.search_by_type] = cloneFilter.search;
-    }
 
     changeKey(
       transformUrl(ADMIN_WAREHOUSES_PURCHASE_ORDERS_END_POINT, {
@@ -340,7 +318,6 @@ const Component = () => {
         <Filter
           filter={filter}
           resetFilter={resetFilterHandler}
-          onSearchByType={onFilterChangeHandler("search_by_type")}
           onSearchChange={onFilterChangeHandler("search")}
           onDateRangeChange={onFilterChangeHandler("range")}
           onFilterByTime={onClickFilterByTime}

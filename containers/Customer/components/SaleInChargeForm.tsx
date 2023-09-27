@@ -1,7 +1,7 @@
 import { useIntl } from "react-intl";
 import { Control, Controller } from "react-hook-form";
 
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { Grid, MenuItem } from "@mui/material";
 
 import { FormControlForNumber, LazyAutocomplete } from "compositions";
@@ -74,7 +74,21 @@ const SaleInChargeForm = (props: SaleInChargeFormProps) => {
                     const firstName = get(option, "first_name");
                     const fullName = `${lastName} ${firstName}`;
 
-                    return <MenuItem {...props} value={option.id} children={fullName} />;
+                    return (
+                      <MenuItem
+                        {...props}
+                        key={option.id}
+                        value={option.id}
+                        children={fullName}
+                      />
+                    );
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                 }}
               />

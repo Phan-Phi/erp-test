@@ -12,8 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import { formatDate, getDisplayValueFromChoiceItem } from "libs";
 import { Link, NumberFormat } from "components";
-import { WrapperTableCell } from "components/TableV2";
 import { useChoice } from "hooks";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = [
   "transactionSId",

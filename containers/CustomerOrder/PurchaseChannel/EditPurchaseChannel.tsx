@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import pick from "lodash/pick";
 import isEmpty from "lodash/isEmpty";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
@@ -9,16 +10,16 @@ import { useEffect, useState, useCallback } from "react";
 
 import axios from "axios.config";
 import { transformUrl } from "libs";
-import { useIntl } from "react-intl";
 import DynamicMessage from "messages";
 import { ORDER_PURCHASE_CHANNEL } from "apis";
 import { ORDERS, PURCHASE_CHANNEL } from "routes";
 import { usePermission, useNotification } from "hooks";
-import { ORDER_PURCHASE_CHANNEL_ITEM } from "interfaces";
 import PurchaseChannelForm from "./components/PurchaseChannelForm";
-import { purchaseChannelSchema, PurchaseChannelSchemaProps } from "yups";
 import { Card, LoadingDynamic as Loading, BackButton, LoadingButton } from "components";
-import { ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
+import {
+  ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_RESOLVER,
+  ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
 import { ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT } from "__generated__/END_POINT";
 
 const EditShipper = () => {
@@ -27,7 +28,7 @@ const EditShipper = () => {
     useState<ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE>();
 
   const { data: orderPurchaseChannelData, mutate: orderPurchaseChannelMutate } =
-    useSWR<ORDER_PURCHASE_CHANNEL_ITEM>(() => {
+    useSWR<ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE>(() => {
       const id = router.query.id;
 
       if (id == undefined) return;
@@ -71,6 +72,7 @@ type RootComponentProps = {
 };
 
 const RootComponent = ({ defaultValues, onSuccessHandler }: RootComponentProps) => {
+  const { query } = useRouter();
   const { formatMessage, messages } = useIntl();
 
   const isMounted = useMountedState();
@@ -86,7 +88,7 @@ const RootComponent = ({ defaultValues, onSuccessHandler }: RootComponentProps) 
     formState: { dirtyFields },
   } = useForm({
     defaultValues,
-    resolver: purchaseChannelSchema(),
+    resolver: ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_RESOLVER,
   });
 
   const onSubmit = useCallback(
@@ -94,18 +96,19 @@ const RootComponent = ({ defaultValues, onSuccessHandler }: RootComponentProps) 
       data,
       dirtyFields,
     }: {
-      data: PurchaseChannelSchemaProps;
+      data: ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE;
       dirtyFields: object;
     }) => {
       try {
         setLoading(true);
 
         if (!isEmpty(dirtyFields)) {
-          const { id } = data;
-
           const body = pick(data, Object.keys(dirtyFields));
 
-          await axios.patch(`${ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT}${id}/`, body);
+          await axios.patch(
+            `${ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT}${query.id}/`,
+            body
+          );
 
           enqueueSnackbarWithSuccess(
             formatMessage(DynamicMessage.updateSuccessfully, {

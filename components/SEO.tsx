@@ -2,17 +2,19 @@ import { NextSeo, NextSeoProps } from "next-seo";
 
 type SEOProps = {
   logo: any;
+  company_name: string;
   defaultNextSeo?: NextSeoProps;
 };
 
 const SEO = (props: SEOProps) => {
-  const { logo } = props;
+  const { logo, company_name } = props;
 
   const favicon = logo ? logo.default : "";
+  const title = company_name ? `ERP - ${company_name}` : "ERP";
 
   return (
     <NextSeo
-      title={"ERP"}
+      title={title}
       additionalLinkTags={[
         {
           rel: "icon",

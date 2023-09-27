@@ -1,40 +1,38 @@
-import { useIntl } from "react-intl";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Stack, Button, MenuItem, Typography, Box } from "@mui/material";
 
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-
 import { useChoice } from "hooks";
-import { FilterByTimeRange, Select, SearchField, DateRangePicker } from "components";
-
+import { useIntl } from "react-intl";
 import { LazyAutocomplete } from "compositions";
-
-import { CASH_TRANSACTION_TYPE, USER, CASH_PAYMENT_METHOD } from "apis";
+import { Select, SearchField, DateRangePicker } from "components";
 import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+  ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1,
+  ADMIN_USER_USER_VIEW_TYPE_V1,
+} from "__generated__/apiType_v1";
+import {
+  ADMIN_CASH_PAYMENT_METHODS_END_POINT,
+  ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT,
+  ADMIN_USERS_END_POINT,
+} from "__generated__/END_POINT";
+import { isEmpty } from "lodash";
 
 type FilterProps = {
-  onFilterHandler: (key: any) => (value: any) => void;
-  data?: Record<string, string>;
-  reset: () => void;
   filter: any;
-  onFlowType: (value: any) => void;
-  onSourceType: (value: any) => void;
-  resetFilter: (value: any) => void;
+  reset: () => void;
   onFilterByTime: any;
   onDateRangeChange: any;
-  onPaymentMethodChange: (value: any) => void;
-  onOwnerChange: (value: any) => void;
+  data?: Record<string, string>;
+  onFlowType: (value: any) => void;
+  resetFilter: (value: any) => void;
   onTypeChange: (value: any) => void;
+  onSourceType: (value: any) => void;
+  onTransactionStatuses: (value: any) => void;
+  onOwnerChange: (value: any) => void;
+  onPaymentMethodChange: (value: any) => void;
   onSearch: (value: string | undefined) => void;
 };
 
 const Filter = ({
-  onFilterHandler,
   data,
   reset,
   filter,
@@ -44,6 +42,7 @@ const Filter = ({
   onFilterByTime,
   onDateRangeChange,
   onPaymentMethodChange,
+  onTransactionStatuses,
   onOwnerChange,
   onTypeChange,
   onSearch,
@@ -53,19 +52,10 @@ const Filter = ({
 
   const [isReady, setIsReady] = useState(true);
 
-  const resetStateHandler = useCallback(() => {
-    reset();
-
-    setIsReady(false);
-
-    setTimeout(() => {
-      setIsReady(true);
-    }, 300);
-  }, [reset]);
-
   if (!isReady) return null;
 
-  const { transaction_source_types, transaction_flow_types } = choice;
+  const { transaction_source_types, transaction_flow_types, transaction_statuses } =
+    choice;
 
   return (
     <Stack spacing={3}>
@@ -90,26 +80,31 @@ const Filter = ({
           }}
           onFilterByTime={onFilterByTime}
         />
-
-        {/* <FilterByTimeRange
-          onChangeDateStart={(e) => {
-            onFilterHandler("date_confirmed_start")(e);
-            onFilterHandler("date_start")(e);
-          }}
-          onChangeDateEnd={(e) => {
-            onFilterHandler("date_confirmed_end")(e);
-            onFilterHandler("date_end")(e);
-          }}
-          initDateStart={data?.date_confirmed_start || null}
-          initDateEnd={data?.date_confirmed_end || null}
-        /> */}
       </Box>
 
       <Box>
         <Typography fontWeight={700} marginBottom={1}>
           {messages["filterSourceType"]}
         </Typography>
+
         <Select
+          {...{
+            renderItem() {
+              return transaction_source_types.map((el) => {
+                return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
+              });
+            },
+
+            SelectProps: {
+              value: filter.source_type || "",
+              onChange: (e) => {
+                onSourceType(e.target.value);
+              },
+              placeholder: messages["filterSourceType"] as string,
+            },
+          }}
+        />
+        {/* <Select
           renderItem={() => {
             return transaction_source_types.map((el) => {
               return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
@@ -122,23 +117,30 @@ const Filter = ({
             value: filter.source_type,
             placeholder: messages["filterSourceType"] as string,
           }}
-        />
-        {/* <Select
+        /> */}
+      </Box>
+
+      <Box>
+        <Typography fontWeight={700} marginBottom={1}>
+          Trạng thái phiếu
+        </Typography>
+        <Select
           {...{
-            renderItem: () => {
-              return transaction_source_types.map((el) => {
+            renderItem() {
+              return transaction_statuses.map((el) => {
                 return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
               });
             },
+
             SelectProps: {
-              value: data?.["source_type"] ?? "",
-              onChange(event) {
-                onFilterHandler("source_type")(event.target.value || "");
+              value: filter.status || "",
+              onChange: (e) => {
+                onTransactionStatuses(e.target.value);
               },
-              placeholder: messages["filterSourceType"] as string,
+              placeholder: "Trạng thái phiếu",
             },
           }}
-        /> */}
+        />
       </Box>
 
       <Box>
@@ -147,37 +149,22 @@ const Filter = ({
         </Typography>
 
         <Select
-          renderItem={() => {
-            return transaction_flow_types.map((el) => {
-              return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
-            });
-          }}
-          SelectProps={{
-            onChange: (e) => {
-              onFlowType(e.target.value);
-            },
-            value: filter.flow_type,
-            placeholder: messages["filterFlowType"] as string,
-          }}
-        />
-
-        {/* <Select
           {...{
-            renderItem: () => {
+            renderItem() {
               return transaction_flow_types.map((el) => {
-              
                 return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
               });
             },
+
             SelectProps: {
-              value: filter.flow_type,
-              onChange(event) {
-                onFlowType("flow_type")(event.target.value || "");
+              value: filter.flow_type || "",
+              onChange: (e) => {
+                onFlowType(e.target.value);
               },
               placeholder: messages["filterFlowType"] as string,
             },
           }}
-        /> */}
+        />
       </Box>
 
       <Box>
@@ -185,35 +172,19 @@ const Filter = ({
           {messages["filterTransactionType"]}
         </Typography>
 
-        <LazyAutocomplete<CASH_TRANSACTION_TYPE_ITEM>
+        <LazyAutocomplete<ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1>
           {...{
-            url: CASH_TRANSACTION_TYPE,
+            url: ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT,
             placeholder: messages["filterTransactionType"] as string,
             AutocompleteProps: {
+              renderOption(props, option) {
+                return <MenuItem {...props} value={option.id} children={option.name} />;
+              },
               getOptionLabel: (option) => {
                 return filter.type ? filter.type.name : option.name;
               },
               onChange: (_, value) => {
                 onTypeChange(value);
-              },
-              value: filter.type,
-            },
-            initValue: null,
-          }}
-        />
-
-        {/* <LazyAutocomplete<{}, CASH_TRANSACTION_TYPE_ITEM>
-          {...{
-            url: CASH_TRANSACTION_TYPE,
-            placeholder: messages["filterTransactionType"] as string,
-
-            AutocompleteProps: {
-              renderOption(props, option) {
-                return <MenuItem {...props} value={option.id} children={option.name} />;
-              },
-
-              getOptionLabel: (option) => {
-                return option.name;
               },
               isOptionEqualToValue: (option, value) => {
                 if (isEmpty(option) || isEmpty(value)) {
@@ -222,18 +193,11 @@ const Filter = ({
 
                 return option?.["id"] === value?.["id"];
               },
-
-              onChange: (e, value) => {
-                onFilterHandler("type")(value?.id || null);
-                onFilterHandler("payment_method")(null);
-              },
+              value: filter.payment_method !== null ? null : filter.type,
+              disabled: filter.payment_method !== null ? true : false,
             },
-            params: {
-              nested_depth: 1,
-            },
-            initValue: null,
           }}
-        /> */}
+        />
       </Box>
 
       <Box>
@@ -241,35 +205,19 @@ const Filter = ({
           {messages["filterPaymentMethod"]}
         </Typography>
 
-        <LazyAutocomplete<CASH_PAYMENT_METHOD_ITEM>
+        <LazyAutocomplete<ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1>
           {...{
-            url: CASH_PAYMENT_METHOD,
+            url: ADMIN_CASH_PAYMENT_METHODS_END_POINT,
             placeholder: messages["filterPaymentMethod"] as string,
             AutocompleteProps: {
+              renderOption(props, option) {
+                return <MenuItem {...props} value={option.id} children={option.name} />;
+              },
               getOptionLabel: (option) => {
                 return filter.payment_method ? filter.payment_method.name : option.name;
               },
               onChange: (_, value) => {
                 onPaymentMethodChange(value);
-              },
-              value: filter.payment_method,
-            },
-            initValue: null,
-          }}
-        />
-
-        {/* <LazyAutocomplete<{}, CASH_PAYMENT_METHOD_ITEM>
-          {...{
-            url: CASH_PAYMENT_METHOD,
-            placeholder: messages["filterPaymentMethod"] as string,
-
-            AutocompleteProps: {
-              renderOption(props, option) {
-                return <MenuItem {...props} value={option.id} children={option.name} />;
-              },
-
-              getOptionLabel: (option) => {
-                return option.name;
               },
               isOptionEqualToValue: (option, value) => {
                 if (isEmpty(option) || isEmpty(value)) {
@@ -278,18 +226,13 @@ const Filter = ({
 
                 return option?.["id"] === value?.["id"];
               },
+              value: filter.type !== null ? null : filter.payment_method,
+              disabled: filter.type !== null ? true : false,
+            },
 
-              onChange: (e, value) => {
-                onFilterHandler("payment_method")(value?.id || null);
-                onFilterHandler("type")(null);
-              },
-            },
-            params: {
-              nested_depth: 1,
-            },
             initValue: null,
           }}
-        /> */}
+        />
       </Box>
 
       <Box>
@@ -297,11 +240,16 @@ const Filter = ({
           {messages["filterOwner"]}
         </Typography>
 
-        <LazyAutocomplete<USER_ITEM>
+        <LazyAutocomplete<ADMIN_USER_USER_VIEW_TYPE_V1>
           {...{
-            url: USER,
+            url: ADMIN_USERS_END_POINT,
             placeholder: messages["filterOwner"] as string,
             AutocompleteProps: {
+              renderOption(props, option) {
+                return (
+                  <MenuItem {...props} value={option.id} children={option.first_name} />
+                );
+              },
               getOptionLabel: (option) => {
                 return filter.owner ? filter.owner.first_name : option.first_name;
               },
@@ -313,48 +261,6 @@ const Filter = ({
             initValue: null,
           }}
         />
-
-        {/* <LazyAutocomplete<{}, USER_ITEM>
-          {...{
-            url: USER,
-            placeholder: messages["filterOwner"] as string,
-            shouldSearch: true,
-            AutocompleteProps: {
-              renderOption(props, option) {
-                const fullName = `${get(option, "last_name")} ${get(
-                  option,
-                  "first_name"
-                )}`;
-
-                return <MenuItem {...props} value={option.id} children={fullName} />;
-              },
-
-              getOptionLabel: (option) => {
-                const fullName = `${get(option, "last_name")} ${get(
-                  option,
-                  "first_name"
-                )}`;
-
-                return fullName;
-              },
-              isOptionEqualToValue: (option, value) => {
-                if (isEmpty(option) || isEmpty(value)) {
-                  return true;
-                }
-
-                return option?.["id"] === value?.["id"];
-              },
-
-              onChange: (e, value) => {
-                onFilterHandler("owner")(value?.id || null);
-              },
-            },
-            params: {
-              nested_depth: 1,
-            },
-            initValue: null,
-          }}
-        /> */}
       </Box>
 
       <Button color="error" variant="contained" onClick={resetFilter}>

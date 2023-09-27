@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Control, Controller } from "react-hook-form";
 
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { Grid, MenuItem } from "@mui/material";
 
 import { PARTNERS } from "routes";
@@ -69,8 +69,20 @@ const PurchaseOrderForm = ({ control, defaultValues }: PurchaseOrderFormProps) =
                       getOptionLabel: (option) => option.name,
                       renderOption: (props, option) => {
                         return (
-                          <MenuItem {...props} value={option.id} children={option.name} />
+                          <MenuItem
+                            {...props}
+                            key={option.id}
+                            value={option.id}
+                            children={option.name}
+                          />
                         );
+                      },
+                      isOptionEqualToValue: (option, value) => {
+                        if (isEmpty(option) || isEmpty(value)) {
+                          return true;
+                        }
+
+                        return option?.["id"] === value?.["id"];
                       },
                     }}
                   />
@@ -133,8 +145,20 @@ const PurchaseOrderForm = ({ control, defaultValues }: PurchaseOrderFormProps) =
                       getOptionLabel: (option) => option.name,
                       renderOption: (props, option) => {
                         return (
-                          <MenuItem {...props} value={option.id} children={option.name} />
+                          <MenuItem
+                            {...props}
+                            key={option.id}
+                            value={option.id}
+                            children={option.name}
+                          />
                         );
+                      },
+                      isOptionEqualToValue: (option, value) => {
+                        if (isEmpty(option) || isEmpty(value)) {
+                          return true;
+                        }
+
+                        return option?.["id"] === value?.["id"];
                       },
                     }}
                   />

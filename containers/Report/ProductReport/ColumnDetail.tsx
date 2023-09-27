@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useMemo, PropsWithChildren } from "react";
 import { useTable, useSortBy, CellProps } from "react-table";
@@ -14,10 +14,9 @@ import {
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
+import { formatDate } from "libs";
 import { NumberFormat } from "components";
 import { CommonTableProps } from "interfaces";
-import HeadTitleTable from "components/HeadTitleTable";
-import { formatDate, transformDate } from "libs";
 
 type TableProps = CommonTableProps<any> & Record<string, any>;
 

@@ -21,16 +21,16 @@ if (!fs.existsSync(tempFile)) {
 
 const GET_PATH = path.resolve(process.cwd(), "__generated__", "GET.ts");
 const POST_PATH = path.resolve(process.cwd(), "__generated__", "POST.ts");
-const POST_TYPE_PATH = path.resolve(process.cwd(), "__generated__", "POST_TYPE.ts");
+// const POST_TYPE_PATH = path.resolve(process.cwd(), "__generated__", "POST_TYPE.ts");
 const PATCH_PATH = path.resolve(process.cwd(), "__generated__", "PATCH.ts");
-const PATCH_TYPE_PATH = path.resolve(process.cwd(), "__generated__", "PATCH_TYPE.ts");
+// const PATCH_TYPE_PATH = path.resolve(process.cwd(), "__generated__", "PATCH_TYPE.ts");
 const END_POINT_PATH = path.resolve(process.cwd(), "__generated__", "END_POINT.ts");
 
 const GET_DEST = fs.createWriteStream(GET_PATH);
 const POST_DEST = fs.createWriteStream(POST_PATH);
-const POST_TYPE_DEST = fs.createWriteStream(POST_TYPE_PATH);
+// const POST_TYPE_DEST = fs.createWriteStream(POST_TYPE_PATH);
 const PATCH_DEST = fs.createWriteStream(PATCH_PATH);
-const PATH_TYPE_DEST = fs.createWriteStream(PATCH_TYPE_PATH);
+// const PATH_TYPE_DEST = fs.createWriteStream(PATCH_TYPE_PATH);
 const END_POINT_DEST = fs.createWriteStream(END_POINT_PATH, {});
 
 const apiTemplate = template(`export const API_NAME = API_VALUE;`);
@@ -112,8 +112,8 @@ Promise.all(
           if (!uniqNameListForPost.has(key)) {
             POST_DEST.write(`export const ${key} = ${JSON.stringify(value)};\n`);
 
-            const type = buildTSType(key, value.properties);
-            POST_TYPE_DEST.write(`${type}\n\n`);
+            // const type = buildTSType(key, value.properties);
+            // POST_TYPE_DEST.write(`${type}\n\n`);
 
             uniqNameListForPost.add(key);
           }
@@ -131,8 +131,8 @@ Promise.all(
           if (!uniqNameListForPatch.has(key)) {
             PATCH_DEST.write(`export const ${key} = ${JSON.stringify(value)};\n`);
 
-            const type = buildTSType(key, value.properties);
-            PATH_TYPE_DEST.write(`${type}\n\n`);
+            // const type = buildTSType(key, value.properties);
+            // PATH_TYPE_DEST.write(`${type}\n\n`);
 
             uniqNameListForPatch.add(key);
           }

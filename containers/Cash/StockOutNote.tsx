@@ -4,9 +4,11 @@ import React, { useState, Fragment, useEffect, useCallback, useMemo } from "reac
 import { cloneDeep } from "lodash";
 import { Box } from "@mui/material";
 
+import { LoadingDynamic as Loading } from "components";
+import StockOutNoteTable from "./table/StockOutNoteTable";
+
 import { useFetch } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
-import StockOutNoteTable from "./table/StockOutNoteTable";
 import { ADMIN_WAREHOUSES_OUT_NOTES_LINES_END_POINT } from "__generated__/END_POINT";
 
 type Props = {
@@ -77,6 +79,8 @@ export default function StockOutNote({ id, onGotoHandler }: Props) {
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Fragment>

@@ -6,23 +6,15 @@ import { useForm } from "react-hook-form";
 import { Stack, Grid } from "@mui/material";
 import { useMountedState } from "react-use";
 
+import { useNotification } from "hooks";
 import { ORDERS, SHIPPING_METHOD } from "routes";
-import { useChoice, useNotification } from "hooks";
 import { Card, BackButton, LoadingButton } from "components";
-import ShippingMethodForm from "./components/ShippingMethodForm";
-
-import {
-  shippingMethodSchema,
-  defaultShippingMethodFormState,
-  ShippingMethodSchemaProps,
-} from "yups";
-
-import { ORDER_SHIPPING_METHOD } from "apis";
+import { ADMIN_ORDERS_SHIPPING_METHODS_END_POINT } from "__generated__/END_POINT";
 
 import axios from "axios.config";
-
 import DynamicMessage from "messages";
-import { ADMIN_ORDERS_SHIPPING_METHODS_END_POINT } from "__generated__/END_POINT";
+import ShippingMethodForm from "./components/ShippingMethodForm";
+
 import {
   ADMIN_ORDERS_SHIPPING_METHODS_POST_YUP_RESOLVER,
   ADMIN_ORDERS_SHIPPING_METHODS_POST_YUP_SCHEMA_TYPE,
@@ -34,11 +26,8 @@ const CreateShippingMethod = () => {
 
   const isMounted = useMountedState();
 
-  const choice = useChoice();
   const { control, handleSubmit } = useForm({
     defaultValues: ADMIN_ORDERS_SHIPPING_METHODS_POST_DEFAULT_VALUE,
-    // defaultValues: defaultShippingMethodFormState(choice),
-    // resolver: shippingMethodSchema(choice),
     resolver: ADMIN_ORDERS_SHIPPING_METHODS_POST_YUP_RESOLVER,
   });
 

@@ -8,10 +8,10 @@ import { Skeleton, Stack } from "@mui/material";
 import { CASHES, EDIT, TYPE } from "routes";
 import { DeleteButton, NumberFormat, ViewButton } from "components";
 import {
-  WrapperTableCell,
   TableCellForSelection,
   TableHeaderForSelection,
-} from "components/TableV2";
+  WrapperTableCell,
+} from "components/TableV3";
 
 export const keys = [
   "selection",

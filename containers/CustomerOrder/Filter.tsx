@@ -1,37 +1,29 @@
-import { useState } from "react";
 import { useIntl } from "react-intl";
 
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { Stack, Button, Box, Typography, MenuItem } from "@mui/material";
 
 import { LazyAutocomplete } from "compositions";
 import { SearchField, Select, DateRangePicker } from "components";
 
 import { useChoice } from "hooks";
-import { OrderListFilterType } from "./OrderList";
 import { CommonFilterTableProps } from "interfaces";
+import { OrderListFilterType } from "./Order/OrderList";
 
 import {
   ADMIN_USERS_END_POINT,
   ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT,
   ADMIN_ORDERS_SHIPPING_METHODS_END_POINT,
 } from "__generated__/END_POINT";
+
 import {
   ADMIN_USER_USER_VIEW_TYPE_V1,
   ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1,
   ADMIN_SHIPPING_SHIPPING_METHOD_VIEW_TYPE_V1,
 } from "__generated__/apiType_v1";
 
-const NOTE_LIST = [
-  ["", "None"],
-  ["sid_icontains", "Mã đơn hàng"],
-  ["invoice_sid_icontains", "Mã hóa đơn"],
-];
-
 type FilterProps = CommonFilterTableProps<OrderListFilterType> & {
   onSearchChange: any;
-  onSearchChang2: any;
-  onSearchByType: (value: any) => void;
   onOwnerChange: (value: any) => void;
   onChannelChange: (value: any) => void;
   onStatusChange: (value: any) => void;
@@ -41,9 +33,7 @@ type FilterProps = CommonFilterTableProps<OrderListFilterType> & {
 const Filter = (props: FilterProps) => {
   const {
     filter,
-    onSearchByType,
     onSearchChange,
-    onSearchChang2,
     resetFilter,
     onDateRangeChange,
     onFilterByTime,
@@ -55,51 +45,20 @@ const Filter = (props: FilterProps) => {
 
   const choice = useChoice();
   const { messages } = useIntl();
-  const [note, setNote] = useState("");
   const { order_statuses } = choice;
 
   return (
     <Stack spacing={3}>
       <Stack spacing={2}>
-        <Typography fontWeight={700}>Tìm kiếm theo loại phiếu</Typography>
+        <Typography fontWeight={700}>Tìm kiếm</Typography>
 
-        <Select
-          {...{
-            renderItem: () => {
-              return NOTE_LIST.map((el, idx) => {
-                return <MenuItem key={idx} value={el[0]} children={el[1]} />;
-              });
-            },
-            SelectProps: {
-              value: filter.search_by_type === "" ? "" : filter.search_by_type,
-              onChange(event) {
-                setNote((prev) => {
-                  const currentValue = event.target.value as string;
-
-                  onSearchByType(currentValue);
-
-                  return currentValue;
-                });
-              },
-            },
-          }}
+        <SearchField
+          isShowIcon={false}
+          initSearch={filter.search}
+          onChange={onSearchChange}
+          placeholder="Tìm kiếm"
         />
-
-        {note && (
-          <SearchField
-            isShowIcon={false}
-            onChange={onSearchChange}
-            placeholder={"Tìm kiếm theo mã phiếu"}
-          />
-        )}
       </Stack>
-
-      <SearchField
-        isShowIcon={false}
-        initSearch={filter.search2}
-        onChange={onSearchChang2}
-        placeholder={"Nhập tên KH, SĐT"}
-      />
 
       <Box>
         <Typography fontWeight={700} marginBottom={1}>
@@ -151,6 +110,14 @@ const Filter = (props: FilterProps) => {
                 return fullName;
               },
 
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
+              },
+
               onChange: (e, value) => {
                 onOwnerChange(value);
               },
@@ -182,6 +149,14 @@ const Filter = (props: FilterProps) => {
                     children={option.name}
                   />
                 );
+              },
+
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
               },
 
               getOptionLabel: (option) => {
@@ -241,6 +216,14 @@ const Filter = (props: FilterProps) => {
                 return option.name;
               },
 
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
+              },
+
               onChange: (e, value) => {
                 onShippingMethodChange(value);
               },
@@ -253,14 +236,7 @@ const Filter = (props: FilterProps) => {
         />
       </Box>
 
-      <Button
-        color="error"
-        variant="contained"
-        onClick={() => {
-          resetFilter();
-          setNote("");
-        }}
-      >
+      <Button color="error" variant="contained" onClick={resetFilter}>
         {messages["removeFilter"]}
       </Button>
     </Stack>

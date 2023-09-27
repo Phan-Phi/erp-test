@@ -24,11 +24,9 @@ import {
   LoadingDynamic as Loading,
 } from "components";
 
-import { CASHES } from "routes";
-
-import { TransactionSchemaProps } from "yups";
 import { useChoice, usePermission } from "hooks";
 import { getDisplayValueFromChoiceItem } from "libs";
+import { ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 const PrintNote = dynamic(import("components/PrintNote/PrintNote"), {
   loading: () => {
@@ -43,7 +41,7 @@ const ViewDetailLine = dynamic(() => import("./ViewDetailLineDialog"), {
 });
 
 interface ViewOnlyTransactionProps {
-  data: TransactionSchemaProps;
+  data: ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE;
 }
 
 const ViewOnlyTransaction = ({ data }: ViewOnlyTransactionProps) => {
@@ -326,7 +324,8 @@ const ViewOnlyTransaction = ({ data }: ViewOnlyTransactionProps) => {
 
       <Grid item xs={10}>
         <Stack flexDirection="row" alignItems={"center"}>
-          <BackButton pathname={`/${CASHES}`} />
+          <BackButton onClick={() => router.back()} />
+          {/* <BackButton pathname={`/${CASHES}`} /> */}
         </Stack>
       </Grid>
 

@@ -1,25 +1,21 @@
-import { useIntl } from "react-intl";
+import { Range } from "react-date-range";
 import { useReactToPrint } from "react-to-print";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-
+import { endOfWeek, startOfWeek } from "date-fns";
+import { cloneDeep, get, omit, set } from "lodash";
 import { Grid, Typography, Stack, Box } from "@mui/material";
+import { useCallback, useMemo, useRef, useState } from "react";
 
-import { TimeFrame } from "../components/TimeFrame";
+import { useIntl } from "react-intl";
+import { EXPORTS, INVOICE } from "routes";
+import { usePermission, useToggle } from "hooks";
 import { ViewTypeForSale } from "./ViewTypeForSale";
+import { ConvertTimeFrameType } from "libs/dateUtils";
 import { SaleReportByTable } from "./SaleReportByTable";
 import { SaleReportByChart } from "./SaleReportByChart";
 import { DisplayCard } from "../components/DisplayCard";
-
 import { PrintButton, ExportButton, LoadingDialog } from "components";
-
-import { usePermission, useToggle } from "hooks";
-import { EXPORTS, INVOICE } from "routes";
 import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
-import { ConvertTimeFrameType, convertTimeFrame } from "libs/dateUtils";
-import FilterByPurchaseChannel from "../components/FilterByPurchaseChannel";
-import { cloneDeep, get, omit, set } from "lodash";
-import { Range } from "react-date-range";
-import { endOfWeek, startOfWeek } from "date-fns";
+
 import Filter from "./Filter";
 
 export interface FilterProps {
@@ -64,22 +60,6 @@ const SaleReport = () => {
   const [filterDate, setFilterDate] = useState(defaultFilterValue);
   const [displayType, setDisplayType] = useState<"chart" | "table">("chart");
   const [viewType, setViewType] = useState<"time" | "profit" | "discount">("time");
-
-  // const printHandler = useReactToPrint({
-  //   content: () => printComponentRef.current,
-  //   onBeforeGetContent: () => {
-  //     if (displayType === "chart") return;
-
-  //     return new Promise((resolve) => {
-  //       onOpen();
-  //       setIsPrinting(true);
-  //       promiseResolveRef.current = resolve;
-  //     });
-  //   },
-  //   onAfterPrint: () => {
-  //     setIsPrinting(false);
-  //   },
-  // });
 
   const printHandler = useReactToPrint({
     content: () => printComponentRef.current,
@@ -216,6 +196,7 @@ const SaleReport = () => {
           <DisplayCard value={displayType} onChange={setDisplayType} />
 
           <ViewTypeForSale value={viewType} onChange={setViewType} />
+
           <Filter
             filter={filter}
             resetFilter={resetFilterHandler}
@@ -229,18 +210,6 @@ const SaleReport = () => {
       </Grid>
       <Grid item xs={10}>
         <Stack position="relative" rowGap={2} ref={printComponentRef}>
-          {/* <Box position="absolute" right={0} top={0}>
-            <PrintButton
-              onClick={printHandler}
-              sx={{
-                pointerEvents: isPrinting ? "none" : "unset",
-              }}
-            />
-            <style type="text/css" media="print">
-              {printStyle()}
-            </style>
-          </Box> */}
-
           <Box position="absolute" right={0} top={0}>
             <PrintButton onClick={printHandler} />
             <style type="text/css" media="print">

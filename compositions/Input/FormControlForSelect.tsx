@@ -31,7 +31,6 @@ function FormControlForSelect(props: FormControlSelectProps) {
       }}
       SelectProps={{
         onChange: (e) => {
-          // console.log("e", e);
           onChange(e.target.value);
         },
         value,

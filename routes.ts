@@ -45,3 +45,5 @@ export const FINANCE_REPORT = "finance-report";
 
 export const DEBT_RECORD = "debt-record";
 export const INVOICE = "invoice";
+
+export const VIEW_DETAIL = "view";

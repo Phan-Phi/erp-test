@@ -1,16 +1,8 @@
 import useSWR from "swr";
-import set from "lodash/set";
 import { useState, useMemo } from "react";
 import { format, parseISO } from "date-fns";
 import { useUpdateEffect } from "react-use";
-// import { TableContainer } from "@mui/material";
 
-import { REPORT_CASH } from "apis";
-import { transformUrl } from "libs";
-import { REPORT_CASH_ITEM } from "interfaces";
-import { LoadingDynamic as Loading, NumberFormat } from "components";
-// import { TableRow, TableCell, Table, TableBody } from "components/TableV2";
-import { convertTimeToString, getPeriodUnitFromTimeObj } from "libs/dateUtils";
 import {
   Table,
   TableBody,
@@ -18,7 +10,13 @@ import {
   TableContainer,
   TableRow,
 } from "components/TableV3";
+import { transformUrl } from "libs";
+import { CashBookReport } from "__generated__/apiType_v1";
+import { LoadingDynamic as Loading, NumberFormat } from "components";
 import { ADMIN_REPORTS_CASH_END_POINT } from "__generated__/END_POINT";
+import { convertTimeToString, getPeriodUnitFromTimeObj } from "libs/dateUtils";
+
+import set from "lodash/set";
 
 const rows = [
   "Doanh thu bán hàng (1)",
@@ -41,7 +39,7 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
 
   const [reload, setReload] = useState(false);
 
-  const { data: cashData } = useSWR<REPORT_CASH_ITEM[]>(
+  const { data: cashData } = useSWR<CashBookReport[]>(
     transformUrl(ADMIN_REPORTS_CASH_END_POINT, {
       date_start: filter.date_start,
       date_end: filter.date_end,
@@ -76,7 +74,7 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
             columns.push(convertTimeToString(filter.period, el.date_start));
           }
 
-          return parseFloat(el.revenue.incl_tax);
+          return parseFloat(el.revenue?.incl_tax as never);
         });
 
         result.push(["", ...columns]);
@@ -88,8 +86,8 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
 
       if (idx === 1) {
         const data = cashData.map((el) => {
-          const netRevenue = parseFloat(el.net_revenue.incl_tax);
-          const revenue = parseFloat(el.revenue.incl_tax);
+          const netRevenue = parseFloat(el.net_revenue?.incl_tax as never);
+          const revenue = parseFloat(el.revenue?.incl_tax as never);
 
           return revenue - netRevenue;
         });
@@ -101,7 +99,7 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
 
       if (idx === 2) {
         const data = cashData.map((el) => {
-          return parseFloat(el.net_revenue.incl_tax);
+          return parseFloat(el.net_revenue?.incl_tax as never);
         });
 
         result.push([el, ...data]);
@@ -111,7 +109,7 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
 
       if (idx === 3) {
         const data = cashData.map((el) => {
-          return parseFloat(el.base_amount.incl_tax);
+          return parseFloat(el.base_amount?.incl_tax as never);
         });
 
         result.push([el, ...data]);
@@ -121,8 +119,8 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
 
       if (idx === 4) {
         const data = cashData.map((el) => {
-          const netRevenue = parseFloat(el.net_revenue.incl_tax);
-          const baseAmount = parseFloat(el.base_amount.incl_tax);
+          const netRevenue = parseFloat(el.net_revenue?.incl_tax as never);
+          const baseAmount = parseFloat(el.base_amount?.incl_tax as never);
 
           return netRevenue - baseAmount;
         });
@@ -140,10 +138,14 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
           let sum = 0;
 
           el.transaction_types.forEach((el, rowIdx) => {
-            sum += parseFloat(el.expense.incl_tax);
+            sum += parseFloat(el.expense?.incl_tax as never);
 
             set(temp, `${rowIdx}.0`, el.name);
-            set(temp, `${rowIdx}.${columnIdx + 1}`, parseFloat(el.expense.incl_tax));
+            set(
+              temp,
+              `${rowIdx}.${columnIdx + 1}`,
+              parseFloat(el.expense?.incl_tax as never)
+            );
           });
 
           expensiveArr.push(sum);
@@ -162,13 +164,13 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
         const temp: any[] = [];
 
         cashData.forEach((el) => {
-          const netRevenue = parseFloat(el.net_revenue.incl_tax);
-          const baseAmount = parseFloat(el.base_amount.incl_tax);
+          const netRevenue = parseFloat(el.net_revenue?.incl_tax as never);
+          const baseAmount = parseFloat(el.base_amount?.incl_tax as never);
 
           let totalExpense = 0;
 
           el.transaction_types.forEach((el, rowIdx) => {
-            totalExpense += parseFloat(el.expense.incl_tax);
+            totalExpense += parseFloat(el.expense?.incl_tax as never);
           });
 
           temp.push(netRevenue - baseAmount - totalExpense);
@@ -187,10 +189,14 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
           let sum = 0;
 
           el.transaction_types.forEach((el, rowIdx) => {
-            sum += parseFloat(el.revenue.incl_tax);
+            sum += parseFloat(el.revenue?.incl_tax as never);
 
             set(temp, `${rowIdx}.0`, el.name);
-            set(temp, `${rowIdx}.${columnIdx + 1}`, parseFloat(el.revenue.incl_tax));
+            set(
+              temp,
+              `${rowIdx}.${columnIdx + 1}`,
+              parseFloat(el.revenue?.incl_tax as never)
+            );
           });
 
           revenueArr.push(sum);
@@ -209,15 +215,15 @@ export const FinanceReportByTable = (props: SaleReportByTableProps) => {
         const temp: any[] = [];
 
         cashData.forEach((el) => {
-          const netRevenue = parseFloat(el.net_revenue.incl_tax);
-          const baseAmount = parseFloat(el.base_amount.incl_tax);
+          const netRevenue = parseFloat(el.net_revenue?.incl_tax as never);
+          const baseAmount = parseFloat(el.base_amount?.incl_tax as never);
 
           let totalExpense = 0;
           let totalRevenue = 0;
 
           el.transaction_types.forEach((el, rowIdx) => {
-            totalExpense += parseFloat(el.expense.incl_tax);
-            totalRevenue += parseFloat(el.revenue.incl_tax);
+            totalExpense += parseFloat(el.expense?.incl_tax as never);
+            totalRevenue += parseFloat(el.revenue?.incl_tax as never);
           });
 
           temp.push(netRevenue + totalRevenue - baseAmount - totalExpense);

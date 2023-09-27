@@ -5,18 +5,32 @@ import { useMountedState } from "react-use";
 import { useCallback, useState, useEffect } from "react";
 import { useForm, FieldNamesMarkedBoolean } from "react-hook-form";
 
+import {
+  get,
+  set,
+  pick,
+  chunk,
+  unset,
+  isEqual,
+  isEmpty,
+  cloneDeep,
+  differenceWith,
+} from "lodash";
 import useSWR from "swr";
+import { boolean, object } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Grid, Stack, Button } from "@mui/material";
-import { get, set, pick, chunk, isEqual, isEmpty, differenceWith } from "lodash";
 
 import Checkbox from "./components/Checkbox";
 // import Attribute from "./components/Attribute";
 import GeneralInfoForProduct from "./components/GeneralInfoForProduct";
-import { LoadingDynamic as Loading, LoadingButton, BackButton } from "components";
+import ContainerRecommendation from "./recommendations/ContainerRecommendation";
+import { LoadingDynamic as Loading, LoadingButton, BackButton, Card } from "components";
 
 import axios from "axios.config";
 import DynamicMessage from "messages";
 import { PRODUCTS, VARIANT } from "routes";
+import { PRODUCT_IMAGE_ITEM } from "interfaces";
 import { useNotification, usePermission } from "hooks";
 import { createRequest, deleteRequest, transformUrl, checkResArr } from "libs";
 
@@ -27,20 +41,19 @@ import {
   ConnectProductWithCategorySchemaProps,
 } from "yups";
 
-import { PRODUCT_ITEM, PRODUCT_IMAGE_ITEM } from "interfaces";
-
 import {
-  ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_RESOLVER,
+  ADMIN_PRODUCTS_WITH_ID_PATCH_SHAPE,
   ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE,
 } from "__generated__/PATCH_YUP";
-
-import { ADMIN_PRODUCTS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 import {
   ADMIN_PRODUCTS_END_POINT,
   ADMIN_PRODUCTS_IMAGES_END_POINT,
   ADMIN_PRODUCTS_PRODUCT_CATEGORIES_END_POINT,
 } from "__generated__/END_POINT";
+
+import { ADMIN_PRODUCT_PRODUCT_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_PRODUCTS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 const VariantTable = dynamic(() => import("./VariantTable"), {
   loading: () => {
@@ -54,9 +67,14 @@ const Category = dynamic(() => import("./components/Category"), {
   },
 });
 
+export interface DATA_PRODUCT_EXTEND
+  extends ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE {
+  stop_business?: boolean;
+}
+
 const ProductDetail = () => {
   const router = useRouter();
-  const [defaultValues, setDefaultValues] = useState<any>();
+  const [defaultValues, setDefaultValues] = useState<DATA_PRODUCT_EXTEND>();
 
   const [defaultImageValues, setDefaultImageValues] = useState<ProductImageSchemaProps>();
 
@@ -65,15 +83,16 @@ const ProductDetail = () => {
 
   // const [defaultAttributeValues, setDefaultAttributeValues] = useState();
 
-  const { data: productData, mutate: productMutate } = useSWR<PRODUCT_ITEM>(() => {
-    const id = router.query.id;
+  const { data: productData, mutate: productMutate } =
+    useSWR<ADMIN_PRODUCT_PRODUCT_VIEW_TYPE_V1>(() => {
+      const id = router.query.id;
 
-    if (id == undefined) return;
+      if (id == undefined) return;
 
-    return transformUrl(`${ADMIN_PRODUCTS_END_POINT}${id}`, {
-      use_cache: false,
+      return transformUrl(`${ADMIN_PRODUCTS_END_POINT}${id}`, {
+        use_cache: false,
+      });
     });
-  });
 
   // const { data: productAttributeData, mutate: productAttributeMutate } = useSWR<
   //   PRODUCT_TYPE_PRODUCT_ATTRIBUTE_VALUE_ITEM[]
@@ -137,7 +156,12 @@ const ProductDetail = () => {
       set(data, key, productData[key]);
     });
 
-    setDefaultValues(data);
+    const overrideData = {
+      ...data,
+      stop_business: get(productData, "available_for_purchase") === null ? true : false,
+    };
+
+    setDefaultValues(overrideData);
   }, [productData]);
 
   useEffect(() => {
@@ -226,7 +250,7 @@ const ProductDetail = () => {
 };
 
 type RootComponentProps = {
-  defaultValues: ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE;
+  defaultValues: DATA_PRODUCT_EXTEND;
   defalutCategoryValues: ConnectProductWithCategorySchemaProps;
   defaultImageValues: ProductImageSchemaProps;
   onSuccessHandler: () => Promise<void>;
@@ -247,14 +271,27 @@ const RootComponent = ({
   const { loading, setLoading, enqueueSnackbarWithSuccess, enqueueSnackbarWithError } =
     useNotification();
 
+  const ADMIN_PRODUCTS_PATCH_SHAPE_EXTENDS = Object.assign(
+    ADMIN_PRODUCTS_WITH_ID_PATCH_SHAPE,
+    {
+      stop_business: boolean().notRequired(),
+    }
+  );
+
+  const ADMIN_PRODUCTS_PATCH_YUP_SCHEMA_EXTENDS = object({}).shape(
+    ADMIN_PRODUCTS_PATCH_SHAPE_EXTENDS
+  );
+
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { dirtyFields },
   } = useForm({
     defaultValues,
-    // resolver: productSchema(),
-    resolver: ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_RESOLVER,
+    resolver: yupResolver(ADMIN_PRODUCTS_PATCH_YUP_SCHEMA_EXTENDS),
+
+    // resolver: ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_RESOLVER,
   });
 
   // const {
@@ -288,7 +325,7 @@ const RootComponent = ({
       imageData,
       originalImageData,
     }: {
-      data: ADMIN_PRODUCTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE;
+      data: DATA_PRODUCT_EXTEND;
       dirtyFields: FieldNamesMarkedBoolean<typeof defaultValues>;
       categoryData: ConnectProductWithCategorySchemaProps["categories"];
       originalCategoryData: ConnectProductWithCategorySchemaProps["categories"];
@@ -298,14 +335,49 @@ const RootComponent = ({
       try {
         const productId = get(data, "id");
 
+        // use for productSchema(): start
+        // if (get(data, "available_for_purchase")) {
+        //   set(
+        //     data,
+        //     "available_for_purchase",
+        //     new Date(get(data, "available_for_purchase") as any).toISOString()
+        //   );
+        // }
+
+        // if (get(data, "publication_date")) {
+        //   set(
+        //     data,
+        //     "publication_date",
+        //     new Date(get(data, "publication_date") as any).toISOString()
+        //   );
+        // }
+
+        // if (get(data, "product_class")) {
+        //   set(data, "product_class", get(data, "product_class.id"));
+        // }
+
+        const cloneData = cloneDeep(data);
+
+        if (get(data, "stop_business")) {
+          set(data, "available_for_purchase", null);
+        }
+
+        unset(data, "stop_business");
+
         setLoading(true);
 
         let resList: any[] = [];
 
-        if (!isEmpty(dirtyFields)) {
+        if (!isEmpty(dirtyFields) || isEmpty(cloneData.stop_business)) {
           const body = pick(data, Object.keys(dirtyFields));
 
-          await axios.patch(`${ADMIN_PRODUCTS_END_POINT}${productId}/`, body);
+          const overrideBody = {
+            ...body,
+            available_for_purchase:
+              cloneData.stop_business === true ? null : cloneData.available_for_purchase,
+          };
+
+          await axios.patch(`${ADMIN_PRODUCTS_END_POINT}${productId}/`, overrideBody);
         }
 
         // * HANDLE PRODUCT ATTRIBUTE
@@ -520,13 +592,17 @@ const RootComponent = ({
         <Grid item xs={4}>
           <Grid container>
             <Grid item xs={12}>
-              <Checkbox {...{ control }} />
+              <Checkbox {...{ control, setValue }} />
             </Grid>
 
             <Grid item xs={12}>
               <Category {...{ control: productCategoryControl }} />
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <ContainerRecommendation />
         </Grid>
 
         <Grid item xs={12}>

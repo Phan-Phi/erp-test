@@ -1,22 +1,20 @@
 import { useSetting } from "hooks";
 import NextHead from "next/head";
+import { Fragment } from "react";
 import { NextSeo } from "next-seo";
-import React, { Fragment } from "react";
 
 const Head = () => {
   const { company_name, logo } = useSetting();
-  console.log("🚀 ~ file: Head.tsx:8 ~ Head ~ logo:", logo);
-  const setting = useSetting();
-  const title = company_name ? `ERP - ${company_name || ""}` : "ERP";
+  const title = company_name ? `ERP - ${company_name || ""}` : "ERPssss";
 
   return (
     <Fragment>
-      <NextSeo
+      {/* <NextSeo
         title={title}
         additionalLinkTags={[
           { rel: "shortcut icon", type: "image/x-icon", href: logo?.default || "" },
         ]}
-      />
+      /> */}
       <NextHead>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         {process.env.NODE_ENV === "production" && (

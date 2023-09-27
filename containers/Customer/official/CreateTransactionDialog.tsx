@@ -25,25 +25,42 @@ import {
   ADMIN_CUSTOMERS_DRAFTS_END_POINT,
   ADMIN_CASH_TRANSACTIONS_END_POINT,
 } from "__generated__/END_POINT";
-import { ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 interface CreateTransactionDialogProps {
   open: boolean;
   toggle: (newValue: boolean) => void;
 }
 
+const OBJ_DEFAULT_VALUES = {
+  source_id: null,
+  target_id: null,
+  affect_creditor: false,
+  type: null,
+  payment_method: null,
+  status: "Draft",
+  source_type: "order.invoice",
+  target_type: "customer.customer",
+  flow_type: "Cash_in",
+  notes: "",
+  address: "",
+  amount: "",
+  target_name: "",
+};
+
 const CreateTransactionDialog = ({ open, toggle }: CreateTransactionDialogProps) => {
   const router = useRouter();
   const { data: customerData } = useSWR(() => {
     return transformUrl(`${ADMIN_CUSTOMERS_DRAFTS_END_POINT}${router.query.id}`);
   });
+
   const [defaultValues, setDefaultValues] = useState<any>();
 
   useEffect(() => {
     if (customerData == undefined || !open) return;
 
     const customer = get(customerData, "official_customer");
-    const data = ADMIN_CASH_TRANSACTIONS_POST_DEFAULT_VALUE;
+    const data = OBJ_DEFAULT_VALUES;
+
     set(data, "source_type", "order.invoice");
     set(data, "target_type", "customer.customer");
     set(data, "affect_creditor", true);
@@ -55,9 +72,11 @@ const CreateTransactionDialog = ({ open, toggle }: CreateTransactionDialogProps)
     );
     setDefaultValues(data);
   }, [customerData, open]);
+
   useEffect(() => {
     !open && setDefaultValues(undefined);
   }, [open]);
+
   const onSuccessHandler = useCallback(() => {
     toggle(false);
   }, []);
@@ -97,6 +116,7 @@ const RootComponent = ({
     defaultValues,
     resolver: ADMIN_CASH_TRANSACTIONS_POST_YUP_RESOLVER,
   });
+
   const onSubmit = useCallback(
     async ({ data }: { data: ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE }) => {
       try {
@@ -131,6 +151,7 @@ const RootComponent = ({
     },
     []
   );
+
   return (
     <Dialog
       {...{

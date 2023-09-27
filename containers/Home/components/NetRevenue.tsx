@@ -3,8 +3,7 @@ import { useIntl } from "react-intl";
 import { XAxis, YAxis, Legend, Tooltip, Bar } from "recharts";
 import { Fragment, useMemo, useState, useCallback } from "react";
 
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import { get, isEmpty } from "lodash";
 import { Stack, Typography, Tab, Tabs, useTheme, Box } from "@mui/material";
 
 import {

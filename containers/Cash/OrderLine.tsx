@@ -4,9 +4,11 @@ import React, { useState, Fragment, useEffect, useCallback, useMemo } from "reac
 import { cloneDeep } from "lodash";
 import { Box } from "@mui/material";
 
+import OrderLineTable from "./table/OrderLineTable";
+import { LoadingDynamic as Loading } from "components";
+
 import { useFetch } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
-import OrderLineTable from "./table/OrderLineTable";
 import { ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_RETURN_ORDERS_END_POINT } from "__generated__/END_POINT";
 
 type Props = {
@@ -86,6 +88,8 @@ export default function OrderLine({ id, onGotoHandler }: Props) {
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Fragment>

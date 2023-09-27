@@ -1,10 +1,12 @@
-import { string, object, mixed, boolean } from "yup";
+import { string, object, mixed, boolean, StringSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getChoiceValue } from "../libs";
 
 import { transformNumberNotEmpty } from "./utils";
 
 import { ChoiceType, CASH_PAYMENT_METHOD_ITEM } from "interfaces";
+import { TransformFunction } from "yup/lib/types";
+import { MixedSchema } from "yup/lib/mixed";
 
 export interface TransactionSchemaProps {
   status: string;
@@ -112,3 +114,35 @@ export const defaultTransactionFormState = (
     payment_method: null,
   };
 };
+
+function transformDecimal(value: any): TransformFunction<StringSchema> {
+  return value === "" ? "0" : value;
+}
+
+function transformObjectToId(value: any): TransformFunction<MixedSchema> {
+  if (mixed().isType(value) && value != null && typeof value === "object") {
+    return value.id;
+  }
+
+  return value;
+}
+
+export const ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA = object({}).shape({
+  status: string().default("Draft").notRequired().oneOf(["Draft", "Confirmed"]),
+  source_type: mixed(),
+  target_type: mixed(),
+  flow_type: string().notRequired().oneOf(["Cash_out", "Cash_in"]),
+  notes: string().notRequired(),
+  address: string().notRequired(),
+  amount: string().transform(transformDecimal).required(),
+  source_id: mixed().notRequired().nullable().transform(transformObjectToId),
+  target_id: mixed().notRequired().nullable().transform(transformObjectToId),
+  target_name: string().notRequired().max(255),
+  affect_creditor: boolean().notRequired(),
+  type: mixed().notRequired().nullable().transform(transformObjectToId),
+  payment_method: mixed().notRequired().nullable().transform(transformObjectToId),
+});
+
+export const ADMIN_CASH_TRANSACTIONS_POST_YUP_RESOLVER = yupResolver(
+  ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA
+);

@@ -172,6 +172,13 @@ const CategoryForm = ({ control }: CategoryFormProps) => {
                         />
                       );
                     }}
+                    isOptionEqualToValue={(option, value) => {
+                      if (isEmpty(option) || isEmpty(value)) {
+                        return true;
+                      }
+
+                      return option?.["id"] === value?.["id"];
+                    }}
                   />
                 );
               }}

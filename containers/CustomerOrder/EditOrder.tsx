@@ -22,17 +22,10 @@ import { transformUrl, convertValueToTupleForAddress } from "libs";
 import { usePermission, useConfirmation, useNotification } from "hooks";
 
 import {
-  OrderSchemaProps,
-  defaultOrderFormState,
-  BillingAddressSchemaProps,
-  ShippingAddressSchemaProps,
-  defaultBillingAddressFormState,
-  defaultShippingAddressFormState,
-} from "yups";
-
-import {
   ADMIN_ORDERS_POST_YUP_RESOLVER,
+  ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE,
   ADMIN_USERS_ADDRESSES_POST_YUP_RESOLVER,
+  ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE,
 } from "__generated__/POST_YUP";
 
 import {
@@ -41,6 +34,12 @@ import {
   ADMIN_ORDERS_BILLING_ADDRESSES_END_POINT,
   ADMIN_ORDERS_SHIPPING_ADDRESSES_END_POINT,
 } from "__generated__/END_POINT";
+
+import {
+  ADMIN_ORDERS_POST_DEFAULT_VALUE,
+  ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE,
+} from "__generated__/POST_DEFAULT_VALUE";
+
 import { ADMIN_ORDER_ORDER_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 const ViewOrder = dynamic(() => import("./OrderLine/view/ViewOrder"), {
@@ -64,12 +63,10 @@ const ContainerInvoice = dynamic(() => import("./Invoice/ContainerInvoice"), {
 const EditOrder = () => {
   const router = useRouter();
   const isMounted = useMountedState();
-  const [defaultValues, setDefaultValues] = useState<OrderSchemaProps>();
+  const [defaultValues, setDefaultValues] = useState<ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE>();
 
-  const [defaultShippingAddressValues, setDefaultShippingAddressValues] =
-    useState<ShippingAddressSchemaProps>();
-  const [defaultBillingAddressValues, setDefaultBillingAddressValues] =
-    useState<BillingAddressSchemaProps>();
+  const [defaultShippingAddressValues, setDefaultShippingAddressValues] = useState<any>();
+  const [defaultBillingAddressValues, setDefaultBillingAddressValues] = useState<any>();
 
   const [orderId, setOrderId] = useState<string | undefined>(() => {
     return router.query.id as string | undefined;
@@ -91,10 +88,10 @@ const EditOrder = () => {
   });
 
   const setDefaultValueHandler = useCallback(async (inputData: any) => {
-    const data = {} as OrderSchemaProps;
+    const data = {} as ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE;
 
     const keyList = [
-      ...Object.keys(defaultOrderFormState()),
+      ...Object.keys(ADMIN_ORDERS_POST_DEFAULT_VALUE),
       "id",
       "billing_address",
       "shipping_address",
@@ -118,7 +115,8 @@ const EditOrder = () => {
         const transformedData =
           await convertValueToTupleForAddress(defaultBillingAddress);
 
-        const transformedBillingAddress = {} as ShippingAddressSchemaProps;
+        const transformedBillingAddress =
+          {} as ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
 
         addressKeyList.forEach((key) => {
           set(transformedBillingAddress, key, defaultBillingAddress[key]);
@@ -135,12 +133,12 @@ const EditOrder = () => {
           });
         }
       } else {
-        setDefaultBillingAddressValues(defaultBillingAddressFormState());
+        setDefaultBillingAddressValues(ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE);
       }
     } else {
       const transformedData = await convertValueToTupleForAddress(billingAddress);
 
-      const transformedBillingAddress = {} as BillingAddressSchemaProps;
+      const transformedBillingAddress = {} as ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
 
       addressKeyList.forEach((key) => {
         set(transformedBillingAddress, key, billingAddress[key]);
@@ -167,7 +165,8 @@ const EditOrder = () => {
         const transformedData =
           await convertValueToTupleForAddress(defaultShippingAddress);
 
-        const transformedShippingAddress = {} as ShippingAddressSchemaProps;
+        const transformedShippingAddress =
+          {} as ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
 
         addressKeyList.forEach((key) => {
           set(transformedShippingAddress, key, defaultShippingAddress[key]);
@@ -184,12 +183,12 @@ const EditOrder = () => {
           });
         }
       } else {
-        setDefaultShippingAddressValues(defaultShippingAddressFormState());
+        setDefaultShippingAddressValues(ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE);
       }
     } else {
       const transformedData = await convertValueToTupleForAddress(shippingAddress);
 
-      const transformedShippingAddress = {} as ShippingAddressSchemaProps;
+      const transformedShippingAddress = {} as ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
 
       addressKeyList.forEach((key) => {
         set(transformedShippingAddress, key, shippingAddress[key]);
@@ -268,9 +267,9 @@ const EditOrder = () => {
 };
 
 interface RootComponentProps {
-  defaultValues: OrderSchemaProps;
-  defaultShippingAddressValues: ShippingAddressSchemaProps;
-  defaultBillingAddressValues: BillingAddressSchemaProps;
+  defaultValues: ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE;
+  defaultShippingAddressValues: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
+  defaultBillingAddressValues: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
   onSuccessHandler: () => Promise<void>;
 }
 
@@ -296,7 +295,7 @@ const RootComponent = ({
     useNotification();
 
   const [sameShippingAddress, setSameShippingAddress] = useState(
-    isEqual(defaultBillingAddressValues, defaultBillingAddressFormState())
+    isEqual(defaultBillingAddressValues, ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE)
   );
 
   const { data: orderInvoiceData, mutate: orderInvoiceMutate } = useSWR(
@@ -338,9 +337,19 @@ const RootComponent = ({
     reset: billingAddressReset,
     formState: { dirtyFields: billingAddressDirtyFields },
   } = useForm({
-    defaultValues: defaultBillingAddressValues,
+    defaultValues: {
+      ...defaultBillingAddressValues,
+    },
     resolver: ADMIN_USERS_ADDRESSES_POST_YUP_RESOLVER,
   });
+
+  const [idShippingAddress, setIdShippingAddress] = useState(
+    get(defaultShippingAddressValues, "id")
+  );
+
+  const [idBillingAddress, setIdBillingAddress] = useState(
+    get(defaultBillingAddressValues, "id")
+  );
 
   const { onConfirm, onClose } = useConfirmation();
 
@@ -353,8 +362,8 @@ const RootComponent = ({
   useUpdateEffect(() => {
     if ((watch("receiver")?.id as unknown as any) === defaultValues?.receiver?.id) return;
 
-    billingAddressReset(defaultBillingAddressFormState());
-    shippingAddressReset(defaultShippingAddressFormState());
+    billingAddressReset(ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE);
+    shippingAddressReset(ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE);
   }, [watch("receiver")]);
 
   const onSubmit = useCallback(
@@ -366,11 +375,11 @@ const RootComponent = ({
       billingAddressData,
       billingAddressDirtyFields,
     }: {
-      data: OrderSchemaProps;
+      data: ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE;
       dirtyFields: object;
-      shippingAddressData: ShippingAddressSchemaProps;
+      shippingAddressData: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
       shippingAddressDirtyFields: object;
-      billingAddressData: BillingAddressSchemaProps;
+      billingAddressData: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
       billingAddressDirtyFields: object;
     }) => {
       try {
@@ -381,8 +390,8 @@ const RootComponent = ({
         const hasBillingAddress = !!get(data, "billing_address");
         const hasShippingAddress = !!get(data, "shipping_address");
 
-        const billingAddressId = get(billingAddressData, "id");
-        const shippingAddressId = get(shippingAddressData, "id");
+        const billingAddressId = idBillingAddress;
+        const shippingAddressId = idShippingAddress;
 
         let shouldUpdateList = ["ward", "district", "province"];
 
@@ -481,7 +490,7 @@ const RootComponent = ({
         }
       }
     },
-    [sameShippingAddress]
+    [sameShippingAddress, idShippingAddress, idBillingAddress]
   );
 
   const approveHandler = useCallback(({ status }) => {
@@ -588,7 +597,7 @@ const RootComponent = ({
 
                     {isEqual(
                       defaultBillingAddressValues,
-                      defaultBillingAddressFormState()
+                      ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE
                     ) && (
                       <FormControlLabel
                         sx={{

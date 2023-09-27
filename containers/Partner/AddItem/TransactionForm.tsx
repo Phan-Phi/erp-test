@@ -17,7 +17,7 @@ import {
   Button,
   FormControl as OriginalFormControl,
 } from "@mui/material";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import {
   FormControl,
@@ -35,12 +35,13 @@ import {
   ADMIN_CASH_PAYMENT_METHOD_VIEW_TYPE_V1,
   ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1,
 } from "__generated__/apiType_v1";
-import { ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 import {
   ADMIN_CASH_PAYMENT_METHODS_END_POINT,
   ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT,
   ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_END_POINT,
 } from "__generated__/END_POINT";
+
+import { ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 const ViewDetailLineDialog = dynamic(() => import("../../Cash/ViewDetailLineDialog"));
 
@@ -66,6 +67,7 @@ const TransactionForm = (props: TransactionFormProps) => {
   const { transaction_target_types } = useChoice();
 
   const { defaultValues } = props;
+
   const control = props.control as Control<ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE>;
   const getValues =
     props.getValues as UseFormGetValues<ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE>;
@@ -148,6 +150,14 @@ const TransactionForm = (props: TransactionFormProps) => {
                     getOptionLabel: (option: any) => {
                       return option.sid;
                     },
+                    isOptionEqualToValue: (option, value) => {
+                      if (isEmpty(option) || isEmpty(value)) {
+                        return true;
+                      }
+
+                      return option?.["id"] === value?.["id"];
+                    },
+
                     ...(!writePermission && {
                       disabled: true,
                       readOnly: true,
@@ -270,6 +280,14 @@ const TransactionForm = (props: TransactionFormProps) => {
                   getOptionLabel: (option) => {
                     return option.name;
                   },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
+                  },
+
                   ...(!writePermission && {
                     disabled: true,
                     readOnly: true,
@@ -417,6 +435,14 @@ const TransactionForm = (props: TransactionFormProps) => {
                   },
                   getOptionLabel: (option) => {
                     return option.name;
+                  },
+
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                   ...(!writePermission && {
                     disabled: true,

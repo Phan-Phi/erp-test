@@ -1,11 +1,11 @@
 import useSWR from "swr";
 import { useIntl } from "react-intl";
+import { get, set } from "lodash";
 import { useForm } from "react-hook-form";
+import { Grid, Stack } from "@mui/material";
 import { useMemo, useCallback, useState } from "react";
 
-import { get, set } from "lodash";
 import { useSnackbar } from "notistack";
-import { Grid, Stack } from "@mui/material";
 
 import CustomerTypeForm from "./components/CustomerTypeForm";
 import { LoadingDynamic as Loading, LoadingButton, Dialog, BackButton } from "components";

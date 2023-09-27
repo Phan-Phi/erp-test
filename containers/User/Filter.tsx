@@ -6,9 +6,6 @@ import { useChoice } from "hooks";
 import { SearchField, FilterByTimeRange, Select, DateRangePicker } from "components";
 
 type FilterProps = {
-  onFilterHandler: (key: any) => (value: any) => void;
-  data?: Record<string, string>;
-  reset: () => void;
   onGender: (value: unknown) => void;
   onIsActive: (value: unknown) => void;
   onSearch: (value: string | undefined) => void;
@@ -19,9 +16,6 @@ type FilterProps = {
 };
 
 const Filter = ({
-  onFilterHandler,
-  data,
-  reset,
   filter,
   onGender,
   onIsActive,
@@ -40,16 +34,6 @@ const Filter = ({
     ["true", messages["active.true"] as string],
     ["false", messages["active.false"] as string],
   ]);
-
-  const resetStateHandler = useCallback(() => {
-    reset();
-
-    setIsReady(false);
-
-    setTimeout(() => {
-      setIsReady(true);
-    }, 300);
-  }, [reset]);
 
   if (!isReady) {
     return null;
@@ -80,13 +64,6 @@ const Filter = ({
           }}
           onFilterByTime={onFilterByTime}
         />
-
-        {/* <FilterByTimeRange
-          onChangeDateStart={onFilterHandler("birthday_start")}
-          onChangeDateEnd={onFilterHandler("birthday_end")}
-          initDateStart={data?.birthday_start || null}
-          initDateEnd={data?.birthday_end || null}
-        /> */}
       </Box>
 
       <Box>
@@ -146,23 +123,6 @@ const Filter = ({
             placeholder: messages["filterIsActive"] as string,
           }}
         />
-
-        {/* <Select
-          {...{
-            renderItem: () => {
-              return statusList.map((el, idx) => {
-                return <MenuItem key={el[0]} value={el[0]} children={el[1]} />;
-              });
-            },
-            SelectProps: {
-              value: data?.["is_active"] ?? "",
-              onChange(event) {
-                onFilterHandler("is_active")(event.target.value || "");
-              },
-              placeholder: messages["filterIsActive"] as string,
-            },
-          }}
-        /> */}
       </Box>
 
       <Button color="error" variant="contained" onClick={resetFilter}>

@@ -147,8 +147,6 @@ const Stock = () => {
             async (data) => {
               const { id, ...restBody } = data;
 
-              // console.log(restBody);
-              // return;
               const resData = await axios.patch(
                 `${ADMIN_WAREHOUSES_RECORDS_END_POINT}${id}/`,
                 restBody

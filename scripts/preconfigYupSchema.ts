@@ -12,18 +12,43 @@ import {
   boolean,
   NumberSchema,
   InferType,
+  setLocale,
 } from "yup";
 import { TransformFunction } from "yup/lib/types";
 
 import { isValidPhoneNumber, parsePhoneNumber } from "react-phone-number-input";
 import { MixedSchema } from "yup/lib/mixed";
 
+setLocale({
+  string: {
+    min: (params) => {
+      return `Trường này ít nhất ${params.min} kí tự`;
+    },
+    email: () => {
+      return "Không đúng định dạng email";
+    },
+  },
+  mixed: {
+    required(params) {
+      return "Trường này không được bỏ trống";
+    },
+  },
+});
+
 function transformDecimal(value: any): TransformFunction<StringSchema> {
   return value === "" ? "0" : value;
 }
 
 function transformProvinceDistrictWard(value: any): TransformFunction<StringSchema> {
-  if (!string().isType(value) && Array.isArray(value)) {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+
+  return value;
+}
+
+function transformArrayToString(value: any): TransformFunction<StringSchema> {
+  if (Array.isArray(value)) {
     return value[0];
   }
 
@@ -41,7 +66,7 @@ function transformObjectToId(value: any): TransformFunction<MixedSchema> {
 const testPhoneNumber = {
   message: "Số điện thoại không hợp lệ",
   test(value: any) {
-    if (!value) return false;
+    if (!value) return true;
 
     const phoneNumber = parsePhoneNumber(value);
 
@@ -139,4 +164,25 @@ const testCompareDate = (key: string, errMessage?: string): TestConfig => {
     },
     message: "Ngày kết thúc phải sau ngày bắt đầu",
   };
+};
+
+const testConfirmPassword = {
+  test(value: any, context: TestContext) {
+    const { parent } = context;
+
+    const password: string = parent.password ?? "";
+
+    if (value !== password) return false;
+
+    return true;
+  },
+  message: "Mật khẩu xác nhận không trùng khớp",
+};
+
+const testEmptyString = {
+  test(value: any, context: TestContext) {
+    if (value == "") return false;
+    return true;
+  },
+  message: "Trường này không được để trống",
 };

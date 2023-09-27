@@ -7,14 +7,13 @@ import { useState, useContext, useEffect, useCallback, useMemo } from "react";
 import { cloneDeep } from "lodash";
 import { Stack } from "@mui/material";
 
-import { useFetch } from "hooks";
-
-import { SearchField } from "components";
 import InvoiceTable from "./InvoiceTable";
+import ViewDetailLineDialog from "./ViewDetailLineDialog";
+import { SearchField, LoadingDynamic as Loading } from "components";
 
+import { useFetch } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
 import { Context as CustomerContext } from "./context";
-import ViewDetailLineDialog from "./ViewDetailLineDialog";
 
 interface OrderHistoryTabProps {
   noteUrl: string;
@@ -43,7 +42,7 @@ const OrderHistoryTab = ({ noteUrl, noteLineUrl }: OrderHistoryTabProps) => {
   const [open, toggle] = useToggle(false);
   const context = useContext(CustomerContext);
 
-  const [selectedNote, setSeletedNote] = useState<number>();
+  const [selectedNote, setSelectedNote] = useState<number>();
   const [filter, setFilter] = useState<OrderHistoryTabFilterType>(defaultFilterValue);
 
   const { data, changeKey, itemCount, isLoading } = useFetch(
@@ -93,9 +92,11 @@ const OrderHistoryTab = ({ noteUrl, noteLineUrl }: OrderHistoryTabProps) => {
   }, [filter]);
 
   const onViewNoteHandler = useCallback((row: Row<any>) => {
-    setSeletedNote(row.original.id);
+    setSelectedNote(row.original.id);
     toggle(true);
   }, []);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Stack spacing={3}>

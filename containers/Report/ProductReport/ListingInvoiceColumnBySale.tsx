@@ -1,17 +1,16 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 import { CellProps, Column } from "react-table";
 
 import get from "lodash/get";
 
 import { NumberFormat } from "components";
-import { WrapperTableCell, TableCellWithFetch } from "components/TableV2";
 
 import { formatDate } from "libs";
 
-import { ORDER_INVOICE_QUANTITY } from "apis";
-
 import { transformUrl } from "libs";
+import { TableCellWithFetch, WrapperTableCell } from "components/TableV3";
+import { ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT } from "__generated__/END_POINT";
 
 export const keys = ["sid", "time", "quantity", "price", "revenue", "difference"];
 
@@ -50,7 +49,7 @@ const columns = <T extends Record<string, unknown>>(loading?: boolean): Column<T
 
         return (
           <TableCellWithFetch
-            url={transformUrl(ORDER_INVOICE_QUANTITY, {
+            url={transformUrl(ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT, {
               variant_sku: variantSku,
               invoice: invoiceId,
               with_sum_unit_quantity: true,
@@ -87,7 +86,7 @@ const columns = <T extends Record<string, unknown>>(loading?: boolean): Column<T
 
         return (
           <TableCellWithFetch
-            url={transformUrl(ORDER_INVOICE_QUANTITY, {
+            url={transformUrl(ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT, {
               variant_sku: variantSku,
               invoice: invoiceId,
               with_sum_unit_quantity: true,
@@ -121,7 +120,7 @@ const columns = <T extends Record<string, unknown>>(loading?: boolean): Column<T
 
         return (
           <TableCellWithFetch
-            url={transformUrl(ORDER_INVOICE_QUANTITY, {
+            url={transformUrl(ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT, {
               variant_sku: variantSku,
               invoice: invoiceId,
               with_sum_unit_quantity: true,
@@ -155,7 +154,7 @@ const columns = <T extends Record<string, unknown>>(loading?: boolean): Column<T
 
         return (
           <TableCellWithFetch
-            url={transformUrl(ORDER_INVOICE_QUANTITY, {
+            url={transformUrl(ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT, {
               variant_sku: variantSku,
               invoice: invoiceId,
               with_sum_unit_quantity: true,

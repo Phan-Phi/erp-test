@@ -2,6 +2,7 @@ import { Fragment, useMemo } from "react";
 import { useIntl } from "react-intl";
 import { Control, Controller } from "react-hook-form";
 
+import { isEmpty } from "lodash";
 import { Grid, MenuItem, Autocomplete } from "@mui/material";
 
 import { FormControl, InputForAutocomplete } from "compositions";
@@ -81,6 +82,13 @@ const CustomerTypeForm = (props: CustomerTypeFormProps) => {
                   );
                 }}
                 disabled={!writePermission}
+                isOptionEqualToValue={(option, value) => {
+                  if (isEmpty(option) || isEmpty(value)) {
+                    return true;
+                  }
+
+                  return option?.["id"] === value?.["id"];
+                }}
               />
             );
           }}

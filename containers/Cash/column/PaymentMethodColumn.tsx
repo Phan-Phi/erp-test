@@ -6,13 +6,13 @@ import get from "lodash/get";
 
 import { Skeleton, Stack } from "@mui/material";
 
-import {
-  WrapperTableCell,
-  TableCellForSelection,
-  TableHeaderForSelection,
-} from "components/TableV2";
 import { DeleteButton, ViewButton } from "components";
 import { CASHES, EDIT, PAYMENT_METHOD } from "routes";
+import {
+  TableCellForSelection,
+  TableHeaderForSelection,
+  WrapperTableCell,
+} from "components/TableV3";
 
 export const keys = ["selection", "paymentMethodName", "action"];
 

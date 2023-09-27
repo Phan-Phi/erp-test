@@ -28,9 +28,7 @@ interface EditInvoiceDialogProps {
 }
 
 export interface ADMIN_ORDERS_INVOICES_WITH_ID_PATCH_YUP_SCHEMA_TYPE_EXTENDS
-  extends ADMIN_ORDERS_INVOICES_WITH_ID_PATCH_YUP_SCHEMA_TYPE {
-  id?: number;
-}
+  extends ADMIN_ORDERS_INVOICES_WITH_ID_PATCH_YUP_SCHEMA_TYPE {}
 
 const EditInvoiceDialog = ({
   data,

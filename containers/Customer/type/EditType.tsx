@@ -1,11 +1,10 @@
 import useSWR from "swr";
-import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
-import { useCallback, useState, useMemo, useEffect } from "react";
-
 import { Grid, Stack } from "@mui/material";
+import { useCallback, useState, useMemo, useEffect } from "react";
 
 import get from "lodash/get";
 import set from "lodash/set";
@@ -13,51 +12,45 @@ import pick from "lodash/pick";
 import has from "lodash/has";
 import isEmpty from "lodash/isEmpty";
 
+import { transformUrl } from "libs";
+import { CUSTOMERS, TYPE } from "routes";
+import { transformCustomerTypeData } from "./utils";
+import { usePermission, useNotification } from "hooks";
 import { Card, BackButton, LoadingButton, LoadingDynamic as Loading } from "components";
 
-import {
-  customerTypeSchema,
-  defaultCustomerTypeFormState,
-  CustomerTypeSchemaProps,
-} from "yups";
-import CustomerTypeForm from "./components/CustomerTypeForm";
-import { usePermission, useNotification } from "hooks";
-import DynamicMessage from "messages";
-import { transformCustomerTypeData } from "./utils";
-import { CUSTOMERS, TYPE } from "routes";
-import { CUSTOMER_TYPE } from "apis";
-import { transformUrl } from "libs";
 import axios from "axios.config";
+import DynamicMessage from "messages";
+import CustomerTypeForm from "./components/CustomerTypeForm";
 
-import { CUSTOMER_TYPE_ITEM } from "interfaces";
 import {
   ADMIN_CUSTOMERS_TYPES_POST_YUP_RESOLVER,
   ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE,
 } from "__generated__/POST_YUP";
 import { ADMIN_CUSTOMERS_TYPES_END_POINT } from "__generated__/END_POINT";
+import { ADMIN_CUSTOMERS_TYPES_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 const EditType = () => {
   const router = useRouter();
-
   const [isReady, setIsReady] = useState(false);
 
   const [defaultValues, setDefaultValues] =
     useState<ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE>();
 
-  const { data: rootData, mutate: rootMutate } = useSWR<CUSTOMER_TYPE_ITEM>(() => {
-    const id = router.query.id;
+  const { data: rootData, mutate: rootMutate } =
+    useSWR<ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE>(() => {
+      const id = router.query.id;
 
-    if (id == undefined) return;
+      if (id == undefined) return;
 
-    const params = {
-      use_cache: false,
-      nested_depth: 3,
-    };
-    return transformUrl(`${ADMIN_CUSTOMERS_TYPES_END_POINT}${id}`, params);
-  });
+      const params = {
+        use_cache: false,
+        nested_depth: 3,
+      };
+      return transformUrl(`${ADMIN_CUSTOMERS_TYPES_END_POINT}${id}`, params);
+    });
 
   const { data: cusomterTypeData, mutate: customerTypeMutate } = useSWR<
-    CUSTOMER_TYPE_ITEM[]
+    ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE[]
   >(() => {
     const params = {
       get_all: true,
@@ -70,9 +63,9 @@ const EditType = () => {
   useEffect(() => {
     if (rootData) {
       const body = pick(rootData, [
-        ...Object.keys(defaultCustomerTypeFormState()),
+        ...Object.keys(ADMIN_CUSTOMERS_TYPES_POST_DEFAULT_VALUE),
         "id",
-      ]) as CustomerTypeSchemaProps;
+      ]) as ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE;
 
       setDefaultValues(body);
     }
@@ -80,7 +73,6 @@ const EditType = () => {
 
   useEffect(() => {
     if (cusomterTypeData == undefined || isEmpty(defaultValues)) return;
-
     const parentId = get(defaultValues, "parent");
 
     if (isReady) return;
@@ -91,7 +83,7 @@ const EditType = () => {
     }
 
     const idx = cusomterTypeData.findIndex((el) => {
-      return el.id === parentId;
+      return router.query.id === parentId;
     });
 
     if (idx > -1) {
@@ -111,7 +103,7 @@ const EditType = () => {
   }, [cusomterTypeData, defaultValues, isReady]);
 
   const transformedData = useMemo(() => {
-    return transformCustomerTypeData(cusomterTypeData);
+    return transformCustomerTypeData(cusomterTypeData as any);
   }, [cusomterTypeData]);
 
   const onSuccessHandler = useCallback(async () => {
@@ -139,7 +131,7 @@ const EditType = () => {
 
 type RootComponentProps = {
   defaultValues: ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE;
-  transformedData: CUSTOMER_TYPE_ITEM[];
+  transformedData: ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE[];
   onSuccessHandler: () => Promise<void>;
 };
 

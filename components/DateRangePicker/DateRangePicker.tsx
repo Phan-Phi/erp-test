@@ -3,10 +3,10 @@ import { Box, Button, Popover, Stack, styled, useTheme } from "@mui/material";
 
 import {
   Range,
+  defaultInputRanges,
+  defaultStaticRanges,
   DateRangePickerProps,
   DateRangePicker as OriginalDateRangePicker,
-  defaultStaticRanges,
-  defaultInputRanges,
 } from "react-date-range";
 
 import { useToggle } from "hooks";
@@ -15,7 +15,7 @@ import { formatDate } from "libs";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { InputBase } from "components/Input/InputBase";
-import { endOfYear, isSameDay, startOfYear } from "date-fns";
+import { endOfYear, isSameDay, startOfYear, startOfWeek, endOfWeek } from "date-fns";
 
 const DateRangePicker = (
   props: DateRangePickerProps & {
@@ -40,13 +40,21 @@ const DateRangePicker = (
       "Last Month": "Tháng trước",
     };
 
-    return defaultStaticRanges.map((el) => {
+    const result = defaultStaticRanges.map((el) => {
       const oldLabel = el.label;
+
       return {
         ...el,
         label: oldLabel ? newLabel[oldLabel] : oldLabel,
       };
     });
+
+    result[2].range = () => ({
+      startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
+      endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
+    });
+
+    return result;
   }, []);
 
   const newDefaultInputRanges = useMemo(() => {

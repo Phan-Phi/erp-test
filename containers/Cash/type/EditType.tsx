@@ -1,31 +1,25 @@
-import useSWR from "swr";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
+import { Grid, Stack } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 
+import useSWR from "swr";
 import get from "lodash/get";
 import pick from "lodash/pick";
 import isEmpty from "lodash/isEmpty";
 
-import { Grid, Stack } from "@mui/material";
-
-import {
-  transactionTypeSchema,
-  defaultTransactionTypeFormState,
-  TransactionTypSchemaProps,
-} from "yups";
-
+import { transformUrl } from "libs";
+import { CASHES, TYPE } from "routes";
+import { CASH_TRANSACTION_TYPE } from "apis";
+import { useNotification, usePermission } from "hooks";
 import { Card, LoadingDynamic as Loading, BackButton, LoadingButton } from "components";
 
-import TransactionTypeForm from "./components/TransactionTypeForm";
-import DynamicMessage from "messages";
-import { CASH_TRANSACTION_TYPE } from "apis";
-import { CASHES, TYPE } from "routes";
-import { useNotification, usePermission } from "hooks";
-import { transformUrl } from "libs";
 import axios from "axios.config";
+import DynamicMessage from "messages";
+import TransactionTypeForm from "./components/TransactionTypeForm";
+
 import {
   ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_RESOLVER,
   ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_SCHEMA_TYPE,

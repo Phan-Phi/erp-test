@@ -1,4 +1,3 @@
-import { useIntl } from "react-intl";
 import { Range } from "react-date-range";
 import { useReactToPrint } from "react-to-print";
 import { endOfWeek, startOfWeek } from "date-fns";
@@ -6,24 +5,26 @@ import { cloneDeep, get, omit, set } from "lodash";
 import { Grid, Typography, Stack, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
 
+import { useIntl } from "react-intl";
 import { EXPORTS, INVOICE } from "routes";
 import { usePermission, useToggle } from "hooks";
-import { PrintButton, ExportButton, LoadingDialog } from "components";
-import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
-
-import Filter from "./Filter";
 import { ConvertTimeFrameType } from "libs/dateUtils";
 import { ViewTypeForStaff } from "./ViewTypeForStaff";
 import { DisplayCard } from "../components/DisplayCard";
 import { StaffReportByTable } from "./StaffReportByTable";
 import { StaffReportByChart } from "./StaffReportByChart";
+import { PrintButton, ExportButton, LoadingDialog } from "components";
+import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
+
+import Filter from "./Filter";
+import { ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 export interface FilterProps {
   date_start: number | null;
   date_end: number | null;
   timeFrame: ConvertTimeFrameType;
   name: string;
-  purchase_channel: string | null;
+  purchase_channel: ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1 | null;
 }
 
 export type PartnerFilterType = {
@@ -31,7 +32,7 @@ export type PartnerFilterType = {
   range: Range;
   page: number;
   page_size: number;
-  purchase_channel: any;
+  purchase_channel: ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1 | null;
   with_count: boolean;
 };
 
@@ -43,8 +44,8 @@ const defaultFilterValue: PartnerFilterType = {
   page_size: 25,
   search: "",
   range: {
-    startDate: startOfWeek(new Date()),
-    endDate: endOfWeek(new Date()),
+    startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
+    endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
     key: "range",
   },
 };
@@ -66,25 +67,8 @@ const StaffReport = () => {
   const [viewType, setViewType] = useState<"sale" | "profit">("sale");
   const [displayType, setDisplayType] = useState<"chart" | "table">("chart");
 
-  // const printHandler = useReactToPrint({
-  //   content: () => printComponentRef.current,
-  //   onBeforeGetContent: () => {
-  //     if (displayType === "chart") return;
-
-  //     return new Promise((resolve) => {
-  //       onOpen();
-  //       setIsPrinting(true);
-  //       promiseResolveRef.current = resolve;
-  //     });
-  //   },
-  //   onAfterPrint: () => {
-  //     setIsPrinting(false);
-  //   },
-  // });
-
   const printHandler = useReactToPrint({
     content: () => {
-    
       return printComponentRef.current;
     },
   });
@@ -96,15 +80,6 @@ const StaffReport = () => {
   const onIsDoneHandler = useCallback(() => {
     promiseResolveRef.current?.();
     onClose();
-  }, []);
-
-  const onSetFilterHandler = useCallback((newFilter: Partial<FilterProps>) => {
-    setFilter((prev) => {
-      return {
-        ...prev,
-        ...newFilter,
-      };
-    });
   }, []);
 
   const onFilterDateHandler = useCallback(
@@ -232,8 +207,6 @@ const StaffReport = () => {
 
           {hasPermission && <ExportButton onClick={onGotoExportFileHandler} />}
           <DisplayCard value={displayType} onChange={setDisplayType} />
-
-          {/* <FilterByPurchaseChannel onChange={onSetFilterHandler} /> */}
 
           <ViewTypeForStaff value={viewType} onChange={setViewType} />
           <Filter

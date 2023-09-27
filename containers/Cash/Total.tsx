@@ -1,9 +1,9 @@
 import useSWR from "swr";
-import { useIntl } from "react-intl";
-import { Typography, Box, Stack } from "@mui/material";
 import { omit } from "lodash";
+import { Typography, Box, Stack } from "@mui/material";
 
 import { transformUrl } from "libs";
+import { useIntl } from "react-intl";
 import { CASH, CASH_TRANSACTION_TYPE, CASH_PAYMENT_METHOD } from "apis";
 import { FailToLoad, FormatNumber, LoadingDynamic as Loading } from "components";
 
@@ -120,30 +120,3 @@ const Total = ({ params }) => {
 };
 
 export default Total;
-// const Total = ({ params }) => {
-//   console.log("🚀 ~ file: Total.tsx:10 ~ Total ~ params:", params);
-//   const { messages } = useIntl();
-
-//   const { data: cashData, error: cashError } = useSWR(() => {
-//     const { type, payment_method, range } = params;
-
-//     if (type) {
-//       return transformUrl(`${CASH_TRANSACTION_TYPE}${type}`, {
-//         date_start: range.startDate,
-//         date_end: range.endDate,
-//       });
-//     }
-
-//     if (payment_method) {
-//       return transformUrl(`${CASH_PAYMENT_METHOD}${payment_method}`, {
-//         date_start: range.startDate,
-//         date_end: range.endDate,
-//       });
-//     }
-
-//     return transformUrl(CASH, {
-//       ...params,
-//       date_start: range.startDate,
-//       date_end: range.endDate,
-//     });
-//   });

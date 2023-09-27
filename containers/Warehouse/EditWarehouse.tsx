@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
-import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
+import { Grid, Stack } from "@mui/material";
 import { useCallback, useState, useEffect, Fragment } from "react";
 
 import get from "lodash/get";
@@ -11,45 +11,37 @@ import set from "lodash/set";
 import pick from "lodash/pick";
 import isEmpty from "lodash/isEmpty";
 
-import { Grid, Stack } from "@mui/material";
-
-import WarehouseAddressForm from "./components/WarehouseAddressForm";
-import { transformUrl, convertValueToTupleForAddress } from "libs";
-import WarehouseForm from "./components/WarehouseForm";
-import { WAREHOUSE, WAREHOUSE_ADDRESS } from "apis";
-import DynamicMessage from "messages";
-import { usePermission } from "hooks";
 import { WAREHOUSES } from "routes";
+import { usePermission } from "hooks";
+import { useSnackbar } from "notistack";
+import { WAREHOUSE, WAREHOUSE_ADDRESS } from "apis";
+import { transformUrl, convertValueToTupleForAddress } from "libs";
+import { Card, LoadingButton, BackButton, LoadingDynamic as Loading } from "components";
+
 import axios from "axios.config";
+import DynamicMessage from "messages";
+import WarehouseForm from "./components/WarehouseForm";
+import WarehouseAddressForm from "./components/WarehouseAddressForm";
 
-import {
-  FailToLoad,
-  Card,
-  LoadingButton,
-  BackButton,
-  LoadingDynamic as Loading,
-} from "components";
-
-import {
-  warehouseSchema,
-  warehouseAddressSchema,
-  defaultWarehouseAddressFormState,
-  defaultWarehouseFormState,
-  WarehouseSchemaProps,
-  WarehouseAddressSchemaProps,
-} from "yups";
 import {
   ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_RESOLVER,
+  ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE,
   ADMIN_WAREHOUSES_POST_YUP_RESOLVER,
+  ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE,
 } from "__generated__/POST_YUP";
+import {
+  ADMIN_WAREHOUSES_ADDRESSES_POST_DEFAULT_VALUE,
+  ADMIN_WAREHOUSES_POST_DEFAULT_VALUE,
+} from "__generated__/POST_DEFAULT_VALUE";
 
 const EditWarehouse = () => {
   const router = useRouter();
   const isMounted = useMountedState();
 
-  const [defaultValues, setDefaultValues] = useState<WarehouseSchemaProps>();
+  const [defaultValues, setDefaultValues] =
+    useState<ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE>();
   const [defaultAddressValues, setDefaultAddressValues] =
-    useState<WarehouseAddressSchemaProps>();
+    useState<ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE>();
 
   let {
     data: warehouseData,
@@ -70,9 +62,9 @@ const EditWarehouse = () => {
     if (warehouseData == undefined) return;
 
     const data = pick(warehouseData, [
-      ...Object.keys(defaultWarehouseFormState()),
+      ...Object.keys(ADMIN_WAREHOUSES_POST_DEFAULT_VALUE),
       "id",
-    ]) as WarehouseSchemaProps;
+    ]) as ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE;
 
     setDefaultValues(data);
 
@@ -80,9 +72,9 @@ const EditWarehouse = () => {
 
     if (!isEmpty(primaryAddress)) {
       let addressData = pick(primaryAddress, [
-        ...Object.keys(defaultWarehouseAddressFormState()),
+        ...Object.keys(ADMIN_WAREHOUSES_ADDRESSES_POST_DEFAULT_VALUE),
         "id",
-      ]) as WarehouseAddressSchemaProps;
+      ]) as ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE;
 
       convertValueToTupleForAddress(primaryAddress).then((data) => {
         if (data && isMounted()) {
@@ -120,8 +112,8 @@ const EditWarehouse = () => {
 };
 
 type RootComponentProps = {
-  defaultValues: WarehouseSchemaProps;
-  defaultAddressValues: WarehouseAddressSchemaProps;
+  defaultValues: ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE;
+  defaultAddressValues: ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE;
   onSuccessHandler: () => Promise<void>;
 };
 
@@ -154,7 +146,7 @@ const RootComponent = ({
     formState: { dirtyFields: warehouseAddressDirtyFields },
   } = useForm({
     defaultValues: defaultAddressValues,
-    resolver: warehouseAddressSchema(),
+    resolver: ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_RESOLVER,
   });
 
   const onSubmit = useCallback(
@@ -164,9 +156,9 @@ const RootComponent = ({
       addressData,
       addressDirtyFields,
     }: {
-      data: WarehouseSchemaProps;
+      data: ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE;
       dirtyFields: object;
-      addressData: WarehouseAddressSchemaProps;
+      addressData: ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE;
       addressDirtyFields: object;
     }) => {
       try {

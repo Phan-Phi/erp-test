@@ -1,11 +1,12 @@
 import { Row } from "react-table";
-import React, { useState, Fragment, useEffect, useCallback, useMemo } from "react";
-
 import { cloneDeep } from "lodash";
 import { Box } from "@mui/material";
+import { useState, Fragment, useEffect, useCallback, useMemo } from "react";
+
+import InvoiceTable from "./table/InvoiceTable";
+import { LoadingDynamic as Loading } from "components";
 
 import { useFetch } from "hooks";
-import InvoiceTable from "./table/InvoiceTable";
 import { setFilterValue, transformUrl } from "libs";
 import { ADMIN_ORDERS_INVOICES_QUANTITIES_END_POINT } from "__generated__/END_POINT";
 
@@ -77,6 +78,8 @@ export default function Invoice({ id, onGotoHandler }: Props) {
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Fragment>

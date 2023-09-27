@@ -7,7 +7,13 @@ import { cloneDeep, get } from "lodash";
 import { Stack, Box } from "@mui/material";
 
 import CreateOrderedItemTable from "../table/CreateOrderedItemTable";
-import { LoadingButton, Dialog, BackButton, SearchField } from "components";
+import {
+  LoadingButton,
+  Dialog,
+  BackButton,
+  SearchField,
+  LoadingDynamic as Loading,
+} from "components";
 
 import { PRODUCTS } from "routes";
 import DynamicMessage from "messages";
@@ -30,6 +36,7 @@ export type CreateOrderItemDialogFilterType = {
   partner: number | undefined;
   not_in_purchase_order: string | undefined;
   search: string;
+  nested_depth: number;
 };
 
 const defaultFilterValue: CreateOrderItemDialogFilterType = {
@@ -40,6 +47,7 @@ const defaultFilterValue: CreateOrderItemDialogFilterType = {
   partner: undefined,
   not_in_purchase_order: undefined,
   search: "",
+  nested_depth: 3,
 };
 
 interface CreateOrderItemDialogProps {
@@ -188,6 +196,8 @@ const CreateOrderItemDialog = ({
     },
     []
   );
+
+  if (dataTable == undefined) return <Loading />;
 
   return (
     <Dialog

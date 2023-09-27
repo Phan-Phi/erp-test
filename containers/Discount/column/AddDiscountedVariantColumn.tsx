@@ -4,13 +4,14 @@ import get from "lodash/get";
 
 import { CellProps, Column } from "react-table";
 import { PropsWithChildren } from "react";
+
+import { Link } from "components";
 import {
   TableCellForAvatar,
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { Link } from "components";
+} from "components/TableV3";
 
 export const keys = ["selection", "primary_image", "productName"];
 

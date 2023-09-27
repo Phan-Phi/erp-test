@@ -5,51 +5,48 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
 import { parseISO, formatISO } from "date-fns";
-import { useEffect, useState, useCallback, Fragment, useMemo } from "react";
-
 import { Box, Grid, Typography, Stack, Button } from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
+import { useEffect, useState, useCallback, Fragment, useMemo } from "react";
 
 import get from "lodash/get";
 import set from "lodash/set";
 import pick from "lodash/pick";
 import omit from "lodash/omit";
 import isEmpty from "lodash/isEmpty";
-
-import { USER, USER_ADDRESS } from "apis";
-
-import { DETAIL, CREATE, EDIT, USERS, ASSIGN_PERMISSION } from "routes";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
-  LoadingDynamic as Loading,
   Card,
+  Container,
   BackButton,
+  DeleteButton,
   LoadingButton,
   AddressDetail,
-  Container,
-  DeleteButton,
+  LoadingDynamic as Loading,
 } from "components";
 
-import { usePermission, useChoice, useConfirmation, useNotification } from "hooks";
-import {
-  defaultUserFormState,
-  UserAddressSchemaProps,
-  userSchema,
-  UserSchemaProps,
-} from "yups";
-import DynamicMessage from "messages";
-import UserForm from "./components/UserForm";
-import axios from "axios.config";
-
-import { USER_ITEM, USER_ADDRESS_ITEM } from "interfaces";
 import {
   transformUrl,
-  convertValueToTupleForAddress,
   transformJSONToFormData,
+  convertValueToTupleForAddress,
 } from "libs";
-import { ADMIN_USERS_ADDRESSES_END_POINT } from "__generated__/END_POINT";
-import { ADMIN_USERS_POST_YUP_RESOLVER } from "__generated__/POST_YUP";
+import { DETAIL, CREATE, EDIT, USERS, ASSIGN_PERMISSION } from "routes";
+import { usePermission, useChoice, useConfirmation, useNotification } from "hooks";
+
+import axios from "axios.config";
+import DynamicMessage from "messages";
+import UserForm from "./components/UserForm";
+
+import {
+  ADMIN_USERS_END_POINT,
+  ADMIN_USERS_ADDRESSES_END_POINT,
+} from "__generated__/END_POINT";
+import {
+  ADMIN_USERS_POST_YUP_RESOLVER,
+  ADMIN_USERS_POST_YUP_SCHEMA_TYPE,
+  ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
+import { ADMIN_USERS_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 const CreateAddress = dynamic(() => import("./components/CreateAddress"), {
   loading: () => {
@@ -73,11 +70,12 @@ const UserDetail = () => {
 
   const isMounted = useMountedState();
 
-  const [defaultUserValues, setDefaultUserValues] = useState<UserSchemaProps>();
+  const [defaultUserValues, setDefaultUserValues] =
+    useState<ADMIN_USERS_POST_YUP_SCHEMA_TYPE>();
   const [transformedAddressListData, setTransformedAddressListData] =
-    useState<UserAddressSchemaProps[]>();
+    useState<ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE[]>();
 
-  const { data: userData, mutate: userMutate } = useSWR<USER_ITEM>(() => {
+  const { data: userData, mutate: userMutate } = useSWR<any>(() => {
     const id = get(router, "query.ids[0]");
 
     if (id) {
@@ -85,13 +83,11 @@ const UserDetail = () => {
         use_cache: false,
       };
 
-      return transformUrl(`${USER}${id}`, params);
+      return transformUrl(`${ADMIN_USERS_END_POINT}${id}`, params);
     }
   });
 
-  const { data: userAddressData, mutate: userAddressMutate } = useSWR<
-    USER_ADDRESS_ITEM[]
-  >(() => {
+  const { data: userAddressData, mutate: userAddressMutate } = useSWR<any>(() => {
     const id = get(router, "query.ids[0]");
 
     if (id) {
@@ -110,9 +106,13 @@ const UserDetail = () => {
       return;
     }
 
-    const data = {} as UserSchemaProps;
+    const data = {} as ADMIN_USERS_POST_YUP_SCHEMA_TYPE;
 
-    const keyList = [...Object.keys(defaultUserFormState()), "id", "is_superuser"];
+    const keyList = [
+      ...Object.keys(ADMIN_USERS_POST_DEFAULT_VALUE),
+      "id",
+      "is_superuser",
+    ];
 
     keyList.forEach((key) => {
       set(data, key, userData[key]);
@@ -158,7 +158,9 @@ const UserDetail = () => {
     ).then((responseArr) => {
       if (!isMounted()) return;
 
-      setTransformedAddressListData(responseArr as any[] as UserAddressSchemaProps[]);
+      setTransformedAddressListData(
+        responseArr as any[] as ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE[]
+      );
     });
   }, [userAddressData]);
 
@@ -190,8 +192,8 @@ const UserDetail = () => {
 };
 
 interface RootComponentProps {
-  defaultUserValues: UserSchemaProps;
-  transformedAddressListData: UserAddressSchemaProps[];
+  defaultUserValues: ADMIN_USERS_POST_YUP_SCHEMA_TYPE;
+  transformedAddressListData: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE[];
   onSuccessHandler: () => Promise<void>;
   onUpdateAddressHandler: () => Promise<void>;
 }
@@ -285,7 +287,13 @@ const RootComponent = ({
   }, []);
 
   const onSubmit = useCallback(
-    async ({ data, dirtyFields }: { data: UserSchemaProps; dirtyFields: object }) => {
+    async ({
+      data,
+      dirtyFields,
+    }: {
+      data: ADMIN_USERS_POST_YUP_SCHEMA_TYPE;
+      dirtyFields: object;
+    }) => {
       try {
         if (!isEmpty(dirtyFields)) {
           const userId = get(data, "id");
@@ -324,7 +332,6 @@ const RootComponent = ({
           const birthday = get(data, "birthday");
 
           if (birthday && birthday instanceof Date) {
-
             set(data, "birthday", formatISO(birthday));
           }
 
@@ -332,11 +339,11 @@ const RootComponent = ({
             set(data, "avatar", null);
             const body = pick(data, Object.keys(dirtyFields));
 
-            await axios.patch(`${USER}${userId}/`, body);
+            await axios.patch(`${ADMIN_USERS_END_POINT}${userId}/`, body);
           } else {
             const formData = transformJSONToFormData(data, dirtyFields);
 
-            await axios.patch(`${USER}${userId}/`, formData, {
+            await axios.patch(`${ADMIN_USERS_END_POINT}${userId}/`, formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
               },
@@ -372,11 +379,13 @@ const RootComponent = ({
       try {
         const userId = router.query.ids?.[0];
 
-        const { data: resData } = await axios.get(`${USER}${userId}/reset-password/`);
+        const { data: resData } = await axios.get(
+          `${ADMIN_USERS_END_POINT}${userId}/reset-password/`
+        );
 
         const token = get(resData, "token");
 
-        await axios.post(`${USER}${userId}/reset-password/`, {
+        await axios.post(`${ADMIN_USERS_END_POINT}${userId}/reset-password/`, {
           token,
         });
 
@@ -399,7 +408,7 @@ const RootComponent = ({
 
         const userId = get(router, "query.ids.[0]");
 
-        await axios.delete(`${USER}${userId}/`);
+        await axios.delete(`${ADMIN_USERS_END_POINT}${userId}/`);
 
         enqueueSnackbarWithSuccess(
           formatMessage(DynamicMessage.deleteSuccessfully, {

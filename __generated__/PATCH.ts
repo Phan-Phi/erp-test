@@ -1440,25 +1440,20 @@ export const ADMIN_PRODUCTS_VARIANTS_WITH_ID_PATCH_SCHEMA = {
 export const ADMIN_PRODUCTS_WITH_ID_PATCH_SCHEMA = {
   type: "object",
   properties: {
-    is_published: { required: false, type: "boolean", default: false },
-    publication_date: {
-      required: false,
-      type: "string",
-      format: "date-time",
-      default: "2023-09-18T18:14:31.582884+07:00",
-    },
-    available_for_purchase: {
-      required: false,
-      type: "string",
-      format: "date-time",
-      default: "2023-09-18T18:14:31.583111+07:00",
-    },
+    publication_date: { required: false, type: "string", format: "date-time" },
+    is_published: { required: false, type: "boolean" },
     meta_title: { required: false, type: "string", maxLength: 255 },
     meta_description: { required: false, type: "string" },
     seo_title: { required: false, type: "string", maxLength: 70 },
     seo_description: { required: false, type: "string", maxLength: 300 },
     name: { required: true, type: "string", maxLength: 250, minLength: 1 },
     description: { required: false, type: "string" },
+    available_for_purchase: {
+      required: false,
+      type: "string",
+      format: "date-time",
+      nullable: true,
+    },
   },
   additionalProperties: false,
 };
@@ -2644,6 +2639,19 @@ export const ADMIN_WAREHOUSES_OUT_NOTES_WITH_ID_PATCH_SCHEMA = {
       type: "string",
       enum: ["Draft", "Confirmed"],
       default: "Draft",
+    },
+    direction: { required: false, type: "string", enum: ["in", "out"] },
+    reason: {
+      required: false,
+      type: "string",
+      enum: [
+        "customer_return",
+        "partner_return",
+        "ecommerce_return",
+        "storage_miss_match",
+        "product_expiration",
+        "other",
+      ],
     },
     shipping_incl_tax: { required: false, type: "string", format: "decimal" },
     shipping_excl_tax: { required: false, type: "string", format: "decimal" },

@@ -1,25 +1,23 @@
-import { useIntl } from "react-intl";
 import { useCallback } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
 import { Grid, Stack } from "@mui/material";
 
-import {
-  transactionTypeSchema,
-  TransactionTypSchemaProps,
-  defaultTransactionTypeFormState,
-} from "yups";
 import { CASHES, TYPE } from "routes";
-import { CASH_TRANSACTION_TYPE } from "apis";
 import { usePermission, useNotification } from "hooks";
 import { Card, BackButton, LoadingButton } from "components";
 import { ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT } from "__generated__/END_POINT";
+import {
+  ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_RESOLVER,
+  ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
+import { ADMIN_CASH_TRANSACTIONS_TYPES_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 import axios from "axios.config";
 import DynamicMessage from "messages";
 import TransactionTypeForm from "./components/TransactionTypeForm";
-import { ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_RESOLVER } from "__generated__/POST_YUP";
 
 const CreateType = () => {
   const { hasPermission: writePermission } = usePermission("write_transaction_type");
@@ -32,32 +30,34 @@ const CreateType = () => {
     useNotification();
 
   const { control, handleSubmit } = useForm({
-    defaultValues: defaultTransactionTypeFormState(),
-    // resolver: transactionTypeSchema(),
+    defaultValues: ADMIN_CASH_TRANSACTIONS_TYPES_POST_DEFAULT_VALUE,
     resolver: ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_RESOLVER,
   });
 
-  const onSubmit = useCallback(async ({ data }: { data: TransactionTypSchemaProps }) => {
-    setLoading(true);
+  const onSubmit = useCallback(
+    async ({ data }: { data: ADMIN_CASH_TRANSACTIONS_TYPES_POST_YUP_SCHEMA_TYPE }) => {
+      setLoading(true);
 
-    try {
-      await axios.post(ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT, data);
+      try {
+        await axios.post(ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT, data);
 
-      enqueueSnackbarWithSuccess(
-        formatMessage(DynamicMessage.createSuccessfully, {
-          content: "loại transaction",
-        })
-      );
+        enqueueSnackbarWithSuccess(
+          formatMessage(DynamicMessage.createSuccessfully, {
+            content: "loại transaction",
+          })
+        );
 
-      router.replace(`/${CASHES}/${TYPE}`);
-    } catch (err) {
-      enqueueSnackbarWithError(err);
-    } finally {
-      if (isMounted()) {
-        setLoading(false);
+        router.replace(`/${CASHES}/${TYPE}`);
+      } catch (err) {
+        enqueueSnackbarWithError(err);
+      } finally {
+        if (isMounted()) {
+          setLoading(false);
+        }
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   return (
     <Grid container>

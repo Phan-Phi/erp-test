@@ -25,7 +25,9 @@ import {
   ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1,
   ADMIN_SHIPPING_SHIPPING_METHOD_VIEW_TYPE_V1,
 } from "__generated__/apiType_v1";
+
 import { ADMIN_ORDERS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
+import { isEmpty } from "lodash";
 
 interface OrderFormProps {
   control: any;
@@ -112,8 +114,20 @@ const OrderForm = (props: OrderFormProps) => {
                   getOptionLabel: (option) => option.name,
                   renderOption: (props, option) => {
                     return (
-                      <MenuItem {...props} value={option.id} children={option.name} />
+                      <MenuItem
+                        {...props}
+                        key={option.id}
+                        value={option.id}
+                        children={option.name}
+                      />
                     );
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                 }}
               />
@@ -146,8 +160,20 @@ const OrderForm = (props: OrderFormProps) => {
                   getOptionLabel: (option) => option.name,
                   renderOption: (props, option) => {
                     return (
-                      <MenuItem {...props} value={option.id} children={option.name} />
+                      <MenuItem
+                        {...props}
+                        key={option.id}
+                        value={option.id}
+                        children={option.name}
+                      />
                     );
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                 }}
               />
@@ -201,6 +227,13 @@ const OrderForm = (props: OrderFormProps) => {
                     }
 
                     return <MenuItem {...props} value={option.id} children={value} />;
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                 }}
               />

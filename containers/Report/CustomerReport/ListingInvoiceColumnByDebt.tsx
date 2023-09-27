@@ -6,8 +6,8 @@ import get from "lodash/get";
 
 import { formatDate, getDisplayValueFromChoiceItem } from "libs";
 import { NumberFormat } from "components";
-import { WrapperTableCell } from "components/TableV2";
 import { useChoice } from "hooks";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = ["sid", "time", "transactionType", "debt_amount", "endDebt"];
 

@@ -2,23 +2,26 @@ import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
-
 import { useCallback, useContext } from "react";
 
+import { set } from "lodash";
 import { Stack } from "@mui/material";
 
-import get from "lodash/get";
-import set from "lodash/set";
-
+import InvoiceForm from "./InvoiceForm";
 import { LoadingButton, BackButton, Dialog } from "components";
-import { invoiceSchema, defaultInvoiceFormState, InvoiceSchemaProps } from "yups";
 
-import { usePermission, useChoice, useNotification } from "hooks";
+import axios from "axios.config";
 import DynamicMessage from "messages";
 import { InvoiceContext } from "../context";
-import { ORDER_INVOICE } from "apis";
-import axios from "axios.config";
-import InvoiceForm from "./InvoiceForm";
+import { usePermission, useNotification } from "hooks";
+
+import {
+  ADMIN_ORDERS_INVOICES_POST_YUP_RESOLVER,
+  ADMIN_ORDERS_INVOICES_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
+
+import { ADMIN_ORDERS_INVOICES_END_POINT } from "__generated__/END_POINT";
+import { ADMIN_ORDERS_INVOICES_POST_DEFAULT_VALUE } from "__generated__/POST_DEFAULT_VALUE";
 
 interface InvoiceDialogProps {
   open: boolean;
@@ -28,7 +31,6 @@ interface InvoiceDialogProps {
 const InvoiceDialog = ({ open, toggle }: InvoiceDialogProps) => {
   const { hasPermission: writePermission } = usePermission("write_invoice");
 
-  const choice = useChoice();
   const router = useRouter();
 
   const isMounted = useMountedState();
@@ -40,22 +42,16 @@ const InvoiceDialog = ({ open, toggle }: InvoiceDialogProps) => {
   const invoiceContext = useContext(InvoiceContext);
 
   const { control, handleSubmit, reset } = useForm({
-    defaultValues: defaultInvoiceFormState(choice),
-    resolver: invoiceSchema(choice),
+    defaultValues: ADMIN_ORDERS_INVOICES_POST_DEFAULT_VALUE,
+    resolver: ADMIN_ORDERS_INVOICES_POST_YUP_RESOLVER,
   });
 
   const onSubmit = useCallback(
-    async ({ data }: { data: InvoiceSchemaProps }) => {
+    async ({ data }: { data: ADMIN_ORDERS_INVOICES_POST_YUP_SCHEMA_TYPE }) => {
       setLoading(true);
 
-      const shipper = get(data, "shipper.id");
-
-      if (shipper) {
-        set(data, "shipper", shipper);
-      }
-
       try {
-        await axios.post(ORDER_INVOICE, data);
+        await axios.post(ADMIN_ORDERS_INVOICES_END_POINT, data);
 
         enqueueSnackbarWithSuccess(
           formatMessage(DynamicMessage.createSuccessfully, {
@@ -68,7 +64,7 @@ const InvoiceDialog = ({ open, toggle }: InvoiceDialogProps) => {
 
         toggle(false);
 
-        reset(defaultInvoiceFormState(choice), {
+        reset(ADMIN_ORDERS_INVOICES_POST_DEFAULT_VALUE, {
           keepDirty: false,
         });
       } catch (err) {

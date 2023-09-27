@@ -5,7 +5,7 @@ import { CellProps, Column } from "react-table";
 import get from "lodash/get";
 
 import { NumberFormat, Link } from "components";
-import { WrapperTableCell } from "components/TableV2";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = ["seller", "revenue", "returnValue", "net_revenue"];
 

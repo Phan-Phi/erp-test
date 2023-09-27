@@ -28,7 +28,6 @@ import { ADMIN_PRODUCTS_TYPES_POST_DEFAULT_VALUE } from "__generated__/POST_DEFA
 
 export interface DEFAULT_VALUES_EXTENDS_TYPE
   extends ADMIN_PRODUCTS_TYPES_WITH_ID_PATCH_YUP_SCHEMA_TYPE {
-  id?: number;
   tax_rate: any;
 }
 

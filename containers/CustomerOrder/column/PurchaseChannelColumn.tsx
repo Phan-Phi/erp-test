@@ -6,13 +6,13 @@ import get from "lodash/get";
 
 import { Skeleton, Stack } from "@mui/material";
 
+import { DeleteButton, ViewButton } from "components";
+import { EDIT, ORDERS, PURCHASE_CHANNEL } from "routes";
 import {
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { DeleteButton, ViewButton } from "components";
-import { EDIT, ORDERS, PURCHASE_CHANNEL } from "routes";
+} from "components/TableV3";
 
 export const keys = ["selection", "purchaseChannelName", "action"];
 

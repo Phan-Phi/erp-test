@@ -1,6 +1,7 @@
 import { useIntl } from "react-intl";
 import { Control, Controller } from "react-hook-form";
 
+import { isEmpty } from "lodash";
 import { Grid, MenuItem } from "@mui/material";
 
 import { Switch } from "components";
@@ -64,6 +65,13 @@ const InvoiceForm = (props: InvoiceFormProps) => {
                   },
                   getOptionLabel: (option) => {
                     return option.name;
+                  },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
+
+                    return option?.["id"] === value?.["id"];
                   },
                 }}
               />

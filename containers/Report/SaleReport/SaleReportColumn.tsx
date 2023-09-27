@@ -1,16 +1,11 @@
-import { Box, Stack } from "@mui/material";
-import { useSticky } from "react-table-sticky";
-import { useMemo, PropsWithChildren, Fragment } from "react";
-
 import { get } from "lodash";
-import { useChoice } from "hooks";
+import { Box, Stack } from "@mui/material";
+import { FormattedMessage } from "react-intl";
+import { useSticky } from "react-table-sticky";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useTable, useSortBy, CellProps } from "react-table";
-import { formatDate, getDisplayValueFromChoiceItem } from "libs";
+import { useMemo, PropsWithChildren, Fragment } from "react";
 
-import { FormattedMessage } from "react-intl";
-import { CheckButton, DeleteButton, Link, NumberFormat, ViewButton } from "components";
-import { CASHES, EDIT } from "routes";
 import {
   RenderBody,
   RenderHeader,
@@ -21,8 +16,13 @@ import {
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
+
+import { useChoice } from "hooks";
+import { CASHES, EDIT } from "routes";
 import { CommonTableProps } from "interfaces";
+import { formatDate, getDisplayValueFromChoiceItem } from "libs";
 import { ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { CheckButton, DeleteButton, Link, NumberFormat, ViewButton } from "components";
 
 type SaleReportColumnProps = CommonTableProps<ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1> &
   Record<string, any>;

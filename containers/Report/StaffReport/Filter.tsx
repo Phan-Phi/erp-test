@@ -1,18 +1,11 @@
-import get from "lodash/get";
 import { useState } from "react";
-import isEmpty from "lodash/isEmpty";
-import { Stack, Button, Card, CardHeader, CardContent } from "@mui/material";
+import { Stack, Button, Card, CardHeader, CardContent, MenuItem } from "@mui/material";
 
 import { useIntl } from "react-intl";
 import { ORDER_PURCHASE_CHANNEL } from "apis";
 import { LazyAutocomplete } from "compositions";
 import { SearchField, DateRangePicker } from "components";
-
-import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+import { ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 type FilterProps = {
   onFilterByTime: any;
@@ -50,11 +43,14 @@ const Filter = ({
             paddingTop: "0 !important",
           }}
         >
-          <LazyAutocomplete<any>
+          <LazyAutocomplete<ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1>
             {...{
               url: ORDER_PURCHASE_CHANNEL,
               placeholder: "Kênh bán",
               AutocompleteProps: {
+                renderOption(props, option) {
+                  return <MenuItem {...props} value={option.id} children={option.name} />;
+                },
                 getOptionLabel: (option) => {
                   return filter.purchase_channel
                     ? filter.purchase_channel.name

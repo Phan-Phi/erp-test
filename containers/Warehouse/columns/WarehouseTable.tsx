@@ -1,13 +1,11 @@
 import { Box, Stack } from "@mui/material";
 import { useRowSelect } from "react-table";
-import { useSticky } from "react-table-sticky";
-
 import { cloneDeep, get, set } from "lodash";
 import { FormattedMessage } from "react-intl";
+import { useSticky } from "react-table-sticky";
 import { useMemo, PropsWithChildren } from "react";
-import { EDIT, WAREHOUSES } from "routes";
-import { DeleteButton, ViewButton } from "components";
 import { useTable, useSortBy, CellProps } from "react-table";
+
 import {
   RenderBody,
   RenderHeader,
@@ -17,11 +15,13 @@ import {
   TableCellWithFullAddress,
   TableContainer,
   TableHead,
-  TableHeaderForSelection,
   TablePagination,
   WrapperTableCell,
+  TableHeaderForSelection,
 } from "components/TableV3";
+import { EDIT, WAREHOUSES } from "routes";
 import { CommonTableProps } from "interfaces";
+import { DeleteButton, ViewButton } from "components";
 import { ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 type WarehouseTableProps = CommonTableProps<ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1> &
@@ -41,7 +41,6 @@ export default function WarehouseTable(props: WarehouseTableProps) {
     onGotoHandler,
     deleteHandler,
     renderHeaderContentForSelectedRow,
-
     ...restProps
   } = props;
 
@@ -103,7 +102,7 @@ export default function WarehouseTable(props: WarehouseTableProps) {
         Header: <FormattedMessage id={`table.action`} />,
         accessor: "action",
         Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
-          const { row, writePermission, deleteHandler } = props;
+          const { row, writePermission } = props;
 
           const isUsed = get(row, "original.is_used");
 

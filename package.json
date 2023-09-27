@@ -11,7 +11,8 @@
     "compile:intl": "formatjs compile-folder --ast --format simple locale/original locale/compiled-locale",
     "intl": "npm run extract:intl && npm run compile:intl",
     "lint": "next lint",
-    "generate:type": "npx gulp"
+    "generate:type": "npx gulp",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "@mui/material": "^5.10.0",
     "@mui/styles": "^5.9.3",
     "@mui/x-date-pickers": "^5.0.0-beta.7",
+    "@tinymce/tinymce-react": "^4.2.0",
     "@types/babel__traverse": "^7.20.1",
     "axios": "^0.25.0",
     "chance": "^1.1.11",
@@ -84,9 +86,10 @@
     "eslint-config-next": "^12.2.5",
     "glob": "^10.3.4",
     "gulp": "^4.0.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "3.0.3",
     "swagger-typescript-api": "^13.0.3",
-    "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   }
 }

@@ -1,6 +1,5 @@
 import { Row } from "react-table";
 import { cloneDeep } from "lodash";
-import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
 import { Grid, Stack, Typography, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -14,26 +13,22 @@ import {
   useFetch,
 } from "hooks";
 
-import { Sticky } from "hocs";
-import DynamicMessage from "messages";
-import { CASH_PAYMENT_METHOD } from "apis";
-import { CASH_PAYMENT_METHOD_ITEM } from "interfaces";
-import { LoadingButton, TableHeader } from "components";
-import { CREATE, CASHES, PAYMENT_METHOD } from "routes";
-import PaymentMethodColumn from "../column/PaymentMethodColumn";
 import {
-  transformUrl,
   checkResArr,
+  transformUrl,
   deleteRequest,
-  createLoadingList,
   setFilterValue,
+  createLoadingList,
 } from "libs";
 
-import {
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-} from "components/TableV2";
+import { Sticky } from "hocs";
+import { useIntl } from "react-intl";
+import { LoadingButton, TableHeader, WrapperTable } from "components";
+import { CREATE, CASHES, PAYMENT_METHOD } from "routes";
+
+import DynamicMessage from "messages";
 import PaymentMethodColumnV2 from "../column/PaymentMethodColumnV2";
+
 import { ADMIN_CASH_PAYMENT_METHODS_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_CASH_PAYMENT_METHOD_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
@@ -63,7 +58,7 @@ const PaymentMethodList = () => {
 
   const { enqueueSnackbarWithSuccess, enqueueSnackbarWithError } = useNotification();
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<CASH_PAYMENT_METHOD_ITEM>>();
+  const tableInstance = useRef<any>();
 
   useParams({
     initState: {
@@ -73,7 +68,7 @@ const PaymentMethodList = () => {
       if (tableInstance.current) {
         const setUrl = tableInstance.current.setUrl;
 
-        setUrl(transformUrl(CASH_PAYMENT_METHOD, params));
+        setUrl(transformUrl(ADMIN_CASH_PAYMENT_METHODS_END_POINT, params));
       }
     },
   });
@@ -83,20 +78,13 @@ const PaymentMethodList = () => {
       transformUrl(ADMIN_CASH_PAYMENT_METHODS_END_POINT, filter)
     );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<CASH_PAYMENT_METHOD_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
-
   const deleteHandler = useCallback(
-    ({ data }: { data: Row<CASH_PAYMENT_METHOD_ITEM>[] }) => {
+    ({ data }: { data: Row<ADMIN_CASH_PAYMENT_METHOD_VIEW_TYPE_V1>[] }) => {
       const handler = async () => {
         const { list } = createLoadingList(data);
 
         try {
-          const results = await deleteRequest(CASH_PAYMENT_METHOD, list);
+          const results = await deleteRequest(ADMIN_CASH_PAYMENT_METHODS_END_POINT, list);
           const result = checkResArr(results);
 
           if (result) {
@@ -134,7 +122,7 @@ const PaymentMethodList = () => {
 
         // if (key === "range") return;
 
-        changeKey(transformUrl(CASH_PAYMENT_METHOD, cloneFilter));
+        changeKey(transformUrl(ADMIN_CASH_PAYMENT_METHODS_END_POINT, cloneFilter));
       };
     },
     [filter]
@@ -159,73 +147,42 @@ const PaymentMethodList = () => {
               ></TableHeader>
             </Box>
 
-            <PaymentMethodColumnV2
-              data={data ?? []}
-              count={itemCount}
-              isLoading={isLoading}
-              pagination={pagination}
-              onPageChange={onFilterChangeHandler("page")}
-              onPageSizeChange={onFilterChangeHandler("pageSize")}
-              writePermission={writePermission}
-              deleteHandler={deleteHandler}
-              maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
+            <WrapperTable>
+              <PaymentMethodColumnV2
+                data={data ?? []}
+                count={itemCount}
+                isLoading={isLoading}
+                pagination={pagination}
+                onPageChange={onFilterChangeHandler("page")}
+                onPageSizeChange={onFilterChangeHandler("pageSize")}
+                writePermission={writePermission}
+                deleteHandler={deleteHandler}
+                maxHeight={
+                  layoutState.windowHeight - (height + layoutState.sumHeight) - 70
+                }
+                renderHeaderContentForSelectedRow={(tableInstance) => {
+                  const selectedRows = tableInstance.selectedFlatRows;
 
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
+                  return (
+                    <Stack flexDirection="row" columnGap={3} alignItems="center">
+                      <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
+                        length: selectedRows.length,
+                      })}`}</Typography>
 
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            />
-
-            {/* <CompoundTableWithFunction<CASH_PAYMENT_METHOD_ITEM>
-              url={CASH_PAYMENT_METHOD}
-              passHandler={passHandler}
-              columnFn={PaymentMethodColumn}
-              deleteHandler={deleteHandler}
-              writePermission={writePermission}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
-
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
-
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            /> */}
+                      <LoadingButton
+                        onClick={() => {
+                          deleteHandler({
+                            data: selectedRows,
+                          });
+                        }}
+                        color="error"
+                        children={messages["deleteStatus"]}
+                      />
+                    </Stack>
+                  );
+                }}
+              />
+            </WrapperTable>
           </Stack>
         </Sticky>
       </Grid>

@@ -81,12 +81,14 @@ const Line = () => {
         }}
         body={<LineList />}
       />
+
       <CreateLineDialog
         {...{
           open,
           toggle,
         }}
       />
+
       <PrintNote
         {...{
           open: openPrintNote,

@@ -1,19 +1,8 @@
-import {
-  REPORT_TOP_CUSTOMER_BY_DEBT_AMOUNT,
-  REPORT_TOP_CUSTOMER_BY_NET_REVENUE,
-} from "apis";
-import {
-  REPORT_TOP_CUSTOMER_BY_DEBT_AMOUNT_ITEM,
-  REPORT_TOP_CUSTOMER_BY_NET_REVENUE_ITEM,
-} from "interfaces";
-import { transformDate, transformUrl } from "libs";
-import { useIntl } from "react-intl";
-
-import truncate from "lodash/truncate";
-
-import React, { memo } from "react";
 import useSWR from "swr";
+import { memo } from "react";
+import truncate from "lodash/truncate";
 import { Stack, Typography, useTheme } from "@mui/material";
+import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
 
 import {
   BarChart,
@@ -25,7 +14,19 @@ import {
 } from "components";
 
 import isEmpty from "lodash/isEmpty";
-import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
+
+import { useIntl } from "react-intl";
+import { transformDate, transformUrl } from "libs";
+
+import {
+  ADMIN_REPORTS_TOP_CUSTOMER_BY_DEBT_AMOUNT_END_POINT,
+  ADMIN_REPORTS_TOP_CUSTOMER_BY_NET_REVENUE_END_POINT,
+} from "__generated__/END_POINT";
+
+import {
+  TopCustomerByDebtAmountReport,
+  TopCustomerByNetRevenueReport,
+} from "__generated__/apiType_v1";
 
 interface CustomerReportByChartProps {
   filter: Record<string, any>;
@@ -39,31 +40,31 @@ export const CustomerReportByChart = (props: CustomerReportByChartProps) => {
 
   const theme = useTheme();
 
-  const { data: topCustomerByNetRevenueData } = useSWR<
-    REPORT_TOP_CUSTOMER_BY_NET_REVENUE_ITEM[]
-  >(() => {
-    if (viewType === "sale") {
-      return transformUrl(REPORT_TOP_CUSTOMER_BY_NET_REVENUE, {
-        date_start: transformDate(filter.range.startDate, "date_start"),
-        date_end: transformDate(filter.range.endDate, "date_end"),
-        get_all: true,
-        name: filter.search,
-      });
+  const { data: topCustomerByNetRevenueData } = useSWR<TopCustomerByNetRevenueReport[]>(
+    () => {
+      if (viewType === "sale") {
+        return transformUrl(ADMIN_REPORTS_TOP_CUSTOMER_BY_NET_REVENUE_END_POINT, {
+          date_start: transformDate(filter.range.startDate, "date_start"),
+          date_end: transformDate(filter.range.endDate, "date_end"),
+          get_all: true,
+          name: filter.search,
+        });
+      }
     }
-  });
+  );
 
-  const { data: topCustomerByDebtAmountData } = useSWR<
-    REPORT_TOP_CUSTOMER_BY_DEBT_AMOUNT_ITEM[]
-  >(() => {
-    if (viewType === "debt") {
-      return transformUrl(REPORT_TOP_CUSTOMER_BY_DEBT_AMOUNT, {
-        date_start: transformDate(filter.range.startDate, "date_start"),
-        date_end: transformDate(filter.range.endDate, "date_end"),
-        get_all: true,
-        name: filter.search,
-      });
+  const { data: topCustomerByDebtAmountData } = useSWR<TopCustomerByDebtAmountReport[]>(
+    () => {
+      if (viewType === "debt") {
+        return transformUrl(ADMIN_REPORTS_TOP_CUSTOMER_BY_DEBT_AMOUNT_END_POINT, {
+          date_start: transformDate(filter.range.startDate, "date_start"),
+          date_end: transformDate(filter.range.endDate, "date_end"),
+          get_all: true,
+          name: filter.search,
+        });
+      }
     }
-  });
+  );
 
   if (viewType === "debt") {
     if (topCustomerByDebtAmountData == undefined) {
@@ -77,7 +78,7 @@ export const CustomerReportByChart = (props: CustomerReportByChartProps) => {
     const transformedData = topCustomerByDebtAmountData.map((el) => {
       return {
         ...el,
-        debt_amount: parseFloat(el.debt_amount.incl_tax),
+        debt_amount: parseFloat(el.debt_amount?.incl_tax as never),
       };
     });
 
@@ -137,7 +138,7 @@ export const CustomerReportByChart = (props: CustomerReportByChartProps) => {
     const transformedData = topCustomerByNetRevenueData.map((el) => {
       return {
         ...el,
-        net_revenue: parseFloat(el.net_revenue.incl_tax),
+        net_revenue: parseFloat(el.net_revenue?.incl_tax as never),
       };
     });
 

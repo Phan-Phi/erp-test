@@ -1,14 +1,14 @@
 import useSWR from "swr";
-import React, { memo } from "react";
-import { useIntl } from "react-intl";
-import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
-
-import { Stack, Typography, useTheme, Box } from "@mui/material";
-
-import isEmpty from "lodash/isEmpty";
 import truncate from "lodash/truncate";
 
+import { memo } from "react";
+import { Stack, Typography, useTheme, Box } from "@mui/material";
+import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
+
+import { useIntl } from "react-intl";
 import { transformDate, transformUrl } from "libs";
+
+import isEmpty from "lodash/isEmpty";
 
 import {
   BarChart,
@@ -20,17 +20,17 @@ import {
 } from "components";
 
 import {
-  REPORT_TOP_PRODUCT_BY_NET_REVENUE,
-  REPORT_TOP_PRODUCT_BY_PROFIT,
-  REPORT_TOP_PRODUCT_BY_QUANTITY,
-  REPORT_TOP_PRODUCT_BY_ROS,
-} from "apis";
+  ADMIN_REPORTS_TOP_PRODUCT_BY_NET_REVENUE_END_POINT,
+  ADMIN_REPORTS_TOP_PRODUCT_BY_PROFIT_END_POINT,
+  ADMIN_REPORTS_TOP_PRODUCT_BY_QUANTITY_END_POINT,
+  ADMIN_REPORTS_TOP_PRODUCT_BY_ROS_END_POINT,
+} from "__generated__/END_POINT";
 import {
-  REPORT_TOP_PRODUCT_BY_NET_REVENUE_ITEM,
-  REPORT_TOP_PRODUCT_BY_PROFIT_ITEM,
-  REPORT_TOP_PRODUCT_BY_QUANTITY_ITEM,
-  REPORT_TOP_PRODUCT_BY_ROS_ITEM,
-} from "interfaces";
+  TopProductByNetRevenueReport,
+  TopProductByProfitReport,
+  TopProductByQuantityReport,
+  TopProductByROSReport,
+} from "__generated__/apiType_v1";
 
 interface ProductReportByChartProps {
   filter: Record<string, any>;
@@ -40,38 +40,10 @@ interface ProductReportByChartProps {
 export const ProductReportByChart = (props: ProductReportByChartProps) => {
   const { viewType, filter } = props;
 
-  const { data: topProductByNetRevenueData } = useSWR<
-    REPORT_TOP_PRODUCT_BY_NET_REVENUE_ITEM[]
-  >(() => {
-    if (viewType === "sale") {
-      return transformUrl(REPORT_TOP_PRODUCT_BY_NET_REVENUE, {
-        get_all: true,
-        date_start: transformDate(filter.range?.startDate, "date_start"),
-        date_end: transformDate(filter.range?.endDate, "date_end"),
-        name: filter.search,
-        category: filter.category ? filter.category.id : undefined,
-      });
-    }
-  });
-
-  const { data: topProductByQuantityData } = useSWR<
-    REPORT_TOP_PRODUCT_BY_QUANTITY_ITEM[]
-  >(() => {
-    if (viewType === "sale") {
-      return transformUrl(REPORT_TOP_PRODUCT_BY_QUANTITY, {
-        get_all: true,
-        date_start: transformDate(filter.range?.startDate, "date_start"),
-        date_end: transformDate(filter.range?.endDate, "date_end"),
-        name: filter.search,
-        category: filter.category ? filter.category.id : undefined,
-      });
-    }
-  });
-
-  const { data: topProductByProfitData } = useSWR<REPORT_TOP_PRODUCT_BY_PROFIT_ITEM[]>(
+  const { data: topProductByNetRevenueData } = useSWR<TopProductByNetRevenueReport[]>(
     () => {
-      if (viewType === "profit") {
-        return transformUrl(REPORT_TOP_PRODUCT_BY_PROFIT, {
+      if (viewType === "sale") {
+        return transformUrl(ADMIN_REPORTS_TOP_PRODUCT_BY_NET_REVENUE_END_POINT, {
           get_all: true,
           date_start: transformDate(filter.range?.startDate, "date_start"),
           date_end: transformDate(filter.range?.endDate, "date_end"),
@@ -82,9 +54,33 @@ export const ProductReportByChart = (props: ProductReportByChartProps) => {
     }
   );
 
-  const { data: topProductByROSData } = useSWR<REPORT_TOP_PRODUCT_BY_ROS_ITEM[]>(() => {
+  const { data: topProductByQuantityData } = useSWR<TopProductByQuantityReport[]>(() => {
+    if (viewType === "sale") {
+      return transformUrl(ADMIN_REPORTS_TOP_PRODUCT_BY_QUANTITY_END_POINT, {
+        get_all: true,
+        date_start: transformDate(filter.range?.startDate, "date_start"),
+        date_end: transformDate(filter.range?.endDate, "date_end"),
+        name: filter.search,
+        category: filter.category ? filter.category.id : undefined,
+      });
+    }
+  });
+
+  const { data: topProductByProfitData } = useSWR<TopProductByProfitReport[]>(() => {
     if (viewType === "profit") {
-      return transformUrl(REPORT_TOP_PRODUCT_BY_ROS, {
+      return transformUrl(ADMIN_REPORTS_TOP_PRODUCT_BY_PROFIT_END_POINT, {
+        get_all: true,
+        date_start: transformDate(filter.range?.startDate, "date_start"),
+        date_end: transformDate(filter.range?.endDate, "date_end"),
+        name: filter.search,
+        category: filter.category ? filter.category.id : undefined,
+      });
+    }
+  });
+
+  const { data: topProductByROSData } = useSWR<TopProductByROSReport[]>(() => {
+    if (viewType === "profit") {
+      return transformUrl(ADMIN_REPORTS_TOP_PRODUCT_BY_ROS_END_POINT, {
         get_all: true,
         date_start: transformDate(filter.range?.startDate, "date_start"),
         date_end: transformDate(filter.range?.endDate, "date_end"),
@@ -112,7 +108,7 @@ export const ProductReportByChart = (props: ProductReportByChartProps) => {
     const transformedTopProductByNetRevenue = topProductByNetRevenueData.map((el) => {
       return {
         ...el,
-        net_revenue: parseFloat(el.net_revenue.incl_tax || "0"),
+        net_revenue: parseFloat(el.net_revenue?.incl_tax || "0"),
       };
     });
 
@@ -217,7 +213,7 @@ export const ProductReportByChart = (props: ProductReportByChartProps) => {
     const transformedTopProductByProfit = topProductByProfitData.map((el) => {
       return {
         ...el,
-        profit: parseFloat(el.profit.incl_tax || "0"),
+        profit: parseFloat(el.profit?.incl_tax || "0"),
       };
     });
 

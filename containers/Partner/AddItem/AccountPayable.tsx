@@ -1,17 +1,19 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { cloneDeep } from "lodash";
 import { Stack } from "@mui/material";
 
-import { cloneDeep } from "lodash";
-
-import { SearchField } from "components";
 import AccountPayableTab from "./table/AccountPayableTab";
+import { SearchField, LoadingDynamic as Loading } from "components";
 
-import { useFetch } from "hooks";
+import { useFetch, useToggle } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
 import { ADMIN_CASH_DEBT_RECORDS_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_CASH_DEBT_RECORD_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+
+const PaymentDialog = dynamic(() => import("../../Partner/AddItem/PaymentDialog"));
 
 export type AccountPayableFilterType = {
   page: number;
@@ -35,6 +37,9 @@ const defaultFilterValue: AccountPayableFilterType = {
 
 const AccountPayable = () => {
   const router = useRouter();
+  const { open, onClose, onOpen } = useToggle();
+  const [urlDetailTransaction, setUrlDetailTransaction] = useState("");
+
   const [filter, setFilter] = useState<AccountPayableFilterType>(defaultFilterValue);
 
   const { data, changeKey, itemCount, isLoading } =
@@ -76,12 +81,19 @@ const AccountPayable = () => {
     [filter]
   );
 
+  const openDetailTransaction = useCallback((id: number) => {
+    onOpen();
+    setUrlDetailTransaction(`${ADMIN_CASH_DEBT_RECORDS_END_POINT}${id}`);
+  }, []);
+
   const pagination = useMemo(() => {
     return {
       pageIndex: filter.page - 1,
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Stack spacing={2}>
@@ -98,7 +110,10 @@ const AccountPayable = () => {
         onPageChange={onFilterChangeHandler("page")}
         onPageSizeChange={onFilterChangeHandler("pageSize")}
         maxHeight={300}
+        openDetailTransaction={openDetailTransaction}
       />
+
+      <PaymentDialog open={open} onClose={onClose} url={urlDetailTransaction} />
     </Stack>
   );
 };

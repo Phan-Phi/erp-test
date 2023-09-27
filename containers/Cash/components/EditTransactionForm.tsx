@@ -1,5 +1,6 @@
 import {
   Control,
+  Controller,
   UseFormGetValues,
   UseFormSetValue,
   UseFormWatch,
@@ -34,6 +35,7 @@ import { CASH_PAYMENT_METHOD, CASH_TRANSACTION_TYPE } from "apis";
 import { usePermission, useChoice } from "hooks";
 import { TransactionSchemaProps } from "yups";
 import { CASH_PAYMENT_METHOD_ITEM, CASH_TRANSACTION_TYPE_ITEM } from "interfaces";
+import { FormControlForSelect } from "compositions";
 
 const ViewDetailLineDialog = dynamic(() => import("../ViewDetailLineDialog"), {
   loading: () => {
@@ -88,7 +90,7 @@ const TransactionForm = ({
     }
   }, []);
 
-  const { transaction_flow_types } = choice;
+  const { transaction_flow_types, transaction_target_types } = choice;
 
   return (
     <Grid container justifyContent="flex-start">

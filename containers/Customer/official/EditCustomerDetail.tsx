@@ -60,9 +60,7 @@ const UpdateAddress = dynamic(() => import("./UpdateAddress"), {
 });
 
 interface CUSTOMER_EXTENDS_TYPE
-  extends ADMIN_CUSTOMERS_DRAFTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE {
-  id?: number;
-}
+  extends ADMIN_CUSTOMERS_DRAFTS_WITH_ID_PATCH_YUP_SCHEMA_TYPE {}
 
 const EditCustomerDetail = () => {
   const router = useRouter();
@@ -315,7 +313,7 @@ const RootComponent = ({
         });
 
         if (!isEmpty(dirtyFields)) {
-          const { id } = data;
+          const { id, tax_identification_number } = data;
 
           const email = get(data, "email");
           const birthday = get(data, "birthday");
@@ -343,6 +341,10 @@ const RootComponent = ({
 
           if (isChangeType) {
             set(data, "type", get(data, "type"));
+          }
+
+          if (isEmpty(tax_identification_number)) {
+            set(data, "tax_identification_number", null);
           }
 
           if (data.avatar == null) {

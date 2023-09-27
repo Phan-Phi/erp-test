@@ -27,6 +27,7 @@ import "styles/custom.css";
 import "styles/preloader.min.css";
 import "styles/react-phone-number-input.css";
 import "node_modules/nprogress/nprogress.css";
+import { Box } from "@mui/material";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -44,7 +45,7 @@ function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { messages, defaultLocale, locale } = useTranslate();
   const { session, ...restPageProps } = pageProps;
-
+  // return <Box></Box>;
   return (
     <SessionProvider session={session}>
       <IntlProvider
@@ -56,7 +57,7 @@ function MyApp(props: MyAppProps) {
           <Theme>
             <Snackbar>
               <ErrorBoundary>
-                <SWR>
+                <SWR fallback={pageProps.fallback}>
                   <Permission>
                     <User>
                       <Setting>

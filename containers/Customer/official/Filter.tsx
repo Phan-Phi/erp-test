@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import { isEmpty } from "lodash";
 import { useIntl } from "react-intl";
 import { Range } from "react-date-range";
 import { Stack, Button, MenuItem, Typography, Box } from "@mui/material";
@@ -152,9 +153,18 @@ const Filter = (props: FilterProps) => {
                 return option.name;
               },
 
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
+              },
+
               onChange: (e, value) => {
                 onChangeCustomerType(value);
               },
+
               value: filter.type,
             },
             // params: {
@@ -188,6 +198,14 @@ const Filter = (props: FilterProps) => {
                     children={fullName}
                   />
                 );
+              },
+
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
               },
 
               getOptionLabel: (option) => {

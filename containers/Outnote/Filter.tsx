@@ -20,6 +20,7 @@ import {
   ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1,
   ADMIN_PRODUCT_PRODUCT_VARIANT_VIEW_TYPE_V1,
 } from "__generated__/apiType_v1";
+import { isEmpty } from "lodash";
 
 type FilterProps = CommonFilterTableProps<OutnoteListFilterType> & {
   onSearchChange: (value: any) => void;
@@ -122,6 +123,14 @@ const Filter = (props: FilterProps) => {
                 const fullName = `${lastName} ${firstName}`;
 
                 return fullName;
+              },
+
+              isOptionEqualToValue: (option, value) => {
+                if (isEmpty(option) || isEmpty(value)) {
+                  return true;
+                }
+
+                return option?.["id"] === value?.["id"];
               },
 
               onChange: (e, value) => {

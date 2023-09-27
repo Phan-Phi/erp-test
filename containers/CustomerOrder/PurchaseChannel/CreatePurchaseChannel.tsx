@@ -1,16 +1,11 @@
 import { useCallback } from "react";
+import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useMountedState } from "react-use";
 import { Stack, Grid } from "@mui/material";
 
-import {
-  purchaseChannelSchema,
-  PurchaseChannelSchemaProps,
-  defaultPurchaseChannelFormState,
-} from "yups";
 import axios from "axios.config";
-import { useIntl } from "react-intl";
 import DynamicMessage from "messages";
 import { useNotification } from "hooks";
 import { ORDERS, PURCHASE_CHANNEL } from "routes";

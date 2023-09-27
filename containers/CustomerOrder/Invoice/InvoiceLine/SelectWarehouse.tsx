@@ -11,6 +11,7 @@ import { LoadingDynamic as Loading } from "components";
 
 import { ADMIN_WAREHOUSES_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { isEmpty } from "lodash";
 
 interface SelectWarehouseProps {
   control: Control<any>;
@@ -66,6 +67,14 @@ const SelectWarehouse = ({ control }: SelectWarehouseProps) => {
 
                 getOptionLabel: (option) => {
                   return option.name;
+                },
+
+                isOptionEqualToValue: (option, value) => {
+                  if (isEmpty(option) || isEmpty(value)) {
+                    return true;
+                  }
+
+                  return option?.["id"] === value?.["id"];
                 },
               }}
             />

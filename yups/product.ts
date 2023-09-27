@@ -29,6 +29,7 @@ export const productSchema = (choice?: ChoiceType) => {
         is_published: boolean(),
         publication_date: date().nullable(),
         available_for_purchase: date().nullable(),
+        stop_business: boolean().notRequired(),
       })
     );
   }
@@ -43,6 +44,7 @@ export const productSchema = (choice?: ChoiceType) => {
       is_published: boolean(),
       publication_date: date().nullable(),
       available_for_purchase: date().nullable(),
+      stop_business: boolean().notRequired(),
     })
   );
 };

@@ -1,4 +1,3 @@
-import { useIntl } from "react-intl";
 import { Range } from "react-date-range";
 import { cloneDeep, get, omit } from "lodash";
 import { useReactToPrint } from "react-to-print";
@@ -6,24 +5,16 @@ import { endOfWeek, startOfWeek } from "date-fns";
 import { Grid, Typography, Stack, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
 
+import { useToggle } from "hooks";
+import { useIntl } from "react-intl";
 import { EXPORTS, INVOICE } from "routes";
-import { SearchBox } from "../components/SearchBox";
-import { TimeFrame } from "../components/TimeFrame";
 import { DisplayCard } from "../components/DisplayCard";
+import { PrintButton, LoadingDialog } from "components";
 import { ViewTypeForPartner } from "./ViewTypeForPartner";
-import { useFetch, usePermission, useToggle } from "hooks";
-import {
-  formatDate,
-  printStyle,
-  setFilterValue,
-  transformDate,
-  transformUrl,
-} from "libs";
 import { PartnerReportByChart } from "./PartnerReportByChart";
 import { PartnerReportByTable } from "./PartnerReportByTable";
-import { PrintButton, ExportButton, LoadingDialog } from "components";
-import { ConvertTimeFrameType, convertTimeFrame } from "libs/dateUtils";
-import { ADMIN_REPORTS_PARTNER_WITH_PURCHASE_AMOUNT_END_POINT } from "__generated__/END_POINT";
+import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
+
 import Filter from "./Filter";
 
 export type CustomerReportFilterType = {
@@ -63,19 +54,7 @@ const CustomerReportClone = () => {
   const [viewType, setViewType] = useState<"import" | "debt">("import");
   const [displayType, setDisplayType] = useState<"chart" | "table">("chart");
 
-  const { hasPermission } = usePermission("export_invoice_quantity");
   const promiseResolveRef = useRef<(value?: any) => void>();
-
-  // const [filter, setFilter] = useState<{
-  //   date_start: number | null;
-  //   date_end: number | null;
-  //   timeFrame: ConvertTimeFrameType;
-  //   name: string;
-  // }>({
-  //   timeFrame: "this_week",
-  //   ...convertTimeFrame("this_week"),
-  //   name: "",
-  // });
 
   const printHandler = useReactToPrint({
     content: () => printComponentRef.current,
@@ -213,8 +192,6 @@ const CustomerReportClone = () => {
       <Grid item xs={2}>
         <Stack spacing={3}>
           <Typography fontWeight="700">{messages["partnerReport"]}</Typography>
-
-          {/* {hasPermission && <ExportButton onClick={onGotoExportFileHandler} />} */}
 
           <DisplayCard value={displayType} onChange={setDisplayType} />
 

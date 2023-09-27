@@ -1,25 +1,24 @@
-import dynamic from "next/dynamic";
-import { useIntl } from "react-intl";
-import { useMemo, useState, Fragment } from "react";
-import { useUpdateEffect, useToggle } from "react-use";
-
 import {
   Grid,
   Button,
   MenuItem,
   FormControl as OriginalFormControl,
 } from "@mui/material";
+import { Controller } from "react-hook-form";
+import { useMemo, useState, Fragment } from "react";
+import { useUpdateEffect, useToggle } from "react-use";
 
 import get from "lodash/get";
+import dynamic from "next/dynamic";
 import isEmpty from "lodash/isEmpty";
 
 import {
-  Select,
   Switch,
   FormLabel,
   LazyAutocomplete,
   LoadingDynamic as Loading,
 } from "components";
+
 import {
   FormControl,
   FormControlForSelect,
@@ -27,43 +26,26 @@ import {
   LazyAutocomplete as LazyAutocomplete2,
 } from "compositions";
 
+import { useIntl } from "react-intl";
 import { usePermission, useChoice } from "hooks";
 
 import {
-  PARTNER,
-  CUSTOMER,
-  ORDER_INVOICE,
-  WAREHOUSE_OUT_NOTE,
-  CASH_PAYMENT_METHOD,
-  CASH_TRANSACTION_TYPE,
-  WAREHOUSE_PURCHASE_ORDER_RECEIPT_ORDER,
-} from "apis";
-
-import {
-  Control,
-  Controller,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
-
-import { TransactionSchemaProps } from "yups";
-import { CASH_TRANSACTION_TYPE_ITEM, PARTNER_ITEM, CUSTOMER_ITEM } from "interfaces";
+  ADMIN_PARTNERS_END_POINT,
+  ADMIN_CUSTOMERS_END_POINT,
+  ADMIN_ORDERS_INVOICES_END_POINT,
+  ADMIN_CASH_PAYMENT_METHODS_END_POINT,
+  ADMIN_WAREHOUSES_OUT_NOTES_END_POINT,
+  ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT,
+  ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_END_POINT,
+} from "__generated__/END_POINT";
+import { ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 const ViewDetailLineDialog = dynamic(() => import("../ViewDetailLineDialog"), {
   loading: () => {
     return <Loading />;
   },
 });
-
-interface TransactionFormProps<
-  T extends TransactionSchemaProps = TransactionSchemaProps,
-> {
-  control: any;
-  getValues: UseFormGetValues<T>;
-  setValue: UseFormSetValue<T>;
-  watch: any;
-}
 
 const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
   const { hasPermission: writePermission } = usePermission("write_transaction");
@@ -147,7 +129,7 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                   const { error } = fieldState;
                   return (
                     <LazyAutocomplete2<any>
-                      url={PARTNER}
+                      url={ADMIN_PARTNERS_END_POINT}
                       label={messages["targetId"] as string}
                       AutocompleteProps={{
                         disabled: !writePermission,
@@ -164,7 +146,13 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                             />
                           );
                         },
+                        isOptionEqualToValue: (option, value) => {
+                          if (isEmpty(option) || isEmpty(value)) {
+                            return true;
+                          }
 
+                          return option?.["id"] === value?.["id"];
+                        },
                         getOptionLabel: (option) => {
                           return `ID: ${option?.id} (${option?.name})`;
                         },
@@ -173,40 +161,6 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                   );
                 }}
               />
-              {/* <LazyAutocomplete<TransactionSchemaProps, PARTNER_ITEM>
-                {...{
-                  url: PARTNER,
-                  shouldSearch: true,
-                  control,
-                  name: "target_id",
-                  label: messages["targetId"] as string,
-                  AutocompleteProps: {
-                    renderOption(props, option) {
-                      return (
-                        <MenuItem
-                          {...props}
-                          value={option.id}
-                          children={`ID: ${option?.id} (${option?.name})`}
-                        />
-                      );
-                    },
-
-                    getOptionLabel: (option) => {
-                      return `ID: ${option?.id} (${option?.name})`;
-                    },
-                    isOptionEqualToValue: (option, value) => {
-                      if (isEmpty(option) || isEmpty(value)) {
-                        return true;
-                      }
-
-                      return option?.["id"] === value?.["id"];
-                    },
-                    ...(!writePermission && {
-                      disabled: true,
-                    }),
-                  },
-                }}
-              /> */}
             </Fragment>
           )}
 
@@ -221,7 +175,7 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                   const { error } = fieldState;
                   return (
                     <LazyAutocomplete2<any>
-                      url={CUSTOMER}
+                      url={ADMIN_CUSTOMERS_END_POINT}
                       label={messages["targetId"] as string}
                       AutocompleteProps={{
                         disabled: !writePermission,
@@ -247,40 +201,6 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                   );
                 }}
               />
-              {/* <LazyAutocomplete<TransactionSchemaProps, CUSTOMER_ITEM>
-              {...{
-                url: CUSTOMER,
-                shouldSearch: true,
-                control,
-                name: "target_id",
-                label: messages["targetId"] as string,
-                AutocompleteProps: {
-                  renderOption(props, option) {
-                    return (
-                      <MenuItem
-                        {...props}
-                        value={option.id}
-                        children={`ID: ${option?.id} (${option?.last_name} ${option?.first_name})`}
-                      />
-                    );
-                  },
-
-                  getOptionLabel: (option) => {
-                    return `ID: ${option?.id} (${option?.last_name} ${option?.first_name})`;
-                  },
-                  isOptionEqualToValue: (option, value) => {
-                    if (isEmpty(option) || isEmpty(value)) {
-                      return true;
-                    }
-
-                    return option?.["id"] === value?.["id"];
-                  },
-                  ...(!writePermission && {
-                    disabled: true,
-                  }),
-                },
-              }}
-            /> */}
             </Fragment>
           )}
         </Fragment>
@@ -334,7 +254,13 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                         <MenuItem {...props} value={option.id} children={option.sid} />
                       );
                     },
+                    isOptionEqualToValue: (option, value) => {
+                      if (isEmpty(option) || isEmpty(value)) {
+                        return true;
+                      }
 
+                      return option?.["id"] === value?.["id"];
+                    },
                     getOptionLabel: (option) => {
                       return option.sid;
                     },
@@ -343,48 +269,6 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
               );
             }}
           />
-          {/* <LazyAutocomplete<
-            TransactionSchemaProps,
-            {
-              id: number;
-              sid: string;
-            }
-          >
-            {...{
-              url,
-              shouldSearch: true,
-              control,
-              name: "source_id",
-              label: messages["noteSid"] as string,
-              FormControlProps: {
-                required: true,
-              },
-
-              AutocompleteProps: {
-                renderOption(props, option) {
-                  return <MenuItem {...props} value={option.id} children={option.sid} />;
-                },
-
-                getOptionLabel: (option) => {
-                  return option.sid;
-                },
-                isOptionEqualToValue: (option, value) => {
-                  if (isEmpty(option) || isEmpty(value)) {
-                    return true;
-                  }
-
-                  return option?.["id"] === value?.["id"];
-                },
-                ...(!writePermission && {
-                  disabled: true,
-                }),
-              },
-              params: {
-                can_be_paid: true,
-              },
-              // searchKey: "sid_icontains",
-            }}
-          /> */}
         </Fragment>
       );
     };
@@ -393,9 +277,10 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
       return (
         <Fragment>
           {sourceType === "stock.receiptorder" &&
-            Component(WAREHOUSE_PURCHASE_ORDER_RECEIPT_ORDER)}
-          {sourceType === "stock.stockoutnote" && Component(WAREHOUSE_OUT_NOTE)}
-          {sourceType === "order.invoice" && Component(ORDER_INVOICE)}
+            Component(ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_END_POINT)}
+          {sourceType === "stock.stockoutnote" &&
+            Component(ADMIN_WAREHOUSES_OUT_NOTES_END_POINT)}
+          {sourceType === "order.invoice" && Component(ADMIN_ORDERS_INVOICES_END_POINT)}
         </Fragment>
       );
     } else {
@@ -430,7 +315,6 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                 controlState={props}
                 renderItem={() => {
                   return [["", "None"], ...transaction_target_types].map((el) => {
-                    // console.log("demo", el);
                     if (el[0] === "") {
                       return (
                         <MenuItem key={el[0]} value={el[0]}>
@@ -510,7 +394,7 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
             return (
               <LazyAutocomplete2<any>
                 // error={error}
-                url={CASH_TRANSACTION_TYPE}
+                url={ADMIN_CASH_TRANSACTIONS_TYPES_END_POINT}
                 label={messages["transactionType"] as string}
                 placeholder={messages["transactionType"] as string}
                 AutocompleteProps={{
@@ -524,7 +408,13 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
                       <MenuItem {...props} value={option.id} children={option.name} />
                     );
                   },
+                  isOptionEqualToValue: (option, value) => {
+                    if (isEmpty(option) || isEmpty(value)) {
+                      return true;
+                    }
 
+                    return option?.["id"] === value?.["id"];
+                  },
                   getOptionLabel: (option) => {
                     return option.name;
                   },
@@ -533,36 +423,6 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
             );
           }}
         />
-        {/* <LazyAutocomplete<TransactionSchemaProps, CASH_TRANSACTION_TYPE_ITEM>
-          {...{
-            url: CASH_TRANSACTION_TYPE,
-            control,
-            name: "type",
-
-            label: messages["transactionType"] as string,
-            placeholder: messages["transactionType"] as string,
-            AutocompleteProps: {
-              renderOption(props, option) {
-                return <MenuItem {...props} value={option.id} children={option.name} />;
-              },
-
-              getOptionLabel: (option) => {
-                return option.name;
-              },
-              isOptionEqualToValue: (option, value) => {
-                if (isEmpty(option) || isEmpty(value)) return true;
-
-                return option?.["id"] === value?.["id"];
-              },
-              ...(!writePermission && {
-                disabled: true,
-              }),
-            },
-            InputProps: {
-              disabled: !writePermission,
-            },
-          }}
-        /> */}
       </Grid>
       <Grid item xs={4}>
         <Controller
@@ -666,9 +526,12 @@ const TransactionForm = ({ control, getValues, setValue, watch }: any) => {
         />
       </Grid>
       <Grid item xs={4}>
-        <LazyAutocomplete<TransactionSchemaProps, CASH_TRANSACTION_TYPE_ITEM>
+        <LazyAutocomplete<
+          ADMIN_CASH_TRANSACTIONS_POST_YUP_SCHEMA_TYPE,
+          ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1
+        >
           {...{
-            url: CASH_PAYMENT_METHOD,
+            url: ADMIN_CASH_PAYMENT_METHODS_END_POINT,
             control,
             name: "payment_method",
             label: messages["paymentMethod"] as string,

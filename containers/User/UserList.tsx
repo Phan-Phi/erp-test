@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
 import { Range } from "react-date-range";
 import { Grid, Stack, Box } from "@mui/material";
@@ -7,16 +8,14 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { USER } from "apis";
 import { Sticky } from "hocs";
 import Filter from "./Filter";
-import { useIntl } from "react-intl";
-import { USER_ITEM } from "interfaces";
 import { USERS, CREATE } from "routes";
-import UserListColumnV2 from "./column/UserListColumnV2";
+import UserListColumn from "./column/UserListColumn";
 import { ADMIN_USERS_END_POINT } from "__generated__/END_POINT";
-import { ExtendableTableInstanceProps } from "components/TableV2";
 import { setFilterValue, transformDate, transformUrl } from "libs";
-import { LoadingDynamic as Loading, TableHeader } from "components";
+import { LoadingDynamic as Loading, TableHeader, WrapperTable } from "components";
 import { usePermission, useParams, useLayout, useFetch } from "hooks";
 import { ADMIN_USER_USER_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_USERS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 export type UserFilterType = {
   page: 1;
@@ -59,51 +58,10 @@ const ListCustomer = () => {
 
   const { messages, formatMessage } = useIntl();
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<USER_ITEM>>();
-
   const [filter, setFilter] = useState(defaultFilterValue);
-
-  const [params, setParams, isReady, resetParams] = useParams({
-    initState: {
-      use_cache: false,
-    },
-    callback: (params) => {
-      if (tableInstance.current) {
-        const setUrl = tableInstance.current.setUrl;
-
-        setUrl(transformUrl(USER, params));
-      }
-    },
-  });
 
   const { data, isLoading, itemCount, changeKey, refreshData } =
     useFetch<ADMIN_USER_USER_VIEW_TYPE_V1>(transformUrl(ADMIN_USERS_END_POINT, filter));
-
-  // useEffect(() => {
-  //   changeKey(transformUrl(USER, params));
-  // }),
-  //   [params];
-
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<USER_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
-
-  const onFilterHandler = useCallback((key) => {
-    return (value: any) => {
-      if (tableInstance.current) {
-        const { pageSize } = tableInstance.current.state;
-
-        setParams({
-          page_size: pageSize,
-          page: 1,
-          [key]: value,
-        });
-      }
-    };
-  }, []);
 
   const onFilterChangeHandler = useCallback(
     (key: string) => {
@@ -202,7 +160,7 @@ const ListCustomer = () => {
     };
   }, [filter]);
 
-  if (!isReady) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -211,9 +169,6 @@ const ListCustomer = () => {
       <Grid item xs={2}>
         <Filter
           filter={filter}
-          onFilterHandler={onFilterHandler}
-          data={params}
-          reset={resetParams}
           onGender={onFilterChangeHandler("gender")}
           onIsActive={onFilterChangeHandler("is_active")}
           onSearch={onFilterChangeHandler("search")}
@@ -232,28 +187,19 @@ const ListCustomer = () => {
               ></TableHeader>
             </Box>
 
-            <UserListColumnV2
-              data={data ?? []}
-              count={itemCount}
-              isLoading={isLoading}
-              pagination={pagination}
-              onPageChange={onFilterChangeHandler("page")}
-              onPageSizeChange={onFilterChangeHandler("pageSize")}
-              maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
-            />
-
-            {/* <CompoundTableWithFunction<USER_ITEM>
-              url={USER}
-              passHandler={passHandler}
-              columnFn={UserListColumn}
-              messages={messages}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-            /> */}
+            <WrapperTable>
+              <UserListColumn
+                data={data ?? []}
+                count={itemCount}
+                isLoading={isLoading}
+                pagination={pagination}
+                onPageChange={onFilterChangeHandler("page")}
+                onPageSizeChange={onFilterChangeHandler("pageSize")}
+                maxHeight={
+                  layoutState.windowHeight - (height + layoutState.sumHeight) - 80
+                }
+              />
+            </WrapperTable>
           </Stack>
         </Sticky>
       </Grid>

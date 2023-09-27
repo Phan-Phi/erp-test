@@ -12,34 +12,28 @@ import { useState, useCallback } from "react";
 import { Box, Button, Grid, Stepper, Step, StepLabel, Stack } from "@mui/material";
 
 import {
-  userSchema,
-  UserSchemaProps,
-  userAddressSchema,
-  defaultUserFormState,
-  UserAddressSchemaProps,
-  defaultUserAddressFormState,
-} from "yups";
+  ADMIN_USERS_END_POINT,
+  ADMIN_USERS_ADDRESSES_END_POINT,
+} from "__generated__/END_POINT";
+import {
+  ADMIN_USERS_POST_DEFAULT_VALUE,
+  ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE,
+} from "__generated__/POST_DEFAULT_VALUE";
+import {
+  ADMIN_USERS_POST_YUP_RESOLVER,
+  ADMIN_USERS_POST_YUP_SCHEMA_TYPE,
+  ADMIN_USERS_ADDRESSES_POST_YUP_RESOLVER,
+  ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE,
+} from "__generated__/POST_YUP";
+
 import { USERS } from "routes";
-import { USER, USER_ADDRESS } from "apis";
 import { transformJSONToFormData } from "libs";
 import { useChoice, useNotification } from "hooks";
-import {
-  ADMIN_USERS_ADDRESSES_END_POINT,
-  ADMIN_USERS_END_POINT,
-} from "__generated__/END_POINT";
 import { BackButton, LoadingButton, LoadingDynamic as Loading } from "components";
 
 import axios from "axios.config";
 import DynamicMessage from "messages";
 import UserForm from "./components/UserForm";
-import {
-  ADMIN_USERS_ADDRESSES_POST_DEFAULT_VALUE,
-  ADMIN_USERS_POST_DEFAULT_VALUE,
-} from "__generated__/POST_DEFAULT_VALUE";
-import {
-  ADMIN_USERS_ADDRESSES_POST_YUP_RESOLVER,
-  ADMIN_USERS_POST_YUP_RESOLVER,
-} from "__generated__/POST_YUP";
 
 const AddressForm = dynamic(() => import("./components/AddressForm"), {
   loading: () => {
@@ -54,8 +48,8 @@ const CreateUser = () => {
 
   const { control, getValues, setError, handleSubmit, clearErrors, reset } = useForm({
     // defaultValues: defaultUserFormState(choice),
-    defaultValues: { ...ADMIN_USERS_POST_DEFAULT_VALUE },
     // resolver: userSchema(choice),
+    defaultValues: { ...ADMIN_USERS_POST_DEFAULT_VALUE },
     resolver: ADMIN_USERS_POST_YUP_RESOLVER,
   });
 
@@ -117,8 +111,8 @@ const CreateUser = () => {
       customerData,
       addressData,
     }: {
-      customerData: UserSchemaProps;
-      addressData: UserAddressSchemaProps;
+      customerData: ADMIN_USERS_POST_YUP_SCHEMA_TYPE;
+      addressData: ADMIN_USERS_ADDRESSES_POST_YUP_SCHEMA_TYPE;
     }) => {
       setLoading(true);
       const avatar = get(customerData, "avatar");

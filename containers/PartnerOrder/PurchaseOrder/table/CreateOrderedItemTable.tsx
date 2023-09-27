@@ -1,12 +1,13 @@
+import { compareAsc } from "date-fns";
 import { useSticky } from "react-table-sticky";
 import { FormattedMessage, useIntl } from "react-intl";
 import React, { PropsWithChildren, useEffect, useMemo } from "react";
 import { CellProps, useTable, useSortBy, useRowSelect } from "react-table";
 
 import { get } from "lodash";
-import DynamicMessage from "messages";
 import { Box, Stack, Typography } from "@mui/material";
 
+import DynamicMessage from "messages";
 import { CommonTableProps } from "interfaces";
 
 import {
@@ -119,18 +120,33 @@ const CreateOrderedItemTable = (props: CreateOrderedItemTableProps) => {
 
           const value = get(row, "original.variant.name");
 
+          const availableForPurchase = get(
+            row,
+            "original.variant.product.available_for_purchase"
+          );
+
+          const compareDate = compareAsc(new Date(availableForPurchase), new Date());
+
           return (
             <WrapperTableCell>
-              <Link
-                href={"#"}
-                onClick={(e: React.SyntheticEvent) => {
-                  e.stopPropagation();
+              <Stack spacing="6px">
+                <Link
+                  href={"#"}
+                  onClick={(e: React.SyntheticEvent) => {
+                    e.stopPropagation();
 
-                  onGotoHandler?.(row);
-                }}
-              >
-                {value}
-              </Link>
+                    onGotoHandler?.(row);
+                  }}
+                >
+                  {value}
+                </Link>
+                {availableForPurchase === null || compareDate === 1 ? (
+                  <Typography
+                    variant="subtitle2"
+                    fontSize={12}
+                  >{`(Sản phẩm tạm ngừng kinh doanh)`}</Typography>
+                ) : null}
+              </Stack>
             </WrapperTableCell>
           );
         },

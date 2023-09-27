@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Card, CardHeader, CardContent } from "@mui/material";
 
 import { Radio, RadioItem } from "components";

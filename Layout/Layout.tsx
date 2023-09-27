@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { Box, styled } from "@mui/material";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState, useContext } from "react";
 
 import get from "lodash/get";
@@ -32,18 +32,9 @@ const Layout = (props: React.PropsWithChildren<{}>) => {
   const setting = useSetting();
 
   const { status, data } = useSession();
+
   const [loading, setLoading] = useState(false);
   const layoutContext = useContext(LayoutContext);
-
-  useEffect(() => {
-    if (data == null) return;
-
-    const { user } = data;
-
-    if (user.shouldReLogin) {
-      signOut();
-    }
-  }, [data]);
 
   useRouting({
     loading,

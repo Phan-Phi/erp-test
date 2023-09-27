@@ -1,11 +1,11 @@
 import { Row } from "react-table";
 import dynamic from "next/dynamic";
+import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
 import { Range } from "react-date-range";
 import { cloneDeep, get, omit, set } from "lodash";
 import { Grid, Box, Stack, Button } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
-import ListTransaction from "./ListTransaction";
 
 import {
   checkResArr,
@@ -22,21 +22,30 @@ import {
   usePermission,
   useNotification,
   useConfirmation,
+  useLayout,
 } from "hooks";
 import { Sticky } from "hocs";
-import { useIntl } from "react-intl";
 import { SAFE_OFFSET } from "constant";
 import { CASH_TRANSACTION } from "apis";
 import { CASH_TRANSACTION_ITEM } from "interfaces";
-import { ExtendableTableInstanceProps } from "components/TableV2";
+import { ADMIN_CASH_TRANSACTIONS_END_POINT } from "__generated__/END_POINT";
+import {
+  ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1,
+  ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1,
+  ADMIN_USER_USER_VIEW_TYPE_V1,
+} from "__generated__/apiType_v1";
 import { CASHES, CREATE, DETAIL, EXPORTS, PARTNERS, TRANSACTION, USERS } from "routes";
-import { ExportButton, Link, LoadingDynamic as Loading, TableHeader } from "components";
+import {
+  ExportButton,
+  Link,
+  LoadingDynamic as Loading,
+  TableHeader,
+  WrapperTable,
+} from "components";
 
 import Filter from "./Filter";
 import DynamicMessage from "messages";
 import ListTransactionTable from "./ListTransactionTable";
-import { ADMIN_CASH_TRANSACTIONS_END_POINT } from "__generated__/END_POINT";
-import { ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 const Total = dynamic(() => import("./Total"), {
   loading: () => {
@@ -48,29 +57,31 @@ export type PartnerFilterType = {
   page: 1;
   page_size: 25;
   with_count: boolean;
-  sid_icontains?: string;
+  search?: string;
   range: Range;
   range_params: {
     startDate: Date | undefined;
     endDate: Date | undefined;
   };
-  flow_type: string | null;
-  source_type: string | null;
-  payment_method: any;
-  owner: any;
-  type: any;
+  flow_type: ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1 | null;
+  source_type: ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1 | null;
+  payment_method: ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1 | null;
+  owner: ADMIN_USER_USER_VIEW_TYPE_V1 | null;
+  type: ADMIN_CASH_TRANSACTION_TYPE_VIEW_TYPE_V1 | null;
+  status: any;
 };
 
 const defaultFilterValue: PartnerFilterType = {
   page: 1,
   page_size: 25,
   with_count: true,
-  sid_icontains: "",
+  search: "",
   flow_type: null,
   source_type: null,
   payment_method: null,
   owner: null,
   type: null,
+  status: null,
   range: {
     startDate: undefined,
     endDate: undefined,
@@ -87,6 +98,7 @@ const Cash = () => {
   const [measureRef, { height }] = useMeasure();
   const { formatMessage, messages } = useIntl();
   const { onConfirm, onClose } = useConfirmation();
+  const { state: layoutState } = useLayout();
 
   const { hasPermission: writePermission } = usePermission("write_transaction");
   const { hasPermission: approvePermission } = usePermission("approve_transaction");
@@ -96,7 +108,6 @@ const Cash = () => {
   const [params, setParams, isReady, resetParams] = useParams();
   const { enqueueSnackbarWithSuccess, enqueueSnackbarWithError } = useNotification();
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<CASH_TRANSACTION_ITEM>>();
   const [filter, setFilter] = useState(defaultFilterValue);
   const [filterTotal, setFilterTotal] = useState(defaultFilterValue);
 
@@ -105,34 +116,13 @@ const Cash = () => {
       transformUrl(ADMIN_CASH_TRANSACTIONS_END_POINT, filter)
     );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<CASH_TRANSACTION_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
-
-  const onFilterHandler = useCallback((key) => {
-    return (value: any) => {
-      if (tableInstance.current) {
-        const { pageSize } = tableInstance.current.state;
-        setParams({
-          page_size: pageSize,
-          page: 1,
-          [key]: value,
-        });
-      }
-    };
-  }, []);
-
   const onGotoExportFileHandler = useCallback(() => {
     window.open(`/${EXPORTS}/${TRANSACTION}`, "_blank");
   }, []);
 
-  const onGotoHandler = useCallback((data: Row<CASH_TRANSACTION_ITEM>) => {
+  const onGotoHandler = useCallback((data: Row<ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1>) => {
     const targetId = get(data, "original.target.id");
     const targetType = get(data, "original.target_type");
-
     if (targetType === "customer.customer") {
       window.open(`/${USERS}/${DETAIL}/${targetId}`, "_blank");
     } else if (targetType === "partner.partner") {
@@ -164,7 +154,6 @@ const Cash = () => {
               })
             );
 
-            tableInstance?.current?.mutate?.();
             refreshData();
             onClose();
           }
@@ -181,7 +170,7 @@ const Cash = () => {
     []
   );
   const approveHandler = useCallback(
-    ({ data }: { data: Row<CASH_TRANSACTION_ITEM>[] }) => {
+    ({ data }: { data: Row<ADMIN_CASH_TRANSACTION_VIEW_TYPE_V1>[] }) => {
       const handler = async () => {
         const filteredData = data.filter((el) => {
           return el.original.status === "Draft";
@@ -215,7 +204,6 @@ const Cash = () => {
               })
             );
 
-            tableInstance?.current?.mutate?.();
             refreshData();
             onClose();
           }
@@ -247,28 +235,22 @@ const Cash = () => {
         set(params, "owner", get(params, "owner.id"));
         set(params, "flow_type", get(params, "flow_type"));
         set(params, "source_type", get(params, "source_type"));
+        set(params, "status", get(params, "status"));
+        set(params, "type", get(params, "type.id"));
+        set(params, "payment_method", get(params, "payment_method.id"));
 
         if (key === "type") {
-          set(params, "type", get(params, "type.id"));
+          set(value, "type", get(params, "type.id"));
           params.payment_method = null;
         }
 
         if (key === "payment_method") {
-          set(params, "payment_method", get(params, "payment_method.id"));
+          set(value, "payment_method", get(params, "payment_method.id"));
           params.type = null;
         }
 
         setFilterTotal(params);
-        // const dateStart = transformDate(filter.range.startDate, "date_start");
-        // const dateEnd = transformDate(filter.range.endDate, "date_end");
 
-        // changeKey(
-        //   transformUrl(CASH_TRANSACTION, {
-        //     ...omit(params, "range"),
-        //     date_confirmed_start: filter.range.startDate ? dateStart : undefined,
-        //     date_confirmed_end: filter.range.endDate ? dateEnd : undefined,
-        //   })
-        // );
         let dateStart = transformDate(cloneFilter.range_params.startDate, "date_start");
         let dateEnd = transformDate(cloneFilter.range_params.endDate, "date_end");
 
@@ -309,15 +291,6 @@ const Cash = () => {
       };
       setFilter(updateFilter);
 
-      // let dateStart: any = get(filter, "range.startDate");
-      // let dateEnd: any = get(filter, "range.endDate");
-
-      // dateStart = transformDate(dateStart, "date_start");
-      // dateEnd = transformDate(dateEnd, "date_end");
-
-      // set(params, "flow_type", get(params, "flow_type"));
-      // set(params, "source_type", get(params, "source_type"));
-
       let dateStart = transformDate(updateFilter.range_params.startDate, "date_start");
       let dateEnd = transformDate(updateFilter.range_params.endDate, "date_end");
 
@@ -327,8 +300,7 @@ const Cash = () => {
       changeKey(
         transformUrl(CASH_TRANSACTION, {
           ...omit(cloneFilter, ["range", "range_params"]),
-          // date_confirmed_start: dateStart,
-          // date_confirmed_end: dateEnd,
+
           date_confirmed_start: isStartDate ? dateStart : undefined,
           date_confirmed_end: isEndDate ? dateEnd : undefined,
           offset: 0,
@@ -359,24 +331,21 @@ const Cash = () => {
           filter={filter}
           reset={resetParams}
           resetFilter={resetFilterHandler}
-          onFilterHandler={onFilterHandler}
           onFilterByTime={onClickFilterByTime}
           onTypeChange={onFilterChangeHandler("type")}
           onOwnerChange={onFilterChangeHandler("owner")}
           onFlowType={onFilterChangeHandler("flow_type")}
-          onSearch={onFilterChangeHandler("sid_icontains")}
+          onSearch={onFilterChangeHandler("search")}
           onDateRangeChange={onFilterChangeHandler("range")}
           onSourceType={onFilterChangeHandler("source_type")}
+          onTransactionStatuses={onFilterChangeHandler("status")}
           onPaymentMethodChange={onFilterChangeHandler("payment_method")}
         />
       </Grid>
       <Grid item xs={10}>
         <Sticky>
           <Stack spacing={3}>
-            <Box ref={measureRef}>
-              {renderTotal}
-              {/* <Total params={filterTotal} /> */}
-            </Box>
+            <Box ref={measureRef}>{renderTotal}</Box>
 
             <Stack spacing={2}>
               <Box ref={ref}>
@@ -393,30 +362,28 @@ const Cash = () => {
                 </TableHeader>
               </Box>
 
-              <ListTransactionTable
-                permission={{
-                  writePermission: writePermission,
-                  approvePermission: approvePermission,
-                }}
-                data={data ?? []}
-                count={itemCount}
-                isLoading={isLoading}
-                pagination={pagination}
-                onPageChange={onFilterChangeHandler("page")}
-                onPageSizeChange={onFilterChangeHandler("pageSize")}
-                maxHeight={heightTable - (SAFE_OFFSET.top + SAFE_OFFSET.bottom)}
-                onViewHandler={onGotoHandler}
-                onDeleteHandler={deleteHandler}
-                approveHandler={approveHandler}
-                deleteHandler={deleteHandler}
-              />
+              <WrapperTable>
+                <ListTransactionTable
+                  permission={{
+                    writePermission: writePermission,
+                    approvePermission: approvePermission,
+                  }}
+                  data={data ?? []}
+                  count={itemCount}
+                  isLoading={isLoading}
+                  pagination={pagination}
+                  onPageChange={onFilterChangeHandler("page")}
+                  onPageSizeChange={onFilterChangeHandler("pageSize")}
+                  onViewHandler={onGotoHandler}
+                  onDeleteHandler={deleteHandler}
+                  approveHandler={approveHandler}
+                  deleteHandler={deleteHandler}
+                  maxHeight={
+                    layoutState.windowHeight - (heightTable + layoutState.sumHeight) - 170
+                  }
+                />
+              </WrapperTable>
             </Stack>
-
-            {/* <ListTransaction
-              params={params}
-              passHandler={passHandler}
-              extraHeight={height}
-            /> */}
           </Stack>
         </Sticky>
       </Grid>

@@ -3,7 +3,6 @@ import OrderLineMemoColumn from "../column/OrderLineMemoColumn";
 import { useFetch } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
 import { WAREHOUSE_PURCHASE_ORDER_RECEIPT_ORDER_RETURN_ORDER } from "apis";
-import { ExtendableTableInstanceProps } from "components/TableV2";
 import { cloneDeep } from "lodash";
 import { Loading } from "components";
 import { Row } from "react-table";
@@ -38,9 +37,9 @@ export default function ViewDetailLineTable({ id, url, viewType, onGotoHandler }
     })
   );
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<any>>();
+  const tableInstance = useRef<any>();
 
-  const passHandler = useCallback((_tableInstance: ExtendableTableInstanceProps<any>) => {
+  const passHandler = useCallback((_tableInstance: any) => {
     tableInstance.current = _tableInstance;
   }, []);
 

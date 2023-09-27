@@ -6,7 +6,7 @@ const _template = require("@babel/template");
 const _generate = require("@babel/generator");
 const fsPromise = require("node:fs/promises");
 
-const { StringSchema, object, string, date, number } = require("yup");
+const { StringSchema, object, string, date, number, mixed } = require("yup");
 const { parseJSON, isValid, compareAsc } = require("date-fns");
 const { isValidPhoneNumber, parsePhoneNumber } = require("react-phone-number-input");
 const Chance = require("chance");
@@ -17,6 +17,14 @@ const process = require("node:process");
 const generate = _generate.default;
 const traverse = _traverse.default;
 const template = _template.default;
+// el[0] value
+// el[1] display_value
+
+const _test = string().notRequired().oneOf(["", "Male", "Female", "Other"]);
+
+// _test.validate("1").then(() => {
+//   console.log("?");
+// });
 
 // type User = InferType<typeof userSchema>;
 
@@ -424,22 +432,19 @@ const test = object().shape({
   }),
 });
 
-const dataSample = {
-  province: ["P_1", "Thành phố Hà Nội"],
-  customerType: {
-    id: 1,
-    name: "Văn Phòng",
-    description: "",
-    parent: null,
-    level: 0,
-    full_name: "Văn Phòng",
-  },
-  num: 0,
-  // str: {},
-};
+// const dataSample = {
+//   province: ["P_1", "Thành phố Hà Nội"],
+//   customerType: {
+//     id: 1,
+//     name: "Văn Phòng",
+//     description: "",
+//     parent: null,
+//     level: 0,
+//     full_name: "Văn Phòng",
+//   },
+//   num: 0,
+// };
 
-test.validate(dataSample).then((result) => {
-  console.log("🚀 ~ file: test.js:418 ~ test.validate ~ result:", result);
-  // console.log("ORIGINAL", dataSample);
-  // console.log("RESULT", result);
-});
+// test.validate(dataSample).then((result) => {
+//   console.log("🚀 ~ file: test.js:418 ~ test.validate ~ result:", result);
+// });

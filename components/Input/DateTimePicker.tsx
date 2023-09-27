@@ -102,8 +102,8 @@ export function DateTimePicker<
                     return onChange(new Date(value).toISOString());
                   }
 
-
-                  onChange(value.toISOString());
+                  onChange(value);
+                  // onChange(value.toISOString());
                 }}
                 renderInput={(params) => {
                   const { InputProps: InternalInputProps, inputProps, inputRef } = params;

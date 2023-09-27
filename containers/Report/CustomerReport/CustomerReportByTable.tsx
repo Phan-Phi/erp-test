@@ -1,36 +1,18 @@
 import useSWR from "swr";
 import { Row } from "react-table";
-import dynamic from "next/dynamic";
+import { Box, Stack } from "@mui/material";
 import { useUpdateEffect } from "react-use";
-import { useCallback, useRef, Fragment, useState, useMemo, useEffect } from "react";
-
-import { alpha, Box, Stack } from "@mui/material";
+import { useCallback, Fragment, useState, useMemo, useEffect } from "react";
 
 import get from "lodash/get";
-
-import CustomerReportColumnByDebt from "./CustomerReportColumnByDebt";
-import CustomerReportColumnBySale from "./CustomerReportColumnBySale";
-import CustomerReportColumnByProfit from "./CustomerReportColumnByProfit";
-
-import {
-  TableRow,
-  TableCell,
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-  TableView,
-} from "components/TableV2";
-
-import { setFilterValue, transformUrl } from "libs";
-import { BackButton, LoadingDynamic as Loading, NumberFormat } from "components";
-import { REPORT_CUSTOMER_WITH_REVENUE, REPORT_CUSTOMER_WITH_DEBT_AMOUNT } from "apis";
-
-import {
-  REPORT_CUSTOMER_WITH_REVENUE_ITEM,
-  REPORT_CUSTOMER_WITH_DEBT_AMOUNT_ITEM,
-} from "interfaces";
-import { useFetch, useFetchAllData } from "hooks";
 import Column from "./Column";
-import { cloneDeep } from "lodash";
+import dynamic from "next/dynamic";
+
+import { useFetch } from "hooks";
+import { transformUrl } from "libs";
+import { REPORT_CUSTOMER_WITH_REVENUE_ITEM } from "interfaces";
+import { BackButton, LoadingDynamic as Loading } from "components";
+import { REPORT_CUSTOMER_WITH_REVENUE, REPORT_CUSTOMER_WITH_DEBT_AMOUNT } from "apis";
 
 const ListingInvoice = dynamic(() => import("./ListingInvoice"), {
   loading: Loading,
@@ -95,10 +77,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
     changeKey,
   } = useFetch<any>(transformUrl(REPORT_CUSTOMER_WITH_REVENUE, filter));
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<any>>();
-
-  const { data: reportDataForPrinting, setUrl, isDone } = useFetchAllData();
-
   useEffect(() => {
     if (_viewType === "sale" || _viewType === "profit") {
       changeKey(transformUrl(REPORT_CUSTOMER_WITH_REVENUE, filter));
@@ -108,36 +86,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
       changeKey(transformUrl(REPORT_CUSTOMER_WITH_DEBT_AMOUNT, filter));
     }
   }, [filter, _viewType]);
-
-  useUpdateEffect(() => {
-    if (viewType === "listingInvoice") return;
-
-    if (!isPrinting) return;
-
-    tableInstance.current && setUrl(tableInstance.current.url);
-  }, [isPrinting, viewType]);
-
-  useUpdateEffect(() => {
-    if (viewType === "listingInvoice") return;
-
-    isDone && onIsDoneHandler();
-  }, [isDone, viewType]);
-
-  const passHandler = useCallback((_tableInstance: ExtendableTableInstanceProps<any>) => {
-    tableInstance.current = _tableInstance;
-  }, []);
-
-  useUpdateEffect(() => {
-    if (viewType === "general" && tableInstance.current) {
-      const setUrl = tableInstance.current.setUrl;
-
-      if (props.viewType === "sale" || props.viewType === "profit") {
-        setUrl(transformUrl(REPORT_CUSTOMER_WITH_REVENUE, filter));
-      } else if (props.viewType === "debt") {
-        setUrl(transformUrl(REPORT_CUSTOMER_WITH_DEBT_AMOUNT, filter));
-      }
-    }
-  }, [filter]);
 
   useUpdateEffect(() => {
     let timer: NodeJS.Timeout;
@@ -178,226 +126,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
     setViewType("general");
   }, []);
 
-  const columnFn = useMemo(() => {
-    const viewType = props.viewType;
-
-    if (viewType === "sale") {
-      return CustomerReportColumnBySale;
-    } else if (viewType === "profit") {
-      return CustomerReportColumnByProfit;
-    } else if (viewType === "debt") {
-      return CustomerReportColumnByDebt;
-    } else {
-      return CustomerReportColumnBySale;
-    }
-  }, [props.viewType]);
-
-  const renderTotal = useMemo(() => {
-    const viewType = props.viewType;
-
-    if (viewType === "sale") {
-      if (data == undefined) return null;
-
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-          >
-            {"SL khách hàng: "}
-            <NumberFormat value={get(data, "count")} suffix="" />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_revenue_incl_tax"))} />
-          </TableCell>
-          {/* <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  get(data, "sum_revenue_incl_tax") -
-                  get(data, "sum_net_revenue_incl_tax")
-                ).toFixed(2)
-              )}
-            />
-          </TableCell> */}
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_net_revenue_incl_tax"))} />
-          </TableCell>
-        </TableRow>
-      );
-    } else if (viewType === "profit") {
-      if (data == undefined) return null;
-
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-          >
-            {"SL khách hàng: "}
-            <NumberFormat value={get(data, "count")} suffix="" />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_revenue_incl_tax"))} />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  get(data, "sum_revenue_incl_tax") -
-                  get(data, "sum_net_revenue_incl_tax")
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_net_revenue_incl_tax"))} />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_base_amount_incl_tax"))} />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  get(data, "sum_net_revenue_incl_tax") -
-                  get(data, "sum_base_amount_incl_tax")
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-        </TableRow>
-      );
-    } else if (viewType === "debt") {
-      if (customerWithDebtAmountdata == undefined) return null;
-
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-          >
-            {"SL khách hàng: "}
-            <NumberFormat value={get(customerWithDebtAmountdata, "count")} suffix="" />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                get(customerWithDebtAmountdata, "sum_beginning_debt_amount")
-              )}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(get(customerWithDebtAmountdata, "sum_credit"))}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(get(customerWithDebtAmountdata, "sum_debit"))}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  parseFloat(
-                    get(customerWithDebtAmountdata, "sum_beginning_debt_amount")
-                  ) +
-                  parseFloat(get(customerWithDebtAmountdata, "sum_credit")) -
-                  parseFloat(get(customerWithDebtAmountdata, "sum_debit"))
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    return null;
-  }, [data, customerWithDebtAmountdata, props.viewType]);
-
   const pagination = useMemo(() => {
     return {
       pageIndex: filter.page - 1,
@@ -427,47 +155,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
             onPageSizeChange={onPageSizeChange}
             onViewDetailHandler={onViewDetailHandler}
           />
-          // <CompoundTableWithFunction<REPORT_CUSTOMER_WITH_REVENUE_ITEM>
-          //   url={transformUrl(REPORT_CUSTOMER_WITH_REVENUE, filter)}
-          //   columnFn={columnFn}
-          //   passHandler={passHandler}
-          //   onViewDetailHandler={onViewDetailHandler}
-          //   renderBodyItem={(rows, tableInstance) => {
-          //     if (rows == undefined) return null;
-
-          //     return (
-          //       <Fragment>
-          //         {renderTotal}
-
-          //         {rows.map((row, i) => {
-          //           tableInstance.prepareRow(row);
-
-          //           return (
-          //             <TableRow {...row.getRowProps()}>
-          //               {row.cells.map((cell) => {
-          //                 return (
-          //                   <TableCell
-          //                     {...cell.getCellProps()}
-          //                     {...(cell.column.colSpan && {
-          //                       colSpan: cell.column.colSpan,
-          //                     })}
-          //                     sx={{
-          //                       width: cell.column.width,
-          //                       minWidth: cell.column.minWidth,
-          //                       maxWidth: cell.column.maxWidth,
-          //                     }}
-          //                   >
-          //                     {cell.render("Cell")}
-          //                   </TableCell>
-          //                 );
-          //               })}
-          //             </TableRow>
-          //           );
-          //         })}
-          //       </Fragment>
-          //     );
-          //   }}
-          // />
         );
       }
     } else if (props.viewType === "debt") {
@@ -487,47 +174,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
             onViewDetailHandler={onViewDetailHandler}
             // maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
           />
-          // <CompoundTableWithFunction<REPORT_CUSTOMER_WITH_DEBT_AMOUNT_ITEM>
-          //   url={transformUrl(REPORT_CUSTOMER_WITH_DEBT_AMOUNT, filter)}
-          //   columnFn={columnFn}
-          //   passHandler={passHandler}
-          //   onViewDetailHandler={onViewDetailHandler}
-          //   renderBodyItem={(rows, tableInstance) => {
-          //     if (rows == undefined) return null;
-
-          //     return (
-          //       <Fragment>
-          //         {renderTotal}
-
-          //         {rows.map((row, i) => {
-          //           tableInstance.prepareRow(row);
-
-          //           return (
-          //             <TableRow {...row.getRowProps()}>
-          //               {row.cells.map((cell) => {
-          //                 return (
-          //                   <TableCell
-          //                     {...cell.getCellProps()}
-          //                     {...(cell.column.colSpan && {
-          //                       colSpan: cell.column.colSpan,
-          //                     })}
-          //                     sx={{
-          //                       width: cell.column.width,
-          //                       minWidth: cell.column.minWidth,
-          //                       maxWidth: cell.column.maxWidth,
-          //                     }}
-          //                   >
-          //                     {cell.render("Cell")}
-          //                   </TableCell>
-          //                 );
-          //               })}
-          //             </TableRow>
-          //           );
-          //         })}
-          //       </Fragment>
-          //     );
-          //   }}
-          // />
         );
       }
     }
@@ -535,16 +181,6 @@ export const CustomerReportByTable = (props: SaleReportByTableProps) => {
     return (
       <Fragment>
         <Box display={isPrinting ? "none" : "block"}>{component}</Box>
-
-        <Box display={isPrinting ? "block" : "none"}>
-          {isDone && (
-            <TableView
-              columns={columnFn()}
-              data={reportDataForPrinting}
-              prependChildren={renderTotal}
-            />
-          )}
-        </Box>
       </Fragment>
     );
   } else if (

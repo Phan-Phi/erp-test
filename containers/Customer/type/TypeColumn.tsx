@@ -6,13 +6,13 @@ import get from "lodash/get";
 
 import { Skeleton, Stack, Typography, Box } from "@mui/material";
 
+import { DeleteButton, ViewButton } from "components";
+import { CUSTOMERS, EDIT, TYPE } from "routes";
 import {
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { DeleteButton, ViewButton } from "components";
-import { CUSTOMERS, EDIT, TYPE } from "routes";
+} from "components/TableV3";
 
 export const keys = ["selection", "customerType", "action"];
 

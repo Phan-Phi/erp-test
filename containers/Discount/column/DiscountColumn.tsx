@@ -7,12 +7,13 @@ import { CellProps, Column } from "react-table";
 import { formatDate } from "libs";
 
 import { DeleteButton, NumberFormat, ViewButton } from "components";
+
+import { DISCOUNTS, EDIT } from "routes";
 import {
-  WrapperTableCell,
   TableCellForSelection,
   TableHeaderForSelection,
-} from "components/TableV2";
-import { DISCOUNTS, EDIT } from "routes";
+  WrapperTableCell,
+} from "components/TableV3";
 
 export const keys = ["selection", "discountName", "discount_amount", "period", "action"];
 

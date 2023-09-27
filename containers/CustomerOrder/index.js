@@ -1,4 +1,4 @@
-export { default as OrderList } from "./OrderList";
+export { default as OrderList } from "./Order/OrderList";
 export { default as CreateOrder } from "./CreateOrder";
 export { default as EditOrder } from "./EditOrder";
 
@@ -13,3 +13,5 @@ export { default as EditShippingMethod } from "./ShippingMethod/EditShippingMeth
 export { default as PurchaseChannelList } from "./PurchaseChannel/PurchaseChannelList";
 export { default as CreatePurchaseChannel } from "./PurchaseChannel/CreatePurchaseChannel";
 export { default as EditPurchaseChannel } from "./PurchaseChannel/EditPurchaseChannel";
+
+export { default as ContainerOrder } from "./Order/ContainerOrder";

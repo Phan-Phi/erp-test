@@ -1,7 +1,5 @@
 import useSWR from "swr";
 import { memo } from "react";
-import { useIntl } from "react-intl";
-import isEmpty from "lodash/isEmpty";
 import { Stack, Typography, useTheme } from "@mui/material";
 import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
 
@@ -22,11 +20,12 @@ import {
   getPeriodUnitFromTimeObj,
 } from "libs/dateUtils";
 
-import { REPORT_REVENUE } from "apis";
-import { REPORT_REVENUE_ITEM } from "interfaces";
+import { useIntl } from "react-intl";
 import { transformDate, transformUrl } from "libs";
+import { RevenueReport } from "__generated__/apiType_v1";
+import { ADMIN_REPORTS_REVENUE_END_POINT } from "__generated__/END_POINT";
 
-import { FilterProps } from "./SaleReport";
+import isEmpty from "lodash/isEmpty";
 
 interface SaleReportByChartProps {
   filter: any;
@@ -41,8 +40,8 @@ export const SaleReportByChart = (props: SaleReportByChartProps) => {
   const theme = useTheme();
   const { messages } = useIntl();
 
-  const { data } = useSWR<REPORT_REVENUE_ITEM[]>(() => {
-    return transformUrl(REPORT_REVENUE, {
+  const { data } = useSWR<RevenueReport[]>(() => {
+    return transformUrl(ADMIN_REPORTS_REVENUE_END_POINT, {
       date_start: transformDate(filter.range?.startDate, "date_start"),
       date_end: transformDate(filter.range?.endDate, "date_end"),
       get_all: true,
@@ -98,7 +97,7 @@ export const SaleReportByChart = (props: SaleReportByChartProps) => {
         }
       }
 
-      const net_revenue = parseFloat(el.net_revenue.incl_tax);
+      const net_revenue = parseFloat(el.net_revenue?.incl_tax as any);
 
       return {
         date_start,
@@ -160,8 +159,8 @@ export const SaleReportByChart = (props: SaleReportByChartProps) => {
         }
       }
 
-      const net_revenue = parseFloat(el.net_revenue.incl_tax);
-      const base_amount = parseFloat(el.base_amount.incl_tax);
+      const net_revenue = parseFloat(el.net_revenue?.incl_tax as any);
+      const base_amount = parseFloat(el.base_amount?.incl_tax as any);
       const profit = net_revenue - base_amount;
 
       return {

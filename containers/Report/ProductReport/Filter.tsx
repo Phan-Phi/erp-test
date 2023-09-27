@@ -1,37 +1,12 @@
-import { useIntl } from "react-intl";
-import { useState, useCallback } from "react";
-import {
-  Stack,
-  Button,
-  MenuItem,
-  Typography,
-  Box,
-  Card,
-  CardHeader,
-  CardContent,
-} from "@mui/material";
-
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import { useState } from "react";
+import { Stack, Button, Card, CardHeader, CardContent } from "@mui/material";
 
 import { useChoice } from "hooks";
-import {
-  FilterByTimeRange,
-  Select,
-  SearchField,
-  DateRangePicker,
-  Radio,
-  RadioItem,
-} from "components";
-
+import { useIntl } from "react-intl";
 import { LazyAutocomplete } from "compositions";
+import { SearchField, DateRangePicker } from "components";
 
-import { CASH_TRANSACTION_TYPE, USER, CASH_PAYMENT_METHOD, PRODUCT_CATEGORY } from "apis";
-import {
-  CASH_PAYMENT_METHOD_ITEM,
-  CASH_TRANSACTION_TYPE_ITEM,
-  USER_ITEM,
-} from "interfaces";
+import { ADMIN_PRODUCTS_CATEGORIES_END_POINT } from "__generated__/END_POINT";
 
 type FilterProps = {
   onFilterByTime: any;
@@ -71,7 +46,7 @@ const Filter = ({
         >
           <LazyAutocomplete<any>
             {...{
-              url: PRODUCT_CATEGORY,
+              url: ADMIN_PRODUCTS_CATEGORIES_END_POINT,
               placeholder: "Danh mục sản phẩm",
               AutocompleteProps: {
                 getOptionLabel: (option) => {

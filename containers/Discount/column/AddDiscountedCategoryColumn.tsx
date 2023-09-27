@@ -3,12 +3,13 @@ import get from "lodash/get";
 import { FormattedMessage } from "react-intl";
 
 import { CellProps, Column } from "react-table";
+
+import { PropsWithChildren } from "react";
 import {
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { PropsWithChildren } from "react";
+} from "components/TableV3";
 
 export const keys = ["selection", "categoryName"];
 

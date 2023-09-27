@@ -12770,6 +12770,16 @@ export interface ADMIN_STOCK_STOCK_OUT_NOTE_VIEW_TYPE_V1 {
    * @minLength 1
    */
   warehouse_name?: string;
+  /** Direction */
+  direction?: "in" | "out";
+  /** Reason */
+  reason?:
+    | "customer_return"
+    | "partner_return"
+    | "ecommerce_return"
+    | "storage_miss_match"
+    | "product_expiration"
+    | "other";
   base_amount?: Price;
   amount?: Price;
   /** Line count */
@@ -12842,6 +12852,16 @@ export interface ADMIN_STOCK_STOCK_OUT_NOTE_LINE_VIEW_TYPE_V1 {
      * @minLength 1
      */
     warehouse_name?: string;
+    /** Direction */
+    direction?: "in" | "out";
+    /** Reason */
+    reason?:
+      | "customer_return"
+      | "partner_return"
+      | "ecommerce_return"
+      | "storage_miss_match"
+      | "product_expiration"
+      | "other";
     base_amount?: Price;
     amount?: Price;
     /** Line count */

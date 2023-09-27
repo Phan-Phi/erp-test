@@ -44,8 +44,6 @@ const SelectReceiptOrder = (props: SelectReceiptOrderProps) => {
     }
   );
 
-  // console.log(receiptOrderData);
-
   useEffect(() => {
     if (receiptOrderData == undefined) return;
 

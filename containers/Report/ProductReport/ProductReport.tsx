@@ -1,4 +1,3 @@
-import { useIntl } from "react-intl";
 import { Range } from "react-date-range";
 import { useReactToPrint } from "react-to-print";
 import { endOfWeek, startOfWeek } from "date-fns";
@@ -6,26 +5,17 @@ import { cloneDeep, get, omit, set } from "lodash";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
 
+import { useIntl } from "react-intl";
 import { DisplayCard } from "../components/DisplayCard";
 import { ViewTypeForProduct } from "./ViewTypeForProduct";
 import { ProductReportByChart } from "./ProductReportByChart";
-import { ConvertTimeFrameType, convertTimeFrame } from "libs/dateUtils";
 
 import Filter from "./Filter";
+import { useToggle } from "hooks";
 import { EXPORTS, INVOICE } from "routes";
-import { usePermission, useToggle } from "hooks";
-import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
-import { PrintButton, LazyAutocomplete, LoadingDialog, ExportButton } from "components";
+import { PrintButton, LoadingDialog } from "components";
 import { ProductReportByTable } from "./ProductReportByTable";
-import { AnyAaaaRecord } from "dns";
-
-interface FilterProps {
-  date_start: number | null;
-  date_end: number | null;
-  timeFrame: ConvertTimeFrameType;
-  name: string;
-  category: string;
-}
+import { formatDate, printStyle, setFilterValue, transformDate } from "libs";
 
 export type PartnerFilterType = {
   range: Range;
@@ -53,7 +43,6 @@ const ProductReport = () => {
 
   const { open, onOpen, onClose } = useToggle();
   const { open: isPrinting, toggle: setIsPrinting } = useToggle();
-  const { hasPermission } = usePermission("export_invoice_quantity");
 
   const promiseResolveRef = useRef<(value?: any) => void>();
 
@@ -64,22 +53,6 @@ const ProductReport = () => {
   const [viewType, setViewType] = useState<
     "sale" | "profit" | "warehouse_value" | "import_export_stock"
   >("sale");
-
-  // const printHandler = useReactToPrint({
-  //   content: () => printComponentRef.current,
-  //   onBeforeGetContent: () => {
-  //     if (displayType === "chart") return;
-
-  //     return new Promise((resolve) => {
-  //       onOpen();
-  //       setIsPrinting(true);
-  //       promiseResolveRef.current = resolve;
-  //     });
-  //   },
-  //   onAfterPrint: () => {
-  //     setIsPrinting(false);
-  //   },
-  // });
 
   const printHandler = useReactToPrint({
     content: () => printComponentRef.current,
@@ -215,8 +188,6 @@ const ProductReport = () => {
         <Stack spacing={3}>
           <Typography fontWeight="700">{messages["productReport"]}</Typography>
 
-          {/* {hasPermission && <ExportButton onClick={onGotoExportFileHandler} />} */}
-
           <DisplayCard value={displayType} onChange={setDisplayType} />
 
           <ViewTypeForProduct value={viewType} onChange={setViewType} />
@@ -231,63 +202,6 @@ const ProductReport = () => {
             onFilterDateHandler={onFilterDateHandler("range")}
             onCategoryChange={onFilterChangeHandler("category")}
           />
-
-          {/* <Card>
-            <CardHeader title={messages["filterProductCategory"]} />
-            <CardContent
-              sx={{
-                paddingTop: "0 !important",
-              }}
-            >
-              <LazyAutocomplete<{}, PRODUCT_CATEGORY_ITEM>
-                {...{
-                  url: PRODUCT_CATEGORY,
-                  placeholder: messages["filterProductCategory"] as string,
-                  shouldSearch: false,
-                  AutocompleteProps: {
-                    renderOption(props, option) {
-                      return (
-                        <MenuItem {...props} value={option.id} children={option.name} />
-                      );
-                    },
-
-                    getOptionLabel: (option) => {
-                      return option.full_name;
-                    },
-                    isOptionEqualToValue: (option, value) => {
-                      if (isEmpty(option) || isEmpty(value)) {
-                        return true;
-                      }
-
-                      return option?.["id"] === value?.["id"];
-                    },
-
-                    value: null,
-                    onChange: (e, value) => {
-                      let categoryId = "";
-
-                      if (value?.id) {
-                        categoryId = value.id.toString();
-                      }
-
-                      setFilter((prev) => {
-                        return { ...prev, category: categoryId };
-                      });
-                    },
-                    componentsProps: {
-                      popper: {
-                        sx: {
-                          minWidth: "250px !important",
-                          left: 0,
-                        },
-                        placement: "bottom-start",
-                      },
-                    },
-                  },
-                }}
-              />
-            </CardContent>
-          </Card> */}
         </Stack>
       </Grid>
       <Grid item xs={10}>

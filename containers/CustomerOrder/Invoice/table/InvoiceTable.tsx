@@ -26,7 +26,6 @@ import {
   NumberFormat,
   PrintButton,
   ViewButton,
-  WrapperTable,
 } from "components";
 
 import { useChoice } from "hooks";
@@ -74,7 +73,7 @@ const InvoiceTable = (props: InvoiceTableProps) => {
           const { row } = props;
           const value = get(row, "original.date_created");
 
-          return <WrapperTableCell>{formatDate(value, "dd-MM-yyyy")}</WrapperTableCell>;
+          return <WrapperTableCell>{formatDate(value)}</WrapperTableCell>;
         },
       },
       {
@@ -236,6 +235,23 @@ const InvoiceTable = (props: InvoiceTableProps) => {
         },
       },
       {
+        Header: <Box textAlign="right">Phí giao hàng có thuể</Box>,
+        accessor: "shipping_charge_incl_tax",
+        Cell: (
+          props: PropsWithChildren<CellProps<ADMIN_ORDER_INVOICE_VIEW_TYPE_V1, any>>
+        ) => {
+          const { row } = props;
+
+          const value: string = get(row, "original.shipping_charge.incl_tax") || "0";
+
+          return (
+            <WrapperTableCell textAlign="right">
+              <NumberFormat value={parseFloat(value)} />
+            </WrapperTableCell>
+          );
+        },
+      },
+      {
         Header: <FormattedMessage id={`table.action`} />,
         accessor: "action",
         Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
@@ -325,7 +341,7 @@ const InvoiceTable = (props: InvoiceTableProps) => {
   );
 
   return (
-    <WrapperTable>
+    <Box>
       <TableContainer maxHeight={maxHeight}>
         <Table>
           <TableHead>
@@ -338,21 +354,21 @@ const InvoiceTable = (props: InvoiceTableProps) => {
             <RenderBody loading={isLoading} table={table} />
           </TableBody>
         </Table>
-
-        <Box display="flex" justifyContent="flex-end">
-          <TablePagination
-            count={count}
-            page={pagination.pageIndex}
-            rowsPerPage={pagination.pageSize}
-            onPageChange={(_, page) => {
-              onPageChange(page);
-            }}
-            onRowsPerPageChange={onPageSizeChange}
-            rowsPerPageOptions={[25, 50, 75, 100]}
-          />
-        </Box>
       </TableContainer>
-    </WrapperTable>
+
+      <Box display="flex" justifyContent="flex-end">
+        <TablePagination
+          count={count}
+          page={pagination.pageIndex}
+          rowsPerPage={pagination.pageSize}
+          onPageChange={(_, page) => {
+            onPageChange(page);
+          }}
+          onRowsPerPageChange={onPageSizeChange}
+          rowsPerPageOptions={[25, 50, 75, 100]}
+        />
+      </Box>
+    </Box>
   );
 };
 

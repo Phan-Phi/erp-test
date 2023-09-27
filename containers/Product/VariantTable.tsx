@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { cloneDeep, get } from "lodash";
 import { Typography, Stack } from "@mui/material";
 
-import { Card } from "components";
+import { Card, LoadingDynamic as Loading } from "components";
 import ProductVariantTable from "./table/ProductVariantTable";
 
 import axios from "axios.config";
@@ -19,6 +19,7 @@ import {
   setFilterValue,
   createLoadingList,
 } from "libs";
+
 import { ADMIN_PRODUCTS_VARIANTS_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_PRODUCT_PRODUCT_VARIANT_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
@@ -158,6 +159,8 @@ const VariantTable = ({ defaultValues }: VariantTableProps) => {
   if (!get(defaultValues, "product_class.has_variants")) {
     return null;
   }
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Card

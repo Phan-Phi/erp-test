@@ -1,5 +1,3 @@
-import React from "react";
-
 import { styled, FormLabel as MuiFormLabel, FormLabelProps } from "@mui/material";
 
 export const FormLabel = (props: FormLabelProps) => {

@@ -1,17 +1,9 @@
 import { useIntl } from "react-intl";
 import { useCallback, useContext, useRef } from "react";
 
-import { Stack, Typography } from "@mui/material";
-
-import {
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-} from "components/TableV2";
+import { Box } from "@mui/material";
 
 import { DiscountContext } from "./context";
-import AddedDiscountedVariantColumn from "../column/AddedDiscountedVariantColumn";
-
-import { LoadingButton } from "components";
 
 import DynamicMessage from "messages";
 import { DISCOUNT_DISCOUNTED_VARIANT } from "apis";
@@ -32,19 +24,15 @@ const AddedDiscountedProduct = () => {
 
   const discountContext = useContext(DiscountContext);
 
-  const tableInstance =
-    useRef<ExtendableTableInstanceProps<DISCOUNT_DISCOUNTED_VARIANT_ITEM>>();
+  const tableInstance = useRef<any>();
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<DISCOUNT_DISCOUNTED_VARIANT_ITEM>) => {
-      tableInstance.current = _tableInstance;
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
 
-      discountContext.set({
-        mutateAddedDiscountedVariant: _tableInstance.mutate,
-      });
-    },
-    []
-  );
+    discountContext.set({
+      mutateAddedDiscountedVariant: _tableInstance.mutate,
+    });
+  }, []);
 
   const deleteHandler = useCallback(({ data }) => {
     const handler = async () => {
@@ -82,44 +70,45 @@ const AddedDiscountedProduct = () => {
   }, []);
 
   return (
-    <CompoundTableWithFunction<DISCOUNT_DISCOUNTED_VARIANT_ITEM>
-      url={transformUrl(DISCOUNT_DISCOUNTED_VARIANT, {
-        nested_depth: 4,
-        not_in_sale: true,
-        use_cache: false,
-      })}
-      passHandler={passHandler}
-      columnFn={AddedDiscountedVariantColumn}
-      deleteHandler={deleteHandler}
-      writePermission={writePermission}
-      onGotoHandler={onGotoHandler}
-      TableContainerProps={{
-        sx: {
-          maxHeight: 300,
-        },
-      }}
-      renderHeaderContentForSelectedRow={(tableInstance) => {
-        const selectedRows = tableInstance.selectedFlatRows;
+    <Box></Box>
+    // <CompoundTableWithFunction<DISCOUNT_DISCOUNTED_VARIANT_ITEM>
+    //   url={transformUrl(DISCOUNT_DISCOUNTED_VARIANT, {
+    //     nested_depth: 4,
+    //     not_in_sale: true,
+    //     use_cache: false,
+    //   })}
+    //   passHandler={passHandler}
+    //   columnFn={AddedDiscountedVariantColumn}
+    //   deleteHandler={deleteHandler}
+    //   writePermission={writePermission}
+    //   onGotoHandler={onGotoHandler}
+    //   TableContainerProps={{
+    //     sx: {
+    //       maxHeight: 300,
+    //     },
+    //   }}
+    //   renderHeaderContentForSelectedRow={(tableInstance) => {
+    //     const selectedRows = tableInstance.selectedFlatRows;
 
-        return (
-          <Stack flexDirection="row" columnGap={3} alignItems="center">
-            <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-              length: selectedRows.length,
-            })}`}</Typography>
+    //     return (
+    //       <Stack flexDirection="row" columnGap={3} alignItems="center">
+    //         <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
+    //           length: selectedRows.length,
+    //         })}`}</Typography>
 
-            <LoadingButton
-              onClick={() => {
-                deleteHandler({
-                  data: selectedRows,
-                });
-              }}
-              color="error"
-              children={messages["deleteStatus"] as string}
-            />
-          </Stack>
-        );
-      }}
-    />
+    //         <LoadingButton
+    //           onClick={() => {
+    //             deleteHandler({
+    //               data: selectedRows,
+    //             });
+    //           }}
+    //           color="error"
+    //           children={messages["deleteStatus"] as string}
+    //         />
+    //       </Stack>
+    //     );
+    //   }}
+    // />
   );
 };
 

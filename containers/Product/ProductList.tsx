@@ -8,8 +8,8 @@ import { cloneDeep, omit, get } from "lodash";
 import { Grid, Stack, Box } from "@mui/material";
 
 import Filter from "./Filter";
-import { TableHeader } from "components";
 import ProductTable from "./table/ProductTable";
+import { TableHeader } from "components";
 
 import { Sticky } from "hocs";
 import DynamicMessage from "messages";

@@ -6,15 +6,14 @@ const _traverse = require("@babel/traverse");
 const _template = require("@babel/template");
 const _generate = require("@babel/generator");
 const fsPromise = require("node:fs/promises");
-const {
-  STRING_EXCLUDE_KEY,
-  PHONE_NUMBER_KEY_REG,
-  NAME_LIST,
-  DESCRIPTION_LIST,
-  ADDRESS_LIST,
-  PROVINCE_DISTRICT_WARD_LIST,
-  TRANSFORM_NUMBER_TO_MIXED_TYPE_LIST,
-} = require("./excludeKeyList");
+const { promisify } = require("node:util");
+const { exec } = require("node:child_process");
+
+const { generateStringValue } = require("./defaultValue/generateStringValue");
+const { generateNumberValue } = require("./defaultValue/generateNumberValue");
+const { generateArrayValue } = require("./defaultValue/generateArrayValue");
+const { generateBooleanValue } = require("./defaultValue/generateBooleanValue");
+const { generateFileValue } = require("./defaultValue/generateFileValue");
 
 const generate = _generate.default;
 const traverse = _traverse.default;
@@ -35,19 +34,6 @@ const excludeListPath = path.resolve(process.cwd(), "scripts", "excludeKeyList.j
 
 let excludeKeyList;
 let preconfigCode;
-
-const generateExpressionNode = (expression) => {
-  const TEMPLATE = `const TEMPLATE = ${JSON.stringify(expression)}`;
-
-  const ast = parse(TEMPLATE, { sourceType: "module" });
-  const item = ast.program.body[0].declarations[0].init;
-
-  return item;
-};
-
-const generateObjectProperty = (key, value) => {
-  return t.objectProperty(t.identifier(key), value);
-};
 
 {
   const uniqList = new Set();
@@ -154,362 +140,78 @@ try {
             eval(`_temp = ${generate(targetProperty.value).code}`);
 
             const uniqDefaultValueObject = new Map();
+            const uniqRandomValueObject = new Map();
             const chanceObject = t.objectExpression([]);
             const defaultObject = t.objectExpression([]);
 
             for (const [key, value] of Object.entries(_temp)) {
               const type = value.type;
-              const format = value.format;
 
               if (type === "string") {
-                if (STRING_EXCLUDE_KEY.includes(key)) continue;
+                const result = generateStringValue(key, value);
 
-                uniqDefaultValueObject.set(
-                  key,
-                  generateObjectProperty(key, t.stringLiteral(""))
-                );
+                if (result == undefined) continue;
 
-                if ("enum" in value) {
-                  let params = generateExpressionNode(value.enum);
+                const { defaultValue, randomValue } = result;
 
-                  if (key === "country") {
-                    params = generateExpressionNode(["VN"]);
-                  }
+                uniqDefaultValueObject.set(key, defaultValue);
+                uniqRandomValueObject.set(key, randomValue);
+              }
+              if (type === "integer" || type === "number") {
+                const result = generateNumberValue(key, value);
 
-                  if (key === "status") {
-                    params = generateExpressionNode(["Draft"]);
-                  }
+                if (result == undefined) continue;
 
-                  let chance = t.callExpression(
-                    t.memberExpression(chanceIdentifier, t.identifier("pickone")),
-                    [params]
-                  );
+                const { defaultValue, randomValue } = result;
 
-                  if (key === "country") {
-                    uniqDefaultValueObject.set(
-                      key,
-                      generateObjectProperty(key, t.stringLiteral("VN"))
-                    );
-                  } else {
-                    uniqDefaultValueObject.set(
-                      key,
-                      generateObjectProperty(key, t.stringLiteral(value.enum[0]))
-                    );
-                  }
-
-                  chanceObject.properties.push(generateObjectProperty(key, chance));
-                  continue;
-                }
-
-                if ("format" in value) {
-                  let params;
-                  let chance;
-
-                  switch (format) {
-                    case "decimal":
-                      params = generateExpressionNode({
-                        min: 0,
-                        fixed: 2,
-                        max: key === "tax_rate" ? 200 : 999999999,
-                      });
-
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("floating")),
-                        [params]
-                      );
-
-                      chance = t.callExpression(
-                        t.memberExpression(chance, t.identifier("toString")),
-                        []
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-                    case "date-time":
-                      params = generateExpressionNode({ year: new Date().getFullYear() });
-
-                      chance = t.newExpression(t.identifier("Date"), [
-                        t.callExpression(
-                          t.memberExpression(chanceIdentifier, t.identifier("date")),
-                          [params]
-                        ),
-                      ]);
-
-                      chance = t.callExpression(
-                        t.memberExpression(chance, t.identifier("toISOString")),
-                        []
-                      );
-
-                      if (key === "date_start") {
-                        uniqDefaultValueObject.set(
-                          key,
-                          generateObjectProperty(
-                            key,
-                            parse("new Date().toISOString()").program.body[0].expression
-                          )
-                        );
-                      } else {
-                        uniqDefaultValueObject.set(
-                          key,
-                          generateObjectProperty(key, t.nullLiteral())
-                        );
-                      }
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-                    case "uri":
-                      params = generateExpressionNode({ domain: "facebook.com" });
-
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("url")),
-                        [params]
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-                    case "email":
-                      params = generateExpressionNode({ domain: "gmail.com" });
-
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("email")),
-                        [params]
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-                  }
-
-                  continue;
-                }
-
-                if (PHONE_NUMBER_KEY_REG.test(key)) {
-                  const params = generateExpressionNode({
-                    min: 770000000,
-                    max: 779999999,
-                  });
-
-                  let chance = t.callExpression(
-                    t.memberExpression(chanceIdentifier, t.identifier("integer")),
-                    [params]
-                  );
-
-                  const mergeValue = t.callExpression(
-                    t.memberExpression(t.stringLiteral("+84"), t.identifier("concat")),
-                    [
-                      t.callExpression(
-                        t.memberExpression(chance, t.identifier("toString")),
-                        []
-                      ),
-                    ]
-                  );
-
-                  chanceObject.properties.push(
-                    t.objectProperty(t.identifier(key), mergeValue)
-                  );
-
-                  continue;
-                }
-
-                if (NAME_LIST.includes(key)) {
-                  let chance;
-
-                  switch (key) {
-                    case "first_name":
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("first")),
-                        []
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-
-                    case "last_name":
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("last")),
-                        []
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-
-                      break;
-
-                    default:
-                      chance = t.callExpression(
-                        t.memberExpression(chanceIdentifier, t.identifier("name")),
-                        []
-                      );
-
-                      chanceObject.properties.push(
-                        t.objectProperty(t.identifier(key), chance)
-                      );
-                  }
-
-                  continue;
-                }
-
-                if (DESCRIPTION_LIST.includes(key)) {
-                  const params = generateExpressionNode({
-                    words: 10,
-                  });
-
-                  const chance = t.callExpression(
-                    t.memberExpression(chanceIdentifier, t.identifier("sentence")),
-                    [params]
-                  );
-
-                  chanceObject.properties.push(
-                    t.objectProperty(t.identifier(key), chance)
-                  );
-
-                  continue;
-                }
-
-                if (ADDRESS_LIST.includes(key)) {
-                  const chance = t.callExpression(
-                    t.memberExpression(chanceIdentifier, t.identifier("address")),
-                    []
-                  );
-
-                  chanceObject.properties.push(
-                    t.objectProperty(t.identifier(key), chance)
-                  );
-
-                  continue;
-                }
-
-                if (PROVINCE_DISTRICT_WARD_LIST.includes(key)) {
-                  if (key === "province") {
-                    chanceObject.properties.push(
-                      t.objectProperty(
-                        t.identifier(key),
-                        parse(`["P_79", "Thành phố Hồ Chí Minh"]`).program.body[0]
-                          .expression
-                      )
-                    );
-                  } else if (key === "district") {
-                    chanceObject.properties.push(
-                      t.objectProperty(
-                        t.identifier(key),
-                        parse(`["D_772", "Quận 11"]`).program.body[0].expression
-                      )
-                    );
-                  } else if (key === "ward") {
-                    chanceObject.properties.push(
-                      t.objectProperty(
-                        t.identifier(key),
-                        parse(`["W_27211", "Phường 05"]`).program.body[0].expression
-                      )
-                    );
-                  }
-
-                  continue;
-                }
-
-                chanceObject.properties.push(
-                  t.objectProperty(t.identifier(key), t.stringLiteral(""))
-                );
+                uniqDefaultValueObject.set(key, defaultValue);
+                uniqRandomValueObject.set(key, randomValue);
 
                 continue;
               }
-              if (type === "integer" || type === "number") {
-                if (TRANSFORM_NUMBER_TO_MIXED_TYPE_LIST.includes(key)) {
-                  chanceObject.properties.push(
-                    t.objectProperty(t.identifier(key), t.nullLiteral())
-                  );
-
-                  defaultObject.properties.push(
-                    generateObjectProperty(key, t.nullLiteral())
-                  );
-
-                  continue;
-                }
-
-                const minLength = value.minimum;
-                const maxLength = value.maximum;
-
-                const params = generateExpressionNode({
-                  min: minLength,
-                  max: maxLength,
-                });
-
-                let chance = t.callExpression(
-                  t.memberExpression(chanceIdentifier, t.identifier("integer")),
-                  [params]
-                );
-
-                if (minLength) {
-                  defaultObject.properties.push(
-                    generateObjectProperty(key, t.numericLiteral(minLength))
-                  );
-                } else {
-                  defaultObject.properties.push(
-                    generateObjectProperty(key, t.numericLiteral(0))
-                  );
-                }
-
-                chanceObject.properties.push(t.objectProperty(t.identifier(key), chance));
-              }
 
               if (type === "array") {
-                const item = value.items;
+                const result = generateArrayValue(key, value);
 
-                defaultObject.properties.push(
-                  generateObjectProperty(key, t.arrayExpression([]))
-                );
+                if (result == undefined) continue;
 
-                if ("enum" in item) {
-                  let params = generateExpressionNode(item.enum);
+                const { defaultValue, randomValue } = result;
 
-                  const chance = t.callExpression(
-                    t.memberExpression(chanceIdentifier, t.identifier("pickone")),
-                    [params]
-                  );
+                uniqDefaultValueObject.set(key, defaultValue);
+                uniqRandomValueObject.set(key, randomValue);
 
-                  chanceObject.properties.push(
-                    t.objectProperty(t.identifier(key), t.arrayExpression([chance]))
-                  );
-                }
+                continue;
               }
 
               if (type === "boolean") {
-                let chance = t.callExpression(
-                  t.memberExpression(chanceIdentifier, t.identifier("bool")),
-                  []
-                );
+                const result = generateBooleanValue(key, value);
 
-                defaultObject.properties.push(
-                  generateObjectProperty(key, t.booleanLiteral(false))
-                );
+                if (result == undefined) continue;
 
-                chanceObject.properties.push(t.objectProperty(t.identifier(key), chance));
+                const { defaultValue, randomValue } = result;
+
+                uniqDefaultValueObject.set(key, defaultValue);
+                uniqRandomValueObject.set(key, randomValue);
+
+                continue;
               }
 
               if (type === "file") {
-                defaultObject.properties.push(
-                  generateObjectProperty(key, t.nullLiteral())
-                );
+                const result = generateFileValue(key, value);
 
-                chanceObject.properties.push(
-                  generateObjectProperty(key, t.nullLiteral())
-                );
+                if (result == undefined) continue;
+
+                const { defaultValue, randomValue } = result;
+
+                uniqDefaultValueObject.set(key, defaultValue);
+                uniqRandomValueObject.set(key, randomValue);
+
+                continue;
               }
+            }
+
+            for (const item of uniqRandomValueObject.values()) {
+              chanceObject.properties.push(item);
             }
 
             yupList.push(
@@ -553,6 +255,12 @@ try {
       });
     })
   ).then(async () => {
+    await Promise.all(
+      [postDefaultValuePath].map((el) => {
+        return promisify(exec)(`npx prettier ${el} --write`);
+      })
+    );
+
     console.log("GENERATE DEFAULT VALUE COMPLETELY");
   });
 } catch (err) {

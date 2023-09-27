@@ -6,7 +6,6 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 
 import CardItem from "./CardItem";
 import { FormatNumber } from "components";
-import { REPORT_GENERAL_NET_REVENUE_ITEM } from "interfaces";
 import { GeneralNetRevenueReport } from "__generated__/apiType_v1";
 
 interface OverviewProps {

@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { useSticky } from "react-table-sticky";
 import { CellProps, useTable } from "react-table";
-import React, { PropsWithChildren, useMemo } from "react";
+import React, { Fragment, PropsWithChildren, useMemo } from "react";
 
 import { get } from "lodash";
 import { Box } from "@mui/material";
@@ -19,7 +19,8 @@ import {
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
-import { NumberFormat, WrapperTable } from "components";
+import { CASHES, EDIT, VIEW_DETAIL } from "routes";
+import { Link, NumberFormat, PaymentButton, WrapperTable } from "components";
 import { ADMIN_CASH_DEBT_RECORD_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 type AccountPayableTableProps = CommonTableProps<ADMIN_CASH_DEBT_RECORD_VIEW_TYPE_V1> &
@@ -47,9 +48,33 @@ const AccountPayableTable = (props: AccountPayableTableProps) => {
         ) => {
           const { row } = props;
 
+          let source_type = get(row, "original.source_type");
+
+          let id = get(row, "original.id");
+
+          let idTransaction = get(row, "original.source.id");
+
+          let hrefTransaction = `/${CASHES}/${EDIT}/${idTransaction}`;
+
+          let hrefViewDetail = `/${VIEW_DETAIL}/${id}`;
+
           const value = get(row, "original.source.sid") || get(row, "original.sid");
 
-          return <WrapperTableCell>{value}</WrapperTableCell>;
+          return (
+            <Fragment>
+              {source_type === "cash.debtrecord" || source_type === null ? (
+                <WrapperTableCell>{value}</WrapperTableCell>
+              ) : (
+                <Link
+                  href={
+                    source_type === "cash.transaction" ? hrefTransaction : hrefViewDetail
+                  }
+                >
+                  {value}
+                </Link>
+              )}
+            </Fragment>
+          );
         },
       },
       {
@@ -123,6 +148,27 @@ const AccountPayableTable = (props: AccountPayableTableProps) => {
             </WrapperTableCell>
           );
         },
+      },
+      {
+        Header: <Box>Thao tác</Box>,
+        accessor: "action",
+        Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+          const { row, openDetailTransaction } = props;
+
+          const getId = get(row, "original.id");
+          const sourceType = get(row, "original.source_type");
+
+          return (
+            <Box height={40}>
+              {sourceType === "order.invoice" && (
+                <PaymentButton onClick={() => openDetailTransaction(getId)} />
+              )}
+            </Box>
+          );
+        },
+        width: 100,
+        maxWidth: 100,
+        sticky: "right",
       },
     ];
   }, []);

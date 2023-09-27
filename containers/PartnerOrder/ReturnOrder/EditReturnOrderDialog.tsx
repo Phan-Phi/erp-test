@@ -33,9 +33,7 @@ interface EditReturnOrderDialogProps {
 }
 
 interface RETURN_ORDER_EXTENDS
-  extends ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_WITH_ID_PATCH_YUP_SCHEMA_TYPE {
-  id?: number;
-}
+  extends ADMIN_WAREHOUSES_PURCHASE_ORDERS_RECEIPT_ORDERS_WITH_ID_PATCH_YUP_SCHEMA_TYPE {}
 
 export type EditReturnOrderDialogFilterType = {
   page: number;

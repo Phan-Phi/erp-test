@@ -7,12 +7,12 @@ import { Grid, Stack, Typography, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import {
+  useFetch,
   useParams,
   useLayout,
   usePermission,
   useConfirmation,
   useNotification,
-  useFetch,
 } from "hooks";
 
 import {
@@ -27,18 +27,17 @@ import { Sticky } from "hocs";
 import { WAREHOUSE } from "apis";
 import DynamicMessage from "messages";
 import { WAREHOUSES, CREATE } from "routes";
-import { WAREHOUSE_ITEM } from "interfaces";
 
-import WarehouseTable from "./columns/WarehouseTable";
-import { ADMIN_WAREHOUSES_END_POINT } from "__generated__/END_POINT";
-import { type ExtendableTableInstanceProps } from "components/TableV2";
-import { ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 import {
-  LoadingButton,
-  LoadingDynamic as Loading,
   TableHeader,
   WrapperTable,
+  LoadingButton,
+  LoadingDynamic as Loading,
 } from "components";
+import WarehouseTable from "./columns/WarehouseTable";
+import { ADMIN_WAREHOUSES_END_POINT } from "__generated__/END_POINT";
+import { ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_WAREHOUSES_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 export type PartnerFilterType = {
   with_count: boolean;
@@ -66,14 +65,11 @@ const ViewWarehouse = () => {
 
   const { enqueueSnackbarWithError, enqueueSnackbarWithSuccess } = useNotification();
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<WAREHOUSE_ITEM>>();
+  const tableInstance = useRef<any>();
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<WAREHOUSE_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
+  }, []);
 
   const [params, setParams, isReady] = useParams({
     callback: (params) => {
@@ -90,7 +86,7 @@ const ViewWarehouse = () => {
       transformUrl(ADMIN_WAREHOUSES_END_POINT, filter)
     );
 
-  const deleteHandler = useCallback(({ data }: { data: Row<WAREHOUSE_ITEM>[] }) => {
+  const deleteHandler = useCallback(({ data }: { data: Row<any>[] }) => {
     const handler = async () => {
       const filteredData = data.filter((el) => {
         return el.original.is_used === false;
@@ -127,20 +123,6 @@ const ViewWarehouse = () => {
     onConfirm(handler, {
       message: "Bạn có chắc muốn xóa?",
     });
-  }, []);
-
-  const onFilterHandler = useCallback((key) => {
-    return (value: any) => {
-      if (tableInstance.current) {
-        const { pageSize } = tableInstance.current.state;
-
-        setParams({
-          page_size: pageSize,
-          page: 1,
-          [key]: value,
-        });
-      }
-    };
   }, []);
 
   const onFilterChangeHandler = useCallback(
@@ -222,42 +204,6 @@ const ViewWarehouse = () => {
                 }}
               />
             </WrapperTable>
-
-            {/* 
-            <CompoundTableWithFunction<WAREHOUSE_ITEM>
-              url={WAREHOUSE}
-              passHandler={passHandler}
-              columnFn={WarehouseColumn}
-              deleteHandler={deleteHandler}
-              writePermission={writePermission}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
-
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
-
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            /> */}
           </Stack>
         </Sticky>
       </Grid>

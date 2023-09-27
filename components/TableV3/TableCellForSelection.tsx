@@ -7,12 +7,13 @@ import IndeterminateCheckbox from "components/IndeterminateCheckbox";
 interface TableCellForSelectionProps<T extends Record<string, unknown>> {
   row: Row<T>;
   loading?: boolean;
+  disabled?: boolean;
 }
 
 const TableCellForSelection = <T extends Record<string, unknown>>(
   props: TableCellForSelectionProps<T>
 ) => {
-  const { loading, row } = props;
+  const { loading, row, disabled } = props;
 
   if (loading) {
     return <Skeleton />;
@@ -26,7 +27,8 @@ const TableCellForSelection = <T extends Record<string, unknown>>(
         marginLeft: 0,
         marginRight: 0,
       }}
-      checked={checked}
+      disabled={disabled}
+      checked={disabled ? false : checked}
       indeterminate={indeterminate}
       onChange={(e, checked) => {
         onChange?.(e as React.ChangeEvent);

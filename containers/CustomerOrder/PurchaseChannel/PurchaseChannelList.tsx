@@ -1,4 +1,6 @@
+import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
+import { Grid, Stack, Typography, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import {
@@ -9,21 +11,11 @@ import {
   useLayout,
   useFetch,
 } from "hooks";
-import { useIntl } from "react-intl";
 import { LoadingButton, TableHeader, WrapperTable } from "components";
-import { Grid, Stack, Typography, Box } from "@mui/material";
-
-import {
-  CompoundTableWithFunction,
-  type ExtendableTableInstanceProps,
-} from "components/TableV2";
 
 import { Sticky } from "hocs";
 import DynamicMessage from "messages";
-import { ORDER_PURCHASE_CHANNEL } from "apis";
-import { ORDER_PURCHASE_CHANNEL_ITEM } from "interfaces";
 import { ORDERS, PURCHASE_CHANNEL, CREATE } from "routes";
-import PurchaseChannelColumn from "../column/PurchaseChannelColumn";
 import PurchaseChannelColumnV2 from "../column/PurchaseChannelColumnV2";
 import {
   transformUrl,
@@ -35,6 +27,7 @@ import {
 import { cloneDeep, omit } from "lodash";
 import { ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_ORDER_PURCHASE_CHANNEL_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
+import { ADMIN_ORDERS_PURCHASE_CHANNELS_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 export type PartnerFilterType = {
   page: number;
@@ -62,8 +55,7 @@ const PurchaseChannelList = () => {
 
   const { enqueueSnackbarWithSuccess, enqueueSnackbarWithError } = useNotification();
 
-  const tableInstance =
-    useRef<ExtendableTableInstanceProps<ORDER_PURCHASE_CHANNEL_ITEM>>();
+  const tableInstance = useRef<any>();
 
   useParams({
     callback: (params) => {
@@ -81,12 +73,9 @@ const PurchaseChannelList = () => {
       transformUrl(ADMIN_ORDERS_PURCHASE_CHANNELS_END_POINT, filter)
     );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<ORDER_PURCHASE_CHANNEL_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
+  const passHandler = useCallback((_tableInstance: any) => {
+    tableInstance.current = _tableInstance;
+  }, []);
 
   const deleteHandler = useCallback(({ data }) => {
     const handler = async () => {
@@ -196,44 +185,6 @@ const PurchaseChannelList = () => {
                 }}
               />
             </WrapperTable>
-
-            {/* <CompoundTableWithFunction<ORDER_PURCHASE_CHANNEL_ITEM>
-              url={transformUrl(ORDER_PURCHASE_CHANNEL, { use_cache: false })}
-              passHandler={passHandler}
-              columnFn={PurchaseChannelColumn}
-              deleteHandler={deleteHandler}
-              writePermission={writePermission}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
-
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>
-                      {`${formatMessage(DynamicMessage.selectedRow, {
-                        length: selectedRows.length,
-                      })}`}
-                      sss
-                    </Typography>
-
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            /> */}
           </Stack>
         </Sticky>
       </Grid>

@@ -1,7 +1,7 @@
-import OrderList from "containers/CustomerOrder/OrderList";
+import { ContainerOrder } from "containers/CustomerOrder";
 
 const OrderListPage = () => {
-  return <OrderList />;
+  return <ContainerOrder />;
 };
 
 export default OrderListPage;

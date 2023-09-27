@@ -1,14 +1,12 @@
-import dynamic from "next/dynamic";
 import { Fragment } from "react";
-import { useToggle } from "react-use";
-
+import dynamic from "next/dynamic";
 import { useIntl } from "react-intl";
+import { useToggle } from "react-use";
 
 import { Button, Stack, Typography } from "@mui/material";
 
-import InvoiceList from "./InvoiceList";
 import { usePermission } from "hooks";
-
+import InvoiceList from "./InvoiceList";
 import { LoadingDynamic as Loading, Card } from "components";
 
 const CreateInvoiceDialog = dynamic(() => import("./CreateInvoiceDialog"), {

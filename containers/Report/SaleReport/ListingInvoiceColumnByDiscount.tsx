@@ -6,7 +6,7 @@ import get from "lodash/get";
 
 import { formatDate } from "libs";
 import { NumberFormat } from "components";
-import { WrapperTableCell } from "components/TableV2";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = ["sid", "time", "staff", "customer", "totalInvoice", "discount"];
 

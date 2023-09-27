@@ -1,21 +1,26 @@
 import { cloneDeep } from "lodash";
+import dynamic from "next/dynamic";
 import { Stack } from "@mui/material";
 import { useContext, useCallback, useState, useEffect, useMemo } from "react";
 
-import { SearchField } from "components";
+import { SearchField, LoadingDynamic as Loading } from "components";
 import AccountPayableTable from "./AccountPayableTable";
 
-import { useFetch } from "hooks";
+import { useFetch, useToggle } from "hooks";
 import { setFilterValue, transformUrl } from "libs";
 import { Context as CustomerContext } from "./context";
 import { ADMIN_CASH_DEBT_RECORDS_END_POINT } from "__generated__/END_POINT";
 import { ADMIN_CASH_DEBT_RECORD_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
+const PaymentDialog = dynamic(
+  () => import("../../Customer/official/PaymentInline/PaymentDialog")
+);
+
 export type AccountPayableFilterType = {
   page: number;
   page_size: number;
   with_count: boolean;
-  search?: string;
+  search: string;
   creditor_type: string;
   creditor_id: number | undefined;
 };
@@ -31,7 +36,8 @@ const defaultFilterValue: AccountPayableFilterType = {
 
 const AccountPayable = () => {
   const context = useContext(CustomerContext);
-
+  const { open, onClose, onOpen } = useToggle();
+  const [urlDetailTransaction, setUrlDetailTransaction] = useState("");
   const [filter, setFilter] = useState<AccountPayableFilterType>(defaultFilterValue);
 
   const { data, changeKey, itemCount, isLoading } =
@@ -71,12 +77,19 @@ const AccountPayable = () => {
     [filter]
   );
 
+  const openDetailTransaction = useCallback((id: number) => {
+    onOpen();
+    setUrlDetailTransaction(`${ADMIN_CASH_DEBT_RECORDS_END_POINT}${id}`);
+  }, []);
+
   const pagination = useMemo(() => {
     return {
       pageIndex: filter.page - 1,
       pageSize: filter.page_size,
     };
   }, [filter]);
+
+  if (data == undefined) return <Loading />;
 
   return (
     <Stack spacing={3}>
@@ -93,7 +106,10 @@ const AccountPayable = () => {
         onPageChange={onFilterChangeHandler("page")}
         onPageSizeChange={onFilterChangeHandler("pageSize")}
         maxHeight={300}
+        openDetailTransaction={openDetailTransaction}
       />
+
+      <PaymentDialog open={open} onClose={onClose} url={urlDetailTransaction} />
     </Stack>
   );
 };

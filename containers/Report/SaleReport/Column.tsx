@@ -1,29 +1,22 @@
-import { Box, Stack } from "@mui/material";
-import { useRowSelect } from "react-table";
-import { useSticky } from "react-table-sticky";
-
-import { cloneDeep, get, set } from "lodash";
+import { get } from "lodash";
+import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useMemo, PropsWithChildren } from "react";
-import { EDIT, WAREHOUSES } from "routes";
-import { DeleteButton, NumberFormat, ViewButton } from "components";
 import { useTable, useSortBy, CellProps } from "react-table";
+
 import {
   RenderBody,
   RenderHeader,
   Table,
   TableBody,
-  TableCellForSelection,
-  TableCellWithFullAddress,
   TableContainer,
   TableHead,
-  TableHeaderForSelection,
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
-import { CommonTableProps } from "interfaces";
-import { ADMIN_STOCK_WAREHOUSE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 import { formatDate } from "libs";
+import { NumberFormat } from "components";
+import { CommonTableProps } from "interfaces";
 import HeadTitleTable from "components/HeadTitleTable";
 
 type TableProps = CommonTableProps<any> & Record<string, any>;
@@ -142,8 +135,8 @@ export default function Column(props: TableProps) {
                 <NumberFormat
                   value={parseFloat(
                     (
-                      get(row, "original.net_revenue.incl_tax") -
-                      get(row, "original.revenue.incl_tax")
+                      get(row, "original.revenue.incl_tax") -
+                      get(row, "original.net_revenue.incl_tax")
                     ).toFixed(2)
                   )}
                 />
@@ -272,8 +265,8 @@ export default function Column(props: TableProps) {
                 <NumberFormat
                   value={parseFloat(
                     (
-                      get(row, "original.net_revenue.incl_tax") -
-                      get(row, "original.revenue.incl_tax")
+                      get(row, "original.revenue.incl_tax") -
+                      get(row, "original.net_revenue.incl_tax")
                     ).toFixed(2)
                   )}
                 />

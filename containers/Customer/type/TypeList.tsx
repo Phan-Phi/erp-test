@@ -1,4 +1,6 @@
 import { Row } from "react-table";
+import { cloneDeep } from "lodash";
+import { useIntl } from "react-intl";
 import { useMeasure } from "react-use";
 import { Grid, Stack, Typography, Box } from "@mui/material";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -12,29 +14,20 @@ import {
   useFetch,
 } from "hooks";
 
-import {
-  CompoundTableWithFunction,
-  type ExtendableTableInstanceProps,
-} from "components/TableV2";
-
-import { Sticky } from "hocs";
-import { useIntl } from "react-intl";
-import { CUSTOMER_TYPE } from "apis";
-import TypeColumn from "./TypeColumn";
 import DynamicMessage from "messages";
-import { CUSTOMER_TYPE_ITEM } from "interfaces";
+import TypeListTable from "./components/TypeListTable";
+
+import {
+  checkResArr,
+  transformUrl,
+  deleteRequest,
+  setFilterValue,
+  createLoadingList,
+} from "libs";
 import { CUSTOMERS, TYPE, CREATE } from "routes";
 import { LoadingButton, TableHeader, WrapperTable } from "components";
-import {
-  transformUrl,
-  checkResArr,
-  deleteRequest,
-  createLoadingList,
-  setFilterValue,
-} from "libs";
-import TypeListTable from "./components/TypeListTable";
-import { cloneDeep } from "lodash";
 import { ADMIN_CUSTOMERS_TYPES_END_POINT } from "__generated__/END_POINT";
+import { ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 import { ADMIN_CUSTOMER_CUSTOMER_TYPE_VIEW_TYPE_V1 } from "__generated__/apiType_v1";
 
 export type PartnerFilterType = {
@@ -58,7 +51,7 @@ const TypeList = () => {
   const { onConfirm, onClose } = useConfirmation();
   const [filter, setFilter] = useState(defaultFilterValue);
 
-  const tableInstance = useRef<ExtendableTableInstanceProps<CUSTOMER_TYPE_ITEM>>();
+  const tableInstance = useRef<any>();
 
   const { enqueueSnackbarWithError, enqueueSnackbarWithSuccess } = useNotification();
 
@@ -67,7 +60,7 @@ const TypeList = () => {
       if (tableInstance.current) {
         const setUrl = tableInstance.current.setUrl;
 
-        setUrl(transformUrl(CUSTOMER_TYPE, params));
+        setUrl(transformUrl(ADMIN_CUSTOMERS_TYPES_END_POINT, params));
       }
     },
     isUpdateRouter: false,
@@ -78,20 +71,13 @@ const TypeList = () => {
       transformUrl(ADMIN_CUSTOMERS_TYPES_END_POINT, filter)
     );
 
-  const passHandler = useCallback(
-    (_tableInstance: ExtendableTableInstanceProps<CUSTOMER_TYPE_ITEM>) => {
-      tableInstance.current = _tableInstance;
-    },
-    []
-  );
-
   const deleteHandler = useCallback(
-    async ({ data }: { data: Row<CUSTOMER_TYPE_ITEM>[] }) => {
+    async ({ data }: { data: Row<ADMIN_CUSTOMERS_TYPES_POST_YUP_SCHEMA_TYPE>[] }) => {
       const handler = async () => {
         const { list } = createLoadingList(data);
 
         try {
-          const results = await deleteRequest(CUSTOMER_TYPE, list);
+          const results = await deleteRequest(ADMIN_CUSTOMERS_TYPES_END_POINT, list);
           const result = checkResArr(results);
 
           if (result) {
@@ -129,7 +115,7 @@ const TypeList = () => {
 
         // if (key === "range") return;
 
-        changeKey(transformUrl(CUSTOMER_TYPE, cloneFilter));
+        changeKey(transformUrl(ADMIN_CUSTOMERS_TYPES_END_POINT, cloneFilter));
       };
     },
     [filter]
@@ -162,7 +148,7 @@ const TypeList = () => {
               onPageSizeChange={onFilterChangeHandler("pageSize")}
               deleteHandler={deleteHandler}
               writePermission={writePermission}
-              maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
+              maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 80}
               renderHeaderContentForSelectedRow={(tableInstance) => {
                 const selectedRows = tableInstance.selectedFlatRows;
 
@@ -188,41 +174,6 @@ const TypeList = () => {
               }}
             />
           </WrapperTable>
-
-          {/* <CompoundTableWithFunction<CUSTOMER_TYPE_ITEM>
-              url={CUSTOMER_TYPE}
-              passHandler={passHandler}
-              columnFn={TypeColumn}
-              deleteHandler={deleteHandler}
-              writePermission={writePermission}
-              TableContainerProps={{
-                sx: {
-                  maxHeight:
-                    layoutState.windowHeight - (height + layoutState.sumHeight) - 48,
-                },
-              }}
-              renderHeaderContentForSelectedRow={(tableInstance) => {
-                const selectedRows = tableInstance.selectedFlatRows;
-
-                return (
-                  <Stack flexDirection="row" columnGap={3} alignItems="center">
-                    <Typography>{`${formatMessage(DynamicMessage.selectedRow, {
-                      length: selectedRows.length,
-                    })}`}</Typography>
-
-                    <LoadingButton
-                      onClick={() => {
-                        deleteHandler({
-                          data: selectedRows,
-                        });
-                      }}
-                      color="error"
-                      children={messages["deleteStatus"]}
-                    />
-                  </Stack>
-                );
-              }}
-            /> */}
         </Stack>
       </Grid>
     </Grid>

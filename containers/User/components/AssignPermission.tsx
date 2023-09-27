@@ -118,8 +118,6 @@ const RootComponent = ({ defaultValues, onSuccessHandler }: RootComponentProps) 
   const onSubmit = useCallback(
     async ({ data }: { data: UserPermissionSchemaProps["permissions"] }) => {
       try {
-        // console.log(data);
-
         return;
 
         const userId = get(router, "query.ids[0]");

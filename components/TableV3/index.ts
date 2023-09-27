@@ -17,3 +17,4 @@ export { default as TableHeaderForSelection } from "./TableHeaderForSelection";
 export { default as TableCellForSelection } from "./TableCellForSelection";
 export { default as TableCellForEdit } from "./TableCellForEdit";
 export { default as TableCellForPickDateTime } from "./TableCellForPickDateTime";
+export { default as SubRow } from "./SubRow";

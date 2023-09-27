@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { Control, Controller } from "react-hook-form";
 
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { Grid, MenuItem } from "@mui/material";
 
 import {
@@ -121,6 +121,13 @@ const OutnoteForm = (props: OutnoteFormProps) => {
                             children={option.name}
                           />
                         );
+                      },
+                      isOptionEqualToValue: (option, value) => {
+                        if (isEmpty(option) || isEmpty(value)) {
+                          return true;
+                        }
+
+                        return option?.["id"] === value?.["id"];
                       },
                     }}
                   />

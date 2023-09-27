@@ -5,13 +5,13 @@ import { Skeleton, Stack } from "@mui/material";
 
 import get from "lodash/get";
 
+import { DeleteButton, Link } from "components";
 import {
   TableCellForAvatar,
   TableCellForSelection,
   TableHeaderForSelection,
   WrapperTableCell,
-} from "components/TableV2";
-import { DeleteButton, Link } from "components";
+} from "components/TableV3";
 
 export const keys = [
   "selection",

@@ -1,27 +1,23 @@
-import { REPORT_TOP_STAFF_BY_NET_REVENUE } from "apis";
-import { REPORT_TOP_STAFF_BY_NET_REVENUE_ITEM } from "interfaces";
-import { transformDate, transformUrl } from "libs";
-import { useIntl } from "react-intl";
-
-import { memo } from "react";
 import useSWR from "swr";
+import { memo } from "react";
+import truncate from "lodash/truncate";
 import { Stack, Typography, useTheme } from "@mui/material";
+import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
 
 import isEmpty from "lodash/isEmpty";
-import truncate from "lodash/truncate";
 
 import {
-  BarChart,
-  CartesianGrid,
   NoData,
+  BarChart,
   NumberFormat,
+  CartesianGrid,
   ResponsiveContainer,
   LoadingDynamic as Loading,
 } from "components";
 
-import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
-
-import { FilterProps } from "./StaffReport";
+import { useIntl } from "react-intl";
+import { transformDate, transformUrl } from "libs";
+import { TopStaffByNetRevenueReport } from "__generated__/apiType_v1";
 import { ADMIN_REPORTS_TOP_STAFF_BY_NET_REVENUE_END_POINT } from "__generated__/END_POINT";
 
 interface StaffReportByChartProps {
@@ -36,13 +32,12 @@ export const StaffReportByChart = (props: StaffReportByChartProps) => {
 
   const theme = useTheme();
 
-  const { data } = useSWR<REPORT_TOP_STAFF_BY_NET_REVENUE_ITEM[]>(
+  const { data } = useSWR<TopStaffByNetRevenueReport[]>(
     transformUrl(ADMIN_REPORTS_TOP_STAFF_BY_NET_REVENUE_END_POINT, {
       date_start: transformDate(filter.range.startDate, "date_start"),
       date_end: transformDate(filter.range.endDate, "date_end"),
       get_all: true,
       name: filter.search,
-      // purchase_channel: filter.purchase_channel,
       purchase_channel: filter.purchase_channel ? filter.purchase_channel.id : undefined,
     })
   );
@@ -59,7 +54,7 @@ export const StaffReportByChart = (props: StaffReportByChartProps) => {
     const transformedData = data.map((el) => {
       return {
         ...el,
-        net_revenue: parseFloat(el.net_revenue.incl_tax),
+        net_revenue: parseFloat(el.net_revenue?.incl_tax as never),
       };
     });
 

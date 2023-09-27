@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 import { CellProps, Column } from "react-table";
 
@@ -6,11 +6,8 @@ import get from "lodash/get";
 
 import { formatDate, transformUrl } from "libs";
 import { Link, NumberFormat } from "components";
-import { WrapperTableCell, TableCellWithFetch } from "components/TableV2";
-
+import { TableCellWithFetch, WrapperTableCell } from "components/TableV3";
 import { WAREHOUSE_PURCHASE_ORDER_RECEIPT_ORDER_RETURN_ORDER } from "apis";
-
-import { WAREHOUSE_PURCHASE_ORDER_RECEIPT_ORDER_RETURN_ORDER_ITEM } from "interfaces";
 
 export const keys = [
   "sid",

@@ -1,27 +1,29 @@
 import { Grid } from "@mui/material";
+import { useIntl } from "react-intl";
 import { Control, Controller, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
-import { useIntl } from "react-intl";
 import { usePermission } from "hooks";
 import { FormControl } from "compositions";
-import { WarehouseAddressSchemaProps } from "yups";
 import { Province, District, Ward, FormControlForPhoneNumber } from "components";
-// import FormControlForPhoneNumber from "compositions/Input/FormControlForPhoneNumber";
+import { ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE } from "__generated__/POST_YUP";
 
 type WarehouseAddressFormProps = {
-  control: Control<WarehouseAddressSchemaProps>;
-  setValue: UseFormSetValue<WarehouseAddressSchemaProps>;
-  watch: UseFormWatch<WarehouseAddressSchemaProps>;
+  control: any;
+  setValue: any;
+  watch: any;
 };
 
-const WarehouseAddressForm = ({
-  control,
-  watch,
-  setValue,
-}: WarehouseAddressFormProps) => {
+const WarehouseAddressForm = (props: WarehouseAddressFormProps) => {
   const { messages } = useIntl();
 
   const { hasPermission: writePermission } = usePermission("write_warehouse");
+
+  const control =
+    props.control as Control<ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE>;
+  const setValue =
+    props.setValue as UseFormSetValue<ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE>;
+  const watch =
+    props.watch as UseFormWatch<ADMIN_WAREHOUSES_ADDRESSES_POST_YUP_SCHEMA_TYPE>;
 
   return (
     <Grid container spacing={3} marginTop={1}>

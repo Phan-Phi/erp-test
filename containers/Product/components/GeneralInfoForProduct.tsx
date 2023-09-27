@@ -3,9 +3,9 @@ import { Grid } from "@mui/material";
 import { Control, useFieldArray, Controller } from "react-hook-form";
 
 import { Card } from "components";
-import { FormControl } from "compositions";
 import ImageUploadBox from "./ImageUploadBox";
 import ImageThumbList from "./ImageThumbList";
+import { FormControl, FormControlForRichText } from "compositions";
 
 import { usePermission } from "hooks";
 import { ProductImageSchemaProps } from "yups";
@@ -63,6 +63,18 @@ const GeneralInfo = (props: GeneralInfoProps) => {
                   name="description"
                   render={(props) => {
                     return (
+                      <FormControlForRichText
+                        controlState={props}
+                        label={messages["productDescription"] as string}
+                      />
+                    );
+                  }}
+                />
+                {/* <Controller
+                  control={control}
+                  name="description"
+                  render={(props) => {
+                    return (
                       <FormControl
                         controlState={props}
                         label={messages["productDescription"] as string}
@@ -78,7 +90,7 @@ const GeneralInfo = (props: GeneralInfoProps) => {
                       />
                     );
                   }}
-                />
+                /> */}
               </Grid>
 
               {writePermission && (

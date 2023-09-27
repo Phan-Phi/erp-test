@@ -1,9 +1,8 @@
 import { useIntl } from "react-intl";
 import { Grid } from "@mui/material";
+import { Control, Controller } from "react-hook-form";
 
 import { usePermission } from "hooks";
-import { Control, Controller } from "react-hook-form";
-import { WarehouseSchemaProps } from "yups";
 import { FormControl } from "compositions";
 
 type WarehouseFormProps = {

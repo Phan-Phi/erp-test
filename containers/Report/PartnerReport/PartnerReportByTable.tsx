@@ -1,41 +1,22 @@
 import useSWR from "swr";
-import get from "lodash/get";
 import { Row } from "react-table";
-import dynamic from "next/dynamic";
+import { Box, Stack } from "@mui/material";
 import { useMeasure, useUpdateEffect } from "react-use";
-import { useCallback, useRef, Fragment, useState, useMemo, useEffect } from "react";
+import { useCallback, Fragment, useState, useMemo, useEffect } from "react";
 
-import { alpha, Box, Stack } from "@mui/material";
-
-import PartnerReportColumnByDebt from "./PartnerReportColumnByDebt";
-import PartnerReportColumnByImport from "./PartnerReportColumnByImport";
-
-import {
-  TableRow,
-  TableCell,
-  CompoundTableWithFunction,
-  ExtendableTableInstanceProps,
-  TableView,
-} from "components/TableV2";
-
-import { BackButton, LoadingDynamic as Loading, NumberFormat } from "components";
-
-import {
-  REPORT_PARTNER_WITH_DEBT_AMOUNT,
-  REPORT_PARTNER_WITH_PURCHASE_AMOUNT,
-} from "apis";
-import {
-  REPORT_PARTNER_WITH_DEBT_AMOUNT_ITEM,
-  REPORT_PARTNER_WITH_PURCHASE_AMOUNT_ITEM,
-} from "interfaces";
+import get from "lodash/get";
+import Column from "./Column";
+import dynamic from "next/dynamic";
 
 import { transformUrl } from "libs";
-import { useFetch, useFetchAllData, useLayout } from "hooks";
+import { useFetch, useLayout } from "hooks";
+import { BackButton, LoadingDynamic as Loading } from "components";
+
 import {
   ADMIN_REPORTS_PARTNER_WITH_DEBT_AMOUNT_END_POINT,
   ADMIN_REPORTS_PARTNER_WITH_PURCHASE_AMOUNT_END_POINT,
 } from "__generated__/END_POINT";
-import Column from "./Column";
+import { PartnerWithPurchaseAmountReport } from "__generated__/apiType_v1";
 
 const ListingInvoice = dynamic(() => import("./ListingInvoice"), {
   loading: Loading,
@@ -67,7 +48,7 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
 
   const [reload, setReload] = useState(false);
 
-  const [partner, setPartner] = useState<REPORT_PARTNER_WITH_PURCHASE_AMOUNT_ITEM>();
+  const [partner, setPartner] = useState<PartnerWithPurchaseAmountReport>();
 
   const [viewType, setViewType] = useState<TView>("general");
 
@@ -99,53 +80,20 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
     isLoading,
     itemCount,
     changeKey,
-  } = useFetch<REPORT_PARTNER_WITH_PURCHASE_AMOUNT_ITEM>(
+  } = useFetch<PartnerWithPurchaseAmountReport>(
     transformUrl(ADMIN_REPORTS_PARTNER_WITH_PURCHASE_AMOUNT_END_POINT, filter)
   );
-  const tableInstance = useRef<ExtendableTableInstanceProps<any>>();
-
-  const { data: reportDataForPrinting, setUrl, isDone } = useFetchAllData();
 
   useEffect(() => {
     if (_viewType === "import") {
-      changeKey(transformUrl(REPORT_PARTNER_WITH_PURCHASE_AMOUNT, filter));
+      changeKey(
+        transformUrl(ADMIN_REPORTS_PARTNER_WITH_PURCHASE_AMOUNT_END_POINT, filter)
+      );
     }
     if (_viewType === "debt") {
-      changeKey(transformUrl(REPORT_PARTNER_WITH_DEBT_AMOUNT, filter));
+      changeKey(transformUrl(ADMIN_REPORTS_PARTNER_WITH_DEBT_AMOUNT_END_POINT, filter));
     }
   }, [filter, _viewType]);
-
-  useUpdateEffect(() => {
-    if (viewType === "listingInvoice") return;
-
-    if (!isPrinting) return;
-
-    tableInstance.current && setUrl(tableInstance.current.url);
-  }, [isPrinting, viewType]);
-
-  useUpdateEffect(() => {
-    if (viewType === "listingInvoice") return;
-
-    isDone && onIsDoneHandler();
-  }, [isDone, viewType]);
-
-  const passHandler = useCallback((_tableInstance: ExtendableTableInstanceProps<any>) => {
-    tableInstance.current = _tableInstance;
-  }, []);
-
-  useUpdateEffect(() => {
-    if (tableInstance.current) {
-      const setUrl = tableInstance.current.setUrl;
-
-      if (viewType !== "general") return;
-
-      if (props.viewType === "import") {
-        setUrl(transformUrl(REPORT_PARTNER_WITH_PURCHASE_AMOUNT, filter));
-      } else if (props.viewType === "debt") {
-        setUrl(transformUrl(REPORT_PARTNER_WITH_DEBT_AMOUNT, filter));
-      }
-    }
-  }, [filter, props.viewType]);
 
   useUpdateEffect(() => {
     let timer: NodeJS.Timeout;
@@ -163,17 +111,8 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
     };
   }, [props.viewType]);
 
-  const onViewDetailHandler = useCallback(
-    (row: Row<REPORT_PARTNER_WITH_PURCHASE_AMOUNT_ITEM>) => {
-      const partner = get(row, "original");
-      setPartner(partner);
-      setViewType("listingInvoice");
-    },
-    []
-  );
-
-  const onViewDetailHandler2 = useCallback((value) => {
-    const partner = get(value, "original");
+  const onViewDetailHandler = useCallback((row: Row<PartnerWithPurchaseAmountReport>) => {
+    const partner = get(row, "original");
     setPartner(partner);
     setViewType("listingInvoice");
   }, []);
@@ -181,150 +120,6 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
   const onBackToGeneralHandler = useCallback(() => {
     setViewType("general");
   }, []);
-
-  const columnFn = useMemo(() => {
-    const viewType = props.viewType;
-
-    if (viewType === "import") {
-      return PartnerReportColumnByImport;
-    } else if (viewType === "debt") {
-      return PartnerReportColumnByDebt;
-    } else {
-      return PartnerReportColumnByImport;
-    }
-  }, [props.viewType]);
-
-  const renderTotal = useMemo(() => {
-    const viewType = props.viewType;
-
-    if (viewType === "import") {
-      if (data == undefined) return null;
-
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-          >
-            {"SL NCC: "}
-            <NumberFormat value={get(data, "count")} suffix="" />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_purchase_amount_incl_tax"))} />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat value={parseFloat(get(data, "sum_return_amount_incl_tax"))} />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  parseFloat(get(data, "sum_purchase_amount_incl_tax")) -
-                  parseFloat(get(data, "sum_return_amount_incl_tax"))
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-        </TableRow>
-      );
-    } else if (viewType === "debt") {
-      if (partnerWithDebtRecordData == undefined) return null;
-
-      return (
-        <TableRow
-          sx={{
-            backgroundColor: ({ palette }) => {
-              return `${alpha(palette.primary2.main, 0.25)} !important`;
-            },
-          }}
-        >
-          <TableCell
-            sx={{
-              fontWeight: 700,
-            }}
-          >
-            SL NCC:{" "}
-            <NumberFormat value={get(partnerWithDebtRecordData, "count")} suffix="" />
-          </TableCell>
-
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                get(partnerWithDebtRecordData, "sum_beginning_debt_amount")
-              )}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(get(partnerWithDebtRecordData, "sum_credit"))}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(get(partnerWithDebtRecordData, "sum_debit"))}
-            />
-          </TableCell>
-          <TableCell
-            sx={{
-              textAlign: "right",
-              fontWeight: 700,
-            }}
-          >
-            <NumberFormat
-              value={parseFloat(
-                (
-                  parseFloat(
-                    get(partnerWithDebtRecordData, "sum_beginning_debt_amount")
-                  ) +
-                  parseFloat(get(partnerWithDebtRecordData, "sum_credit")) -
-                  parseFloat(get(partnerWithDebtRecordData, "sum_debit"))
-                ).toFixed(2)
-              )}
-            />
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    return null;
-  }, [data, partnerWithDebtRecordData, props.viewType]);
 
   const pagination = useMemo(() => {
     return {
@@ -356,47 +151,6 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
               onPageSizeChange={onPageSizeChange}
               maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
             />
-            {/* <CompoundTableWithFunction<REPORT_PARTNER_WITH_PURCHASE_AMOUNT_ITEM>
-              url={transformUrl(REPORT_PARTNER_WITH_PURCHASE_AMOUNT, filter)}
-              columnFn={columnFn}
-              passHandler={passHandler}
-              onViewDetailHandler={onViewDetailHandler}
-              renderBodyItem={(rows, tableInstance) => {
-                if (rows == undefined) return null;
-
-                return (
-                  <Fragment>
-                    {renderTotal}
-
-                    {rows.map((row, i) => {
-                      tableInstance.prepareRow(row);
-
-                      return (
-                        <TableRow {...row.getRowProps()}>
-                          {row.cells.map((cell) => {
-                            return (
-                              <TableCell
-                                {...cell.getCellProps()}
-                                {...(cell.column.colSpan && {
-                                  colSpan: cell.column.colSpan,
-                                })}
-                                sx={{
-                                  width: cell.column.width,
-                                  minWidth: cell.column.minWidth,
-                                  maxWidth: cell.column.maxWidth,
-                                }}
-                              >
-                                {cell.render("Cell")}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                  </Fragment>
-                );
-              }}
-            /> */}
           </Fragment>
         );
       }
@@ -419,47 +173,6 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
               onPageSizeChange={onPageSizeChange}
               maxHeight={layoutState.windowHeight - (height + layoutState.sumHeight) - 70}
             />
-            {/* <CompoundTableWithFunction<REPORT_PARTNER_WITH_DEBT_AMOUNT_ITEM>
-              url={transformUrl(REPORT_PARTNER_WITH_DEBT_AMOUNT, filter)}
-              columnFn={columnFn}
-              onViewDetailHandler={onViewDetailHandler}
-              passHandler={passHandler}
-              renderBodyItem={(rows, tableInstance) => {
-                if (rows == undefined) return null;
-
-                return (
-                  <Fragment>
-                    {renderTotal}
-
-                    {rows.map((row, i) => {
-                      tableInstance.prepareRow(row);
-
-                      return (
-                        <TableRow {...row.getRowProps()}>
-                          {row.cells.map((cell) => {
-                            return (
-                              <TableCell
-                                {...cell.getCellProps()}
-                                {...(cell.column.colSpan && {
-                                  colSpan: cell.column.colSpan,
-                                })}
-                                sx={{
-                                  width: cell.column.width,
-                                  minWidth: cell.column.minWidth,
-                                  maxWidth: cell.column.maxWidth,
-                                }}
-                              >
-                                {cell.render("Cell")}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                  </Fragment>
-                );
-              }}
-            /> */}
           </Fragment>
         );
       }
@@ -472,16 +185,6 @@ export const PartnerReportByTable = (props: PartnerReportByTableProps) => {
           // displayPrint="none"
         >
           {component}
-        </Box>
-
-        <Box display={isPrinting ? "block" : "block"}>
-          {isDone && (
-            <TableView
-              columns={columnFn()}
-              data={reportDataForPrinting}
-              prependChildren={renderTotal}
-            />
-          )}
         </Box>
       </Fragment>
     );

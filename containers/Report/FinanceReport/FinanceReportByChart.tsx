@@ -1,22 +1,21 @@
 import useSWR from "swr";
-import React, { memo } from "react";
-import { useIntl } from "react-intl";
+import { memo } from "react";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { XAxis, YAxis, Tooltip, Legend, Bar, TooltipProps } from "recharts";
 
 import isEmpty from "lodash/isEmpty";
 
-import { Stack, Typography, useTheme } from "@mui/material";
-
 import { REPORT_CASH } from "apis";
 import { transformUrl } from "libs";
-import { REPORT_CASH_ITEM } from "interfaces";
+import { useIntl } from "react-intl";
+import { CashBookReport } from "__generated__/apiType_v1";
 import { convertTimeToString, getPeriodUnitFromTimeObj } from "libs/dateUtils";
 
 import {
-  BarChart,
-  CartesianGrid,
   NoData,
+  BarChart,
   NumberFormat,
+  CartesianGrid,
   ResponsiveContainer,
   LoadingDynamic as Loading,
 } from "components";
@@ -32,7 +31,7 @@ export const FinanceReportByChart = (props: FinanceReportByChartProps) => {
 
   const theme = useTheme();
 
-  const { data: cashData } = useSWR<REPORT_CASH_ITEM[]>(
+  const { data: cashData } = useSWR<CashBookReport[]>(
     transformUrl(REPORT_CASH, {
       date_start: filter.date_start,
       date_end: filter.date_end,
@@ -57,7 +56,9 @@ export const FinanceReportByChart = (props: FinanceReportByChartProps) => {
     return {
       ...el,
       date_start: convertTimeToString(filter.period, el.date_start),
-      profit: parseFloat(el.net_revenue.incl_tax) - parseFloat(el.base_amount.incl_tax),
+      profit:
+        parseFloat(el.net_revenue?.incl_tax as any) -
+        parseFloat(el.base_amount?.incl_tax as any),
     };
   });
 

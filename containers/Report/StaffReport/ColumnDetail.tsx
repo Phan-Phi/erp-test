@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { useMemo, PropsWithChildren } from "react";
 import { useTable, useSortBy, CellProps } from "react-table";
 
-import ColumnDetail from "./ColumnDetail";
 import {
   RenderBody,
   RenderHeader,
@@ -15,9 +14,9 @@ import {
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
+import { formatDate } from "libs";
 import { NumberFormat } from "components";
 import { CommonTableProps } from "interfaces";
-import { formatDate } from "libs";
 
 type TableProps = CommonTableProps<any> & Record<string, any>;
 
@@ -128,7 +127,7 @@ export default function ColumDetail(props: TableProps) {
         },
       ];
     }
-  }, []);
+  }, [dataTotal]);
 
   const table = useTable(
     {

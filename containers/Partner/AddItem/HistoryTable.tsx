@@ -96,6 +96,8 @@ const OrderHistoryTab = ({ noteUrl, noteLineUrl }: OrderHistoryTabProps) => {
     toggle(true);
   }, []);
 
+  if (data == undefined) return <Loading />;
+
   return (
     <Stack spacing={3}>
       <SearchField

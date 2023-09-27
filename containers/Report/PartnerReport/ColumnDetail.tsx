@@ -1,8 +1,8 @@
-import { get } from "lodash";
-import { Box, Typography } from "@mui/material";
+import { get, isEmpty } from "lodash";
+import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useMemo, PropsWithChildren } from "react";
-import { useTable, useSortBy, CellProps } from "react-table";
+import { useTable, useSortBy, CellProps, useExpanded } from "react-table";
 
 import {
   RenderBody,
@@ -14,10 +14,9 @@ import {
   TablePagination,
   WrapperTableCell,
 } from "components/TableV3";
+import { formatDate } from "libs";
 import { NumberFormat } from "components";
 import { CommonTableProps } from "interfaces";
-import HeadTitleTable from "components/HeadTitleTable";
-import { formatDate, transformDate } from "libs";
 
 type TableProps = CommonTableProps<any> & Record<string, any>;
 
@@ -45,7 +44,79 @@ export default function ColumnDetail(props: TableProps) {
 
   const columns = useMemo(() => {
     if (type === "import") {
-      return [];
+      return [
+        {
+          Header: <FormattedMessage id={`table.sid`} />,
+          id: "expander",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.sid");
+
+            return (
+              <span
+                {...row.getToggleRowExpandedProps({
+                  style: {
+                    paddingLeft: `${row.depth * 2}rem`,
+                    cursor: "pointer",
+                    color: "rgb(16,116,186)",
+                  },
+                })}
+              >
+                {value}
+              </span>
+            );
+          },
+        },
+        {
+          Header: <FormattedMessage id={`table.date_created`} />,
+          accessor: "date_created",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.date_created");
+            return <WrapperTableCell>{formatDate(value)}</WrapperTableCell>;
+          },
+        },
+        {
+          Header: <FormattedMessage id={`table.importStock`} />,
+          accessor: "importStock",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.item_count");
+
+            return <WrapperTableCell>{value}</WrapperTableCell>;
+          },
+        },
+        {
+          Header: <FormattedMessage id={`table.importStockValue`} />,
+          accessor: "importStockValue",
+          textAlign: "right",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.amount.incl_tax");
+
+            return (
+              <WrapperTableCell textAlign="right">
+                <NumberFormat value={parseFloat(value)} />
+              </WrapperTableCell>
+            );
+          },
+        },
+        {
+          Header: <FormattedMessage id={`table.returnValue`} />,
+          accessor: "returnValue",
+          textAlign: "right",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.total_transaction_in_amount.incl_tax");
+
+            return (
+              <WrapperTableCell textAlign="right">
+                <NumberFormat value={parseFloat(value)} />
+              </WrapperTableCell>
+            );
+          },
+        },
+      ];
     }
 
     if (type === "debt") {
@@ -82,7 +153,7 @@ export default function ColumnDetail(props: TableProps) {
             return (
               <WrapperTableCell>
                 {value ? (
-                  <FormattedMessage id={`transaction_source_types.${value}`} />
+                  <FormattedMessage id={`permission_content_types.${value}`} />
                 ) : null}
               </WrapperTableCell>
             );
@@ -126,7 +197,47 @@ export default function ColumnDetail(props: TableProps) {
     if (type === "import") {
       if (dataTotal[0] == undefined) return [];
 
-      return [];
+      return [
+        {
+          accessor: "endDebt",
+          textAlign: "right",
+          colSpan: 3,
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.count");
+            return (
+              <WrapperTableCell fontWeight={700}>
+                {"SL giao dịch: "}
+                <NumberFormat value={value} suffix="" />
+              </WrapperTableCell>
+            );
+          },
+        },
+        {
+          accessor: "importStockValue",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            return (
+              <WrapperTableCell textAlign="right" fontWeight={700}>
+                <NumberFormat
+                  value={parseFloat(get(partner, "purchase_amount.incl_tax"))}
+                />
+              </WrapperTableCell>
+            );
+          },
+        },
+        {
+          accessor: "returnValue",
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            return (
+              <WrapperTableCell textAlign="right" fontWeight={700}>
+                <NumberFormat
+                  value={parseFloat(get(partner, "return_amount.incl_tax"))}
+                />
+              </WrapperTableCell>
+            );
+          },
+        },
+      ];
     }
 
     if (type === "debt") {
@@ -134,7 +245,6 @@ export default function ColumnDetail(props: TableProps) {
 
       return [
         {
-          Header: <FormattedMessage id={`table.endDebt`} />,
           accessor: "endDebt",
           textAlign: "right",
           Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
@@ -142,7 +252,6 @@ export default function ColumnDetail(props: TableProps) {
           },
         },
         {
-          Header: <FormattedMessage id={`table.time`} />,
           accessor: "time",
           Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
             return (
@@ -155,18 +264,15 @@ export default function ColumnDetail(props: TableProps) {
         },
 
         {
-          Header: <FormattedMessage id={`table.transactionType`} />,
           accessor: "transactionType",
           Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
             const { row } = props;
-            const value = get(row, "original");
 
             return <WrapperTableCell>Dư nợ đầu kỳ</WrapperTableCell>;
           },
         },
 
         {
-          Header: <FormattedMessage id={`table.debt_amount`} />,
           accessor: "debt_amount",
           textAlign: "right",
           Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
@@ -194,27 +300,31 @@ export default function ColumnDetail(props: TableProps) {
         },
       ];
     }
-  }, []);
+  }, [partner, dataTotal]);
 
-  const columnQuantity = useMemo(() => {
-    return dataTotal.map((el, idx) => {
-      return {
-        Header: <FormattedMessage id={`table.endDebt`} />,
-        accessor: "endDebt",
-        colSpan: 5,
-        Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
-          const { row } = props;
-          const value = get(row, "original.count");
+  const columnQuatity = useMemo(() => {
+    if (type === "import") {
+      return [];
+    }
+    if (type === "debt") {
+      return [
+        {
+          accessor: "endDebt",
+          colSpan: 5,
+          Cell: (props: PropsWithChildren<CellProps<any, any>>) => {
+            const { row } = props;
+            const value = get(row, "original.count");
 
-          return (
-            <WrapperTableCell textAlign="left" fontWeight={700}>
-              {"SL giao dịch: "}
-              <NumberFormat value={value} suffix="" />
-            </WrapperTableCell>
-          );
+            return (
+              <WrapperTableCell textAlign="left" fontWeight={700}>
+                {"SL giao dịch: "}
+                <NumberFormat value={value} suffix="" />
+              </WrapperTableCell>
+            );
+          },
         },
-      };
-    });
+      ];
+    }
   }, []);
 
   const table = useTable(
@@ -225,7 +335,8 @@ export default function ColumnDetail(props: TableProps) {
       autoResetPage: false,
       ...restProps,
     },
-    useSortBy
+    useSortBy,
+    useExpanded
   );
 
   const tableTotal = useTable(
@@ -238,9 +349,10 @@ export default function ColumnDetail(props: TableProps) {
     },
     useSortBy
   );
-  const tableTotalSL = useTable(
+
+  const tableQuatity = useTable(
     {
-      columns: columnQuantity as any,
+      columns: columnQuatity as any,
       data: dataTotal,
       manualPagination: true,
       autoResetPage: false,
@@ -257,9 +369,21 @@ export default function ColumnDetail(props: TableProps) {
             <RenderHeader table={table} />
           </TableHead>
           <TableBody>
-            <RenderBody loading={isLoading} table={table} />
-            <RenderBody loading={isLoading} table={tableTotal} />
-            <RenderBody isBackground={true} loading={isLoading} table={tableTotalSL} />
+            {type === "import" && (
+              <RenderBody isBackground={true} loading={isLoading} table={tableTotal} />
+            )}
+            <RenderBody loading={isLoading} table={table} filter={filter} />
+
+            {type === "debt" ? (
+              <>
+                <RenderBody loading={isLoading} table={tableTotal} />
+                <RenderBody
+                  isBackground={true}
+                  loading={isLoading}
+                  table={tableQuatity}
+                />
+              </>
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>

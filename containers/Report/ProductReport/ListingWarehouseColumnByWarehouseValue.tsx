@@ -1,17 +1,12 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { FormattedMessage } from "react-intl";
 import { CellProps, Column } from "react-table";
 
 import get from "lodash/get";
 
 import { NumberFormat } from "components";
-import { WrapperTableCell, TableCellWithFetch } from "components/TableV2";
 
-import { formatDate } from "libs";
-
-import { ORDER_INVOICE_QUANTITY } from "apis";
-
-import { transformUrl } from "libs";
+import { WrapperTableCell } from "components/TableV3";
 
 export const keys = ["sid", "time", "quantity", "price", "revenue", "difference"];
 
